@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, Counter
 from numpy.random import choice
 from CAI import genetic_codes
 
@@ -41,21 +41,17 @@ def amino_acids_to_codons(amino_acids: str, codon_frequencies: dict, genetic_cod
         str: A DNA sequence with the given codon usage.
     '''
 
-    # create a translation table
-    translation_table = defaultdict(list)
-    for key, value in genetic_codes[genetic_code].items():
-    	translation_table[value].append(key)
-    translation_table = dict(translation_table)
+    codons_dict = codons_for_aa(genetic_code)
 
     # generate the sequence
     sequence = ""
     for aa in amino_acids:
-        codons_for_aa = translation_table[aa]
-        sequence += choice(codons_for_aa, p=[codon_frequencies[codon] for codon in codons_for_aa])
+        codons = codons_dict[aa]
+        sequence += choice(codons, p=[codon_frequencies[codon] for codon in codons])
 
     return sequence
 
-def gc_content(seq):
+def gc_content(seq: str) -> float:
     """Calculates the GC content of a sequence.
 
     Args:
@@ -70,4 +66,55 @@ def gc_content(seq):
     for i in seq:
         if i not in ["A", "T", "G", "C"]:
             raise ValueError("Invalid character in sequence.")
-	return (seq.count("G") + seq.count("C")) / len(seq)
+            return (seq.count("G") + seq.count("C")) / len(seq)
+
+def codons_for_aa(genetic_code: int) -> dict:
+    '''Generates a dict of the codons for each amino acid.
+
+    Example:
+        >>> codons_for_aa(1)
+        {'F': ['TTT', 'TTC'], 'L': ['TTA', 'TTG', 'CTT', 'CTC', 'CTA', 'CTG'], 'S': ['TCT', 'TCC', 'TCA', 'TCG', 'AGT', 'AGC'], 'Y': ['TAT', 'TAC'], 'C': ['TGT', 'TGC'], 'W': ['TGG'], 'P': ['CCT', 'CCC', 'CCA', 'CCG'], 'H': ['CAT', 'CAC'], 'Q': ['CAA', 'CAG'], 'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'], 'I': ['ATT', 'ATC', 'ATA'], 'M': ['ATG'], 'T': ['ACT', 'ACC', 'ACA', 'ACG'], 'N': ['AAT', 'AAC'], 'K': ['AAA', 'AAG'], 'V': ['GTT', 'GTC', 'GTA', 'GTG'], 'A': ['GCT', 'GCC', 'GCA', 'GCG'], 'D': ['GAT', 'GAC'], 'E': ['GAA', 'GAG'], 'G': ['GGT', 'GGC', 'GGA', 'GGG']}
+    '''
+    # create a translation table
+    codons_for_aa = defaultdict(list)
+    for key, value in genetic_codes[genetic_code].items():
+    	codons_for_aa[value].append(key)
+    return dict(codons_for_aa)
+
+def codon_frequencies(seq: str, genetic_code=1) -> dict:
+    '''Calculated the codon frequencies of each codon
+
+    Args:
+        seq (str): The DNA sequence.
+        genetic_code (int, optional): The genetic code to use. Defaults to the standard genetic code.
+
+    Returns:
+        dict: The codon frequencies of each codon.
+    '''
+
+    if len(seq) % 3 != 0:
+        raise ValueError("Sequence length is not divisible by 3.")
+
+    seq = [seq[i:i+3] for i in range(0, len(seq), 3)]
+    counts = Counter(seq)
+
+    freqs = dict()
+    for aa, codons in codons_for_aa(genetic_code).items():
+        total_codons_for_aa = sum([counts[codon] for codon in codons])
+        for codon in codons:
+            try:
+                freqs[codon] = counts[codon] / total_codons_for_aa
+            except ZeroDivisionError:
+                freqs[codon] = 0
+    return freqs
+
+def translate(seq, genetic_code=1):
+    codons = [seq[i:i+3] for i in range(0, len(seq), 3)]
+    aa_seq = ""
+    for codon in codons:
+        print(genetic_codes[genetic_code][codon])
+    return aa_seq
+with open("dummy_seq.txt") as f:
+    # print(codon_frequencies(f.readline().rstrip()))
+    print(translate(f.readline().rstrip()))
+# print(codons_for_aa(1))
