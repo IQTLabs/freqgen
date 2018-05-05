@@ -1,8 +1,9 @@
 from collections import defaultdict, Counter
-from numpy.random import choice
+import numpy.random
 from CAI import genetic_codes
+from warnings import warn
 
-def amino_acid_seq(length: int, frequencies: dict) -> str:
+def amino_acid_seq(length, frequencies):
     """Generates an amino acid sequence given frequencies of each amino acid.
 
     Args:
@@ -26,14 +27,14 @@ def amino_acid_seq(length: int, frequencies: dict) -> str:
     sequence = ""
     amino_acids, frequencies = zip(*frequencies.items())
     for i in range(length):
-        sequence += choice(amino_acids, p=frequencies)
+        sequence += numpy.random.choice(amino_acids, p=frequencies)
     return sequence
 
-def amino_acids_to_codons(amino_acids: str, codon_frequencies: dict, genetic_code=1) -> str:
+def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=1):
     '''Generates a DNA representation of an amino acid sequence.
 
     Args:
-        amino_acids (str): The amino acids to convert to DNA.
+        aa_seq (str): The amino acids to convert to DNA.
         codon_frequencies (dict): A dictionary of codon frequencies for each amino acid. For each amino acid, the sum of the frequencies of its codon must be 1.
         genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 1, the standard genetic code.
 
@@ -45,17 +46,20 @@ def amino_acids_to_codons(amino_acids: str, codon_frequencies: dict, genetic_cod
 
     # generate the sequence
     sequence = ""
-    for aa in amino_acids:
-        codons = codons_dict[aa]
-        sequence += choice(codons, p=[codon_frequencies[codon] for codon in codons])
+    for aa in aa_seq:
+        try:
+            codons = codons_dict[aa]
+            sequence += numpy.random.choice(codons, p=[codon_frequencies[codon] for codon in codons])
+        except KeyError:
+            pass
 
     return sequence
 
-def gc_content(seq: str) -> float:
+def gc_content(dna_seq):
     """Calculates the GC content of a sequence.
 
     Args:
-        seq (str): The DNA sequence whose GC content is being calculated.
+        dna_seq (str): The DNA sequence whose GC content is being calculated.
 
     Returns:
         float: The GC content.
@@ -63,12 +67,12 @@ def gc_content(seq: str) -> float:
     Raises:
         ValueError: When there is an invalid character in the sequence.
     """
-    for i in seq:
+    for i in dna_seq:
         if i not in ["A", "T", "G", "C"]:
             raise ValueError("Invalid character in sequence.")
-            return (seq.count("G") + seq.count("C")) / len(seq)
+    return (dna_seq.count("G") + dna_seq.count("C")) / len(dna_seq)
 
-def codons_for_aa(genetic_code: int) -> dict:
+def codons_for_aa(genetic_code):
     '''Generates a dict of the codons for each amino acid.
 
     Example:
@@ -81,22 +85,22 @@ def codons_for_aa(genetic_code: int) -> dict:
     	codons_for_aa[value].append(key)
     return dict(codons_for_aa)
 
-def codon_frequencies(seq: str, genetic_code=1) -> dict:
+def codon_frequencies(dna_seq, genetic_code=1):
     '''Calculated the codon frequencies of each codon
 
     Args:
-        seq (str): The DNA sequence.
+        dna_seq (str): The DNA sequence.
         genetic_code (int, optional): The genetic code to use. Defaults to the standard genetic code.
 
     Returns:
         dict: The codon frequencies of each codon.
     '''
 
-    if len(seq) % 3 != 0:
+    if len(dna_seq) % 3 != 0:
         raise ValueError("Sequence length is not divisible by 3.")
 
-    seq = [seq[i:i+3] for i in range(0, len(seq), 3)]
-    counts = Counter(seq)
+    dna_seq = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
+    counts = Counter(dna_seq)
 
     freqs = dict()
     for aa, codons in codons_for_aa(genetic_code).items():
@@ -108,13 +112,15 @@ def codon_frequencies(seq: str, genetic_code=1) -> dict:
                 freqs[codon] = 0
     return freqs
 
-def translate(seq, genetic_code=1):
-    codons = [seq[i:i+3] for i in range(0, len(seq), 3)]
+def translate(dna_seq, genetic_code=1):
+    """Translates a DNA sequence.
+    """
+    codons = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
     aa_seq = ""
-    for codon in codons:
-        print(genetic_codes[genetic_code][codon])
+    for i, codon in enumerate(codons):
+        try:
+            aa_seq += genetic_codes[genetic_code][codon]
+        except KeyError:
+            warn("Stop codon in sequence... Ignoring!")
+            pass
     return aa_seq
-with open("dummy_seq.txt") as f:
-    # print(codon_frequencies(f.readline().rstrip()))
-    print(translate(f.readline().rstrip()))
-# print(codons_for_aa(1))

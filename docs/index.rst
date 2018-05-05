@@ -1,0 +1,21 @@
+.. seqgen documentation master file, created by
+   sphinx-quickstart on Fri May  4 22:46:48 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to seqgen's documentation!
+==================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+.. automodule:: seqgen
+    :members:
+    
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
