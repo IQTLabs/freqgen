@@ -17,12 +17,11 @@ def amino_acid_seq(length, frequencies):
         str: An amino acid sequence with the given frequencies.
 
     Raises:
-        ValueError: When the length of the sequence is invalid.
-        ValueError: When the probabilities do not sum to 1.
+        ValueError: When the length of the sequence is invalid or when the probabilities do not sum to 1.
     """
 
     if length <= 0:
-        raise ValueError("Length must be a positive integer.")
+        raise ValueError("Length must be a positive integer")
 
     sequence = ""
     amino_acids, frequencies = zip(*frequencies.items())
@@ -65,7 +64,7 @@ def gc_content(dna_seq):
         float: The GC content.
 
     Raises:
-        ValueError: When there is an invalid character in the sequence.
+        ValueError: When there is an invalid character in the sequence, i.e. not A, T, G, or C.
     """
     for i in dna_seq:
         if i not in ["A", "T", "G", "C"]:
@@ -77,7 +76,26 @@ def codons_for_aa(genetic_code):
 
     Example:
         >>> codons_for_aa(1)
-        {'F': ['TTT', 'TTC'], 'L': ['TTA', 'TTG', 'CTT', 'CTC', 'CTA', 'CTG'], 'S': ['TCT', 'TCC', 'TCA', 'TCG', 'AGT', 'AGC'], 'Y': ['TAT', 'TAC'], 'C': ['TGT', 'TGC'], 'W': ['TGG'], 'P': ['CCT', 'CCC', 'CCA', 'CCG'], 'H': ['CAT', 'CAC'], 'Q': ['CAA', 'CAG'], 'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'], 'I': ['ATT', 'ATC', 'ATA'], 'M': ['ATG'], 'T': ['ACT', 'ACC', 'ACA', 'ACG'], 'N': ['AAT', 'AAC'], 'K': ['AAA', 'AAG'], 'V': ['GTT', 'GTC', 'GTA', 'GTG'], 'A': ['GCT', 'GCC', 'GCA', 'GCG'], 'D': ['GAT', 'GAC'], 'E': ['GAA', 'GAG'], 'G': ['GGT', 'GGC', 'GGA', 'GGG']}
+        {'A': ['GCT', 'GCC', 'GCA', 'GCG'],
+         'C': ['TGT', 'TGC'],
+         'D': ['GAT', 'GAC'],
+         'E': ['GAA', 'GAG'],
+         'F': ['TTT', 'TTC'],
+         'G': ['GGT', 'GGC', 'GGA', 'GGG'],
+         'H': ['CAT', 'CAC'],
+         'I': ['ATT', 'ATC', 'ATA'],
+         'K': ['AAA', 'AAG'],
+         'L': ['TTA', 'TTG', 'CTT', 'CTC', 'CTA', 'CTG'],
+         'M': ['ATG'],
+         'N': ['AAT', 'AAC'],
+         'P': ['CCT', 'CCC', 'CCA', 'CCG'],
+         'Q': ['CAA', 'CAG'],
+         'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'],
+         'S': ['TCT', 'TCC', 'TCA', 'TCG', 'AGT', 'AGC'],
+         'T': ['ACT', 'ACC', 'ACA', 'ACG'],
+         'V': ['GTT', 'GTC', 'GTA', 'GTG'],
+         'W': ['TGG'],
+         'Y': ['TAT', 'TAC']}
     '''
     # create a translation table
     codons_for_aa = defaultdict(list)
@@ -94,6 +112,9 @@ def codon_frequencies(dna_seq, genetic_code=1):
 
     Returns:
         dict: The codon frequencies of each codon.
+
+    Raises:
+        ValueError: When the sequence length is not divisible into codons, i.e. when sequence length is not divisible by three.
     '''
 
     if len(dna_seq) % 3 != 0:
@@ -113,8 +134,33 @@ def codon_frequencies(dna_seq, genetic_code=1):
     return freqs
 
 def translate(dna_seq, genetic_code=1):
-    """Translates a DNA sequence.
+    """Translates a DNA sequence into amino acids.
+
+    Args:
+        dna_seq (str): The DNA sequence to translate.
+        genetic_code (int, optional): The genetic code to use. Defaults to the standard genetic code.
+
+    Note:
+        If there is a stop codon in the sequence, it is ignored.
+
+    Returns:
+        str: The amino acid sequence.
+
+    Raises:
+        ValueError: When there is an invalid character or when the sequence
+        length is not divisible into codons, i.e. when sequence length is not
+        divisible by three.
+
+    Example:
+        >>> translate("ATTAATCAAACGGAGTTA")
+        'INQTEL'
     """
+    for base in dna_seq:
+        if base not in ["A", "T", "G", "C"]:
+            raise ValueError("Invalid character in sequence: ", base)
+    if len(dna_seq) % 3 != 0:
+        raise ValueError("Invalid sequence length.")
+        
     codons = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
     aa_seq = ""
     for i, codon in enumerate(codons):

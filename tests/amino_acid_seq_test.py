@@ -1,5 +1,5 @@
 import pytest
-from seqgen import amino_acid_seq
+from freqgen import amino_acid_seq
 
 def test_length():
     assert len(amino_acid_seq(length=10, frequencies=dict(A=1))) == 10
