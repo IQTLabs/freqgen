@@ -148,8 +148,8 @@ def translate(dna_seq, genetic_code=1):
 
     Raises:
         ValueError: When there is an invalid character or when the sequence
-        length is not divisible into codons, i.e. when sequence length is not
-        divisible by three.
+            length is not divisible into codons, i.e. when sequence length is not
+            divisible by three.
 
     Example:
         >>> translate("ATTAATCAAACGGAGTTA")
@@ -160,7 +160,7 @@ def translate(dna_seq, genetic_code=1):
             raise ValueError("Invalid character in sequence: ", base)
     if len(dna_seq) % 3 != 0:
         raise ValueError("Invalid sequence length.")
-        
+
     codons = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
     aa_seq = ""
     for i, codon in enumerate(codons):
