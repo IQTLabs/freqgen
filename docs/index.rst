@@ -10,6 +10,8 @@ Welcome to freqgen's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+API Reference
+-------------
 .. automodule:: freqgen
     :members:
 

@@ -1,5 +1,6 @@
 from collections import defaultdict, Counter
-import numpy.random
+from itertools import islice, product
+import numpy as np
 from CAI import genetic_codes
 from warnings import warn
 
@@ -26,7 +27,7 @@ def amino_acid_seq(length, frequencies):
     sequence = ""
     amino_acids, frequencies = zip(*frequencies.items())
     for i in range(length):
-        sequence += numpy.random.choice(amino_acids, p=frequencies)
+        sequence += np.random.choice(amino_acids, p=frequencies)
     return sequence
 
 def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=1):
@@ -48,7 +49,7 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=1):
     for aa in aa_seq:
         try:
             codons = codons_dict[aa]
-            sequence += numpy.random.choice(codons, p=[codon_frequencies[codon] for codon in codons])
+            sequence += np.random.choice(codons, p=[codon_frequencies[codon] for codon in codons])
         except KeyError:
             pass
 
@@ -73,6 +74,12 @@ def gc_content(dna_seq):
 
 def codons_for_aa(genetic_code):
     '''Generates a dict of the codons for each amino acid.
+
+    Args:
+        genetic_code (int): The genetic code to use to create the dictionary.
+
+    Returns:
+        dict: A dict with the amino acids as keys and a list of codons for the amino acid as the values.
 
     Example:
         >>> codons_for_aa(1)
@@ -104,7 +111,7 @@ def codons_for_aa(genetic_code):
     return dict(codons_for_aa)
 
 def codon_frequencies(dna_seq, genetic_code=1):
-    '''Calculated the codon frequencies of each codon
+    '''Calculated the codon frequencies of each codon within the amino acid it represents.
 
     Args:
         dna_seq (str): The DNA sequence.
@@ -155,6 +162,7 @@ def translate(dna_seq, genetic_code=1):
         >>> translate("ATTAATCAAACGGAGTTA")
         'INQTEL'
     """
+
     for base in dna_seq:
         if base not in ["A", "T", "G", "C"]:
             raise ValueError("Invalid character in sequence: ", base)
@@ -170,3 +178,67 @@ def translate(dna_seq, genetic_code=1):
             warn("Stop codon in sequence... Ignoring!")
             pass
     return aa_seq
+
+def k_mers(seq, k):
+    '''Yields all *k*-mers in the input sequence with repeats.
+
+    Modified from this `StackOverflow answer <https://stackoverflow.com/questions/6822725/rolling-or-sliding-window-iterator>`_.
+
+    Args:
+        seq (str): The sequence for which to generate *k*-mers.
+        k (int): the length of the *k*-mers.
+
+    Yields:
+        str: the next *k*-mer
+
+    Example:
+        >>> list(k_mers("GATTACA", 1))
+        ['G', 'A', 'T', 'T', 'A', 'C', 'A']
+        >>> list(k_mers("GATTACA", 2))
+        ['GA', 'AT', 'TT', 'TA', 'AC', 'CA']
+        >>> list(k_mers("GATTACA", 3))
+        ['GAT', 'ATT', 'TTA', 'TAC', 'ACA']
+        >>> list(k_mers("GATTACA", 4))
+        ['GATT', 'ATTA', 'TTAC', 'TACA']
+        >>> k_mers("GATTACA", 4)
+        <generator object k_mers at 0x10831d258>
+    '''
+    it = iter(seq)
+    result = tuple(islice(it, k))
+    if len(result) == k:
+        yield "".join(result)
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield "".join(result)
+
+def k_mer_frequencies(seq, k):
+    '''Calculates relative frequencies of each *k*-mer in the sequence.
+
+    Args:
+        seq (str): The sequence to for which to generate *k*-mer frequencies.
+        k (int): the length of the *k*-mers.
+
+    Returns:
+        dict: A dict in which the keys are *k*-mers and the values are floats of their frequencies.
+
+    Example:
+        >>> k_mer_frequencies("INQTEL", 1)
+        {'E': 0.16666666666666666,
+         'I': 0.16666666666666666,
+         'L': 0.16666666666666666,
+         'N': 0.16666666666666666,
+         'Q': 0.16666666666666666,
+         'T': 0.16666666666666666}
+         >>> k_mer_frequencies("GATGATGGC", 3)
+         {'ATG': 0.2857142857142857,
+          'GAT': 0.2857142857142857,
+          'GGC': 0.14285714285714285,
+          'TGA': 0.14285714285714285,
+          'TGG': 0.14285714285714285}
+    '''
+
+    count = Counter(k_mers(seq, k))
+    return {k: v/sum(count.values()) for k, v in count.items()}
+
+from pprint import pprint
+pprint(k_mer_frequencies("GATGATGGC", 3))
