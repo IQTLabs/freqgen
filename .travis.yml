@@ -4,6 +4,6 @@ python:
   - "3.6"
   - "3.7-dev"  # 3.7 development branch
 install:
-    - pip install .
+    - pip install -e .
 script:
     - pytest
