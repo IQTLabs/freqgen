@@ -17,7 +17,11 @@ DESCRIPTION = 'Generate sequences'
 URL = 'https://github.com/Benjamin-Lee/seqgen'
 EMAIL = 'benjamindlee@me.com'
 AUTHOR = 'Benjamin Lee'
+<<<<<<< HEAD
 REQUIRES_PYTHON = '>=3.4.0'
+=======
+REQUIRES_PYTHON = '>=3.3.0'
+>>>>>>> df5c679f41ff0b1c3fb4dfdb54f2e806c7dc6aa3
 VERSION = 0.1
 
 # What packages are required for this module to be executed?
