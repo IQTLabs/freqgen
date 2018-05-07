@@ -229,6 +229,7 @@ def k_mer_frequencies(seq, k):
          'N': 0.16666666666666666,
          'Q': 0.16666666666666666,
          'T': 0.16666666666666666}
+
          >>> k_mer_frequencies("GATGATGGC", 3)
          {'ATG': 0.2857142857142857,
           'GAT': 0.2857142857142857,
@@ -239,6 +240,3 @@ def k_mer_frequencies(seq, k):
 
     count = Counter(k_mers(seq, k))
     return {k: v/sum(count.values()) for k, v in count.items()}
-
-from pprint import pprint
-pprint(k_mer_frequencies("GATGATGGC", 3))
