@@ -35,11 +35,14 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=1):
 
     Args:
         aa_seq (str): The amino acids to convert to DNA.
-        codon_frequencies (dict): A dictionary of codon frequencies for each amino acid. For each amino acid, the sum of the frequencies of its codon must be 1.
+        codon_frequencies (dict): A dictionary of codon frequencies for each amino acid. For each amino acid, the sum of the frequencies of its codons must be 1.
         genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 1, the standard genetic code.
 
     Returns:
         str: A DNA sequence with the given codon usage.
+
+    Example:
+
     '''
 
     codons_dict = codons_for_aa(genetic_code)
@@ -66,6 +69,10 @@ def gc_content(dna_seq):
 
     Raises:
         ValueError: When there is an invalid character in the sequence, i.e. not A, T, G, or C.
+
+    Example:
+        >>> gc_content("GATTACA")
+        0.2857142857142857
     """
     for i in dna_seq:
         if i not in ["A", "T", "G", "C"]:
@@ -111,7 +118,7 @@ def codons_for_aa(genetic_code):
     return dict(codons_for_aa)
 
 def codon_frequencies(dna_seq, genetic_code=1):
-    '''Calculated the codon frequencies of each codon within the amino acid it represents.
+    '''Calculates the codon frequencies of each codon within the amino acid it represents.
 
     Args:
         dna_seq (str): The DNA sequence.
@@ -236,6 +243,31 @@ def k_mer_frequencies(seq, k):
           'GGC': 0.14285714285714285,
           'TGA': 0.14285714285714285,
           'TGG': 0.14285714285714285}
+
+        # calculating amino acid usage frequencies
+        >>> from Bio import SeqIO
+        >>> seq = str(SeqIO.read("beta_lactamase.fasta", "fasta").seq)
+        >>> k_mer_frequencies(seq, 1)
+        {'A': 0.10139860139860139,
+        'C': 0.01048951048951049,
+        'D': 0.055944055944055944,
+        'E': 0.06993006993006994,
+        'F': 0.03496503496503497,
+        'G': 0.07342657342657342,
+        'H': 0.024475524475524476,
+        'I': 0.05944055944055944,
+        'K': 0.038461538461538464,
+        'L': 0.11538461538461539,
+        'M': 0.03496503496503497,
+        'N': 0.027972027972027972,
+        'P': 0.04895104895104895,
+        'Q': 0.03146853146853147,
+        'R': 0.06643356643356643,
+        'S': 0.055944055944055944,
+        'T': 0.06993006993006994,
+        'V': 0.05244755244755245,
+        'W': 0.013986013986013986,
+        'Y': 0.013986013986013986}
     '''
 
     count = Counter(k_mers(seq, k))
