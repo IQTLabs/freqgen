@@ -19,6 +19,12 @@ def amino_acid_seq(length, frequencies):
 
     Raises:
         ValueError: When the length of the sequence is invalid or when the probabilities do not sum to 1.
+
+    Example:
+        >>> from Bio import SeqIO
+        >>> seq = SeqIO.read("beta_lactamase.fasta", "fasta").seq
+        >>> frequencies = k_mer_frequencies(seq, 1)
+        >>> amino_acid_seq(25, frequencies)
     """
 
     if length <= 0:
@@ -30,19 +36,23 @@ def amino_acid_seq(length, frequencies):
         sequence += np.random.choice(amino_acids, p=frequencies)
     return sequence
 
-def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=1):
+def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
     '''Generates a DNA representation of an amino acid sequence.
 
     Args:
         aa_seq (str): The amino acids to convert to DNA.
         codon_frequencies (dict): A dictionary of codon frequencies for each amino acid. For each amino acid, the sum of the frequencies of its codons must be 1.
-        genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 1, the standard genetic code.
+        genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 11, the standard genetic code.
 
     Returns:
         str: A DNA sequence with the given codon usage.
 
     Example:
-
+        >>> from Bio import SeqIO
+        >>> seq = SeqIO.read("sequence.fasta", "fasta").seq
+        >>> frequencies = codon_frequencies(seq)
+        >>> amino_acids_to_codons("INQTEL", frequencies)
+        'ATAAATCAAACCGAACTT'
     '''
 
     codons_dict = codons_for_aa(genetic_code)
@@ -117,18 +127,84 @@ def codons_for_aa(genetic_code):
     	codons_for_aa[value].append(key)
     return dict(codons_for_aa)
 
-def codon_frequencies(dna_seq, genetic_code=1):
+def codon_frequencies(dna_seq, genetic_code=11):
     '''Calculates the codon frequencies of each codon within the amino acid it represents.
 
     Args:
         dna_seq (str): The DNA sequence.
-        genetic_code (int, optional): The genetic code to use. Defaults to the standard genetic code.
+        genetic_code (int, optional): The genetic code to use. Defaults to the 11, standard genetic code.
 
     Returns:
         dict: The codon frequencies of each codon.
 
     Raises:
         ValueError: When the sequence length is not divisible into codons, i.e. when sequence length is not divisible by three.
+
+    Example:
+        >>> from Bio import SeqIO
+        >>> seq = SeqIO.read("sequence.fasta", "fasta").seq
+        >>> codon_frequencies(seq)
+        {'AAA': 0.5,
+         'AAC': 0.5,
+         'AAG': 0.5,
+         'AAT': 0.5,
+         'ACA': 0.0,
+         'ACC': 0.5,
+         'ACG': 0.0,
+         'ACT': 0.5,
+         'AGA': 0.0,
+         'AGC': 0.0,
+         'AGG': 0.0,
+         'AGT': 0.0,
+         'ATA': 1.0,
+         'ATC': 0.0,
+         'ATG': 1.0,
+         'ATT': 0.0,
+         'CAA': 1.0,
+         'CAC': 0.0,
+         'CAG': 0.0,
+         'CAT': 1.0,
+         'CCA': 0.25,
+         'CCC': 0.125,
+         'CCG': 0.375,
+         'CCT': 0.25,
+         'CGA': 0.3333333333333333,
+         'CGC': 0.0,
+         'CGG': 0.6666666666666666,
+         'CGT': 0.0,
+         'CTA': 0.0,
+         'CTC': 0.0,
+         'CTG': 0.25,
+         'CTT': 0.75,
+         'GAA': 1.0,
+         'GAC': 0.0,
+         'GAG': 0.0,
+         'GAT': 1.0,
+         'GCA': 0.0,
+         'GCC': 0.8,
+         'GCG': 0.2,
+         'GCT': 0.0,
+         'GGA': 0.5,
+         'GGC': 0.25,
+         'GGG': 0.25,
+         'GGT': 0.0,
+         'GTA': 0.0,
+         'GTC': 0.25,
+         'GTG': 0.0,
+         'GTT': 0.75,
+         'TAC': 0.0,
+         'TAT': 1.0,
+         'TCA': 0.2,
+         'TCC': 0.4,
+         'TCG': 0.0,
+         'TCT': 0.4,
+         'TGC': 1.0,
+         'TGG': 1.0,
+         'TGT': 0.0,
+         'TTA': 0.0,
+         'TTC': 0.6,
+         'TTG': 0.0,
+         'TTT': 0.4}
     '''
 
     if len(dna_seq) % 3 != 0:
@@ -147,12 +223,12 @@ def codon_frequencies(dna_seq, genetic_code=1):
                 freqs[codon] = 0
     return freqs
 
-def translate(dna_seq, genetic_code=1):
+def translate(dna_seq, genetic_code=11):
     """Translates a DNA sequence into amino acids.
 
     Args:
         dna_seq (str): The DNA sequence to translate.
-        genetic_code (int, optional): The genetic code to use. Defaults to the standard genetic code.
+        genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
 
     Note:
         If there is a stop codon in the sequence, it is ignored.
