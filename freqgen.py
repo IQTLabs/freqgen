@@ -294,12 +294,13 @@ def k_mers(seq, k):
         result = result[1:] + (elem,)
         yield "".join(result)
 
-def k_mer_frequencies(seq, k):
+def k_mer_frequencies(seq, k, include_missing=False):
     '''Calculates relative frequencies of each *k*-mer in the sequence.
 
     Args:
         seq (str): The sequence to for which to generate *k*-mer frequencies.
         k (int): the length of the *k*-mers.
+        include_missing (bool): If set to "dna", include missing *k*-mers as having a frequency of 0. Defaults to False.
 
     Returns:
         dict: A dict in which the keys are *k*-mers and the values are floats of their frequencies.
@@ -322,4 +323,9 @@ def k_mer_frequencies(seq, k):
     '''
 
     count = Counter(k_mers(seq, k))
-    return {k: v/sum(count.values()) for k, v in count.items()}
+    frequencies = {k: v/sum(count.values()) for k, v in count.items()}
+    if include_missing == "dna":
+        defaults = {"".join(x): 0 for x in list(product("ATGC", repeat=k))}
+        return {**defaults, **frequencies}
+    return frequencies
+
