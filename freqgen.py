@@ -294,16 +294,20 @@ def k_mers(seq, k):
         result = result[1:] + (elem,)
         yield "".join(result)
 
-def k_mer_frequencies(seq, k, include_missing=False):
+def k_mer_frequencies(seq, k, include_missing=False, vector=False):
     '''Calculates relative frequencies of each *k*-mer in the sequence.
 
     Args:
         seq (str): The sequence to for which to generate *k*-mer frequencies.
         k (int): the length of the *k*-mers.
-        include_missing (bool): If set to "dna", include missing *k*-mers as having a frequency of 0. Defaults to False.
+        include_missing (bool, optional): If True, include missing *k*-mers as having a frequency of 0. Only supports DNA *k*-mers. Defaults to False.
+        vector (bool, optional): Return a 1-D Numpy array of the *k*-mer frequencies, ordered by *k*-mers alphabetically. If True, ``include_missing`` must also be True. Defaults to False.
 
     Returns:
         dict: A dict in which the keys are *k*-mers and the values are floats of their frequencies.
+
+    Raises:
+        ValueError: When an invalid value of k is provided or ``include_missing`` is False and ``vector`` is True.
 
     Example:
         >>> k_mer_frequencies("INQTEL", 1)
@@ -316,8 +320,8 @@ def k_mer_frequencies(seq, k, include_missing=False):
 
         >>> k_mer_frequencies("GATGATGGC", 2)
         {'AT': 0.25, 'GA': 0.25, 'GC': 0.125, 'GG': 0.125, 'TG': 0.25}
-        
-        >>> k_mer_frequencies("GATGATGGC", 2, include_missing="dna")
+
+        >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True)
         {'AA': 0,
          'AC': 0,
          'AG': 0,
@@ -334,12 +338,24 @@ def k_mer_frequencies(seq, k, include_missing=False):
          'TC': 0,
          'TG': 0.25,
          'TT': 0}
+
+        >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True, vector=True)
+        array([0.   , 0.   , 0.   , 0.25 , 0.   , 0.   , 0.   , 0.   , 0.25 ,
+               0.125, 0.125, 0.   , 0.   , 0.   , 0.25 , 0.   ])
     '''
+
+    if k < 1:
+        raise ValueError("Invalid value of k. May not be less than 1.")
+    elif not include_missing and vector:
+        raise ValueError("May not create vector without including missing kmers.")
 
     count = Counter(k_mers(seq, k))
     frequencies = {k: v/sum(count.values()) for k, v in count.items()}
-    if include_missing == "dna":
+    if include_missing or vector:
         defaults = {"".join(x): 0 for x in list(product("ATGC", repeat=k))}
-        return {**defaults, **frequencies}
+        frequencies = {**defaults, **frequencies}
+    if vector:
+        frequencies = sorted(list(frequencies.items()), key=lambda x: x[0])
+        frequencies = np.fromiter((x[1] for x in frequencies), float)
     return frequencies
 
