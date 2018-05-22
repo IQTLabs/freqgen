@@ -54,3 +54,22 @@ def test_vectorization():
     assert np.array_equal(k_mer_frequencies("G", 1, include_missing=True, vector=True), np.array([0.0, 0.0, 1.0, 0.0]))
     assert np.array_equal(k_mer_frequencies("C", 1, include_missing=True, vector=True), np.array([0.0, 1.0, 0.0, 0.0]))
     assert np.array_equal(k_mer_frequencies("AT", 1, include_missing=True, vector=True), np.array([0.5, 0.0, 0.0, 0.5]))
+
+def test_multiple_k():
+    assert np.array_equal(k_mer_frequencies("AA", [1, 2], include_missing=True, vector=True), np.array([1.0, 0.0, 0.0, 0.0, # k = 1
+                                                                                                        1.0, 0.0, 0.0, 0.0, # k = 2
+                                                                                                        0.0, 0.0, 0.0, 0.0,
+                                                                                                        0.0,  0.0, 0.0, 0.0,
+                                                                                                        0.0,  0.0, 0.0, 0.0]))
+
+    assert np.array_equal(k_mer_frequencies("AA", [2, 1], include_missing=True, vector=True), np.array([1.0, 0.0, 0.0, 0.0, # k = 1
+                                                                                                        1.0, 0.0, 0.0, 0.0, # k = 2
+                                                                                                        0.0, 0.0, 0.0, 0.0,
+                                                                                                        0.0,  0.0, 0.0, 0.0,
+                                                                                                        0.0,  0.0, 0.0, 0.0]))
+
+def test_multiple_seqs():
+    assert k_mer_frequencies(["A", "A"], 1) == {"A": 1.0}
+    assert k_mer_frequencies(["A", "T"], 1) == {"A": 0.5, "T": 0.5}
+    assert k_mer_frequencies(["A", "T"], 1, include_missing=True) == {"A": 0.5, "T": 0.5, "G": 0.0, "C": 0.0}
+    assert np.array_equal(k_mer_frequencies(["A", "T"], 1, include_missing=True, vector=True), np.array([0.5, 0.0, 0.0, 0.5]))
