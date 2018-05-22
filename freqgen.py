@@ -341,6 +341,9 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
          'T': 0.2222222222222222,
          'TG': 0.25}
 
+        >>> k_mer_frequencies(["A", "T"], 1)
+        {"A": 0.5, "T": 0.5}
+
         >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True)
         {'AA': 0,
          'AC': 0,
