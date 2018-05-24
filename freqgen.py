@@ -136,11 +136,11 @@ def codons_for_aa(genetic_code):
     	codons_for_aa[value].append(key)
     return dict(codons_for_aa)
 
-def codon_frequencies(dna_seq, genetic_code=11):
-    '''Calculates the codon frequencies of each codon within the amino acid it represents.
+def codon_frequencies(seq, genetic_code=11):
+    '''Calculates the frequency of each codon.
 
     Args:
-        dna_seq (str): The DNA sequence.
+        seq (str): The DNA sequence.
         genetic_code (int, optional): The genetic code to use. Defaults to the 11, standard genetic code.
 
     Returns:
@@ -153,84 +153,86 @@ def codon_frequencies(dna_seq, genetic_code=11):
         >>> from Bio import SeqIO
         >>> seq = SeqIO.read("sequence.fasta", "fasta").seq
         >>> codon_frequencies(seq)
-        {'AAA': 0.5,
-         'AAC': 0.5,
-         'AAG': 0.5,
-         'AAT': 0.5,
-         'ACA': 0.0,
-         'ACC': 0.5,
-         'ACG': 0.0,
-         'ACT': 0.5,
-         'AGA': 0.0,
-         'AGC': 0.0,
-         'AGG': 0.0,
-         'AGT': 0.0,
-         'ATA': 1.0,
-         'ATC': 0.0,
-         'ATG': 1.0,
-         'ATT': 0.0,
-         'CAA': 1.0,
-         'CAC': 0.0,
-         'CAG': 0.0,
-         'CAT': 1.0,
-         'CCA': 0.25,
-         'CCC': 0.125,
-         'CCG': 0.375,
-         'CCT': 0.25,
-         'CGA': 0.3333333333333333,
-         'CGC': 0.0,
-         'CGG': 0.6666666666666666,
-         'CGT': 0.0,
-         'CTA': 0.0,
-         'CTC': 0.0,
-         'CTG': 0.25,
-         'CTT': 0.75,
-         'GAA': 1.0,
-         'GAC': 0.0,
-         'GAG': 0.0,
-         'GAT': 1.0,
-         'GCA': 0.0,
-         'GCC': 0.8,
-         'GCG': 0.2,
-         'GCT': 0.0,
-         'GGA': 0.5,
-         'GGC': 0.25,
-         'GGG': 0.25,
-         'GGT': 0.0,
-         'GTA': 0.0,
-         'GTC': 0.25,
-         'GTG': 0.0,
-         'GTT': 0.75,
-         'TAC': 0.0,
-         'TAT': 1.0,
-         'TCA': 0.2,
-         'TCC': 0.4,
-         'TCG': 0.0,
-         'TCT': 0.4,
-         'TGC': 1.0,
-         'TGG': 1.0,
-         'TGT': 0.0,
-         'TTA': 0.0,
-         'TTC': 0.6,
-         'TTG': 0.0,
-         'TTT': 0.4}
+        {'AAA': 0.016129032258064516,
+         'AAC': 0.016129032258064516,
+         'AAG': 0.016129032258064516,
+         'AAT': 0.016129032258064516,
+         'ACA': 0,
+         'ACC': 0.016129032258064516,
+         'ACG': 0,
+         'ACT': 0.016129032258064516,
+         'AGA': 0,
+         'AGC': 0,
+         'AGG': 0,
+         'AGT': 0,
+         'ATA': 0.016129032258064516,
+         'ATC': 0,
+         'ATG': 0.03225806451612903,
+         'ATT': 0,
+         'CAA': 0.04838709677419355,
+         'CAC': 0,
+         'CAG': 0,
+         'CAT': 0.03225806451612903,
+         'CCA': 0.03225806451612903,
+         'CCC': 0.016129032258064516,
+         'CCG': 0.04838709677419355,
+         'CCT': 0.03225806451612903,
+         'CGA': 0.016129032258064516,
+         'CGC': 0,
+         'CGG': 0.03225806451612903,
+         'CGT': 0,
+         'CTA': 0,
+         'CTC': 0,
+         'CTG': 0.03225806451612903,
+         'CTT': 0.0967741935483871,
+         'GAA': 0.016129032258064516,
+         'GAC': 0,
+         'GAG': 0,
+         'GAT': 0.016129032258064516,
+         'GCA': 0,
+         'GCC': 0.06451612903225806,
+         'GCG': 0.016129032258064516,
+         'GCT': 0,
+         'GGA': 0.03225806451612903,
+         'GGC': 0.016129032258064516,
+         'GGG': 0.016129032258064516,
+         'GGT': 0,
+         'GTA': 0,
+         'GTC': 0.016129032258064516,
+         'GTG': 0,
+         'GTT': 0.04838709677419355,
+         'TAA': 0,
+         'TAC': 0,
+         'TAG': 0,
+         'TAT': 0.03225806451612903,
+         'TCA': 0.016129032258064516,
+         'TCC': 0.03225806451612903,
+         'TCG': 0,
+         'TCT': 0.03225806451612903,
+         'TGA': 0,
+         'TGC': 0.016129032258064516,
+         'TGG': 0.016129032258064516,
+         'TGT': 0,
+         'TTA': 0,
+         'TTC': 0.04838709677419355,
+         'TTG': 0,
+         'TTT': 0.03225806451612903}
     '''
 
-    if len(dna_seq) % 3 != 0:
-        raise ValueError("Sequence length is not divisible by 3.")
+    assert len(seq) % 3 == 0 # check to ensure sequence contains only complete codons
+    seq = str(seq).upper()
 
-    dna_seq = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
-    counts = Counter(dna_seq)
+    seq = [seq[i:i+3] for i in range(0, len(seq), 3)] # slices the sequence into individual codons
+    codon_count = Counter(seq)
+    frequencies = {key: (float(value) / len(seq)) for (key, value) in codon_count.items()}
+    # collections.Counter returns a dictionary with counts of all the codons present. To ensure a 64-D vector, we make sure all codons are present in the dictionary.
+    for codon in genetic_codes[genetic_code]:
+        try:
+            frequencies[codon]
+        except KeyError:
+            frequencies[codon] = 0
 
-    freqs = dict()
-    for aa, codons in codons_for_aa(genetic_code).items():
-        total_codons_for_aa = sum([counts[codon] for codon in codons])
-        for codon in codons:
-            try:
-                freqs[codon] = counts[codon] / total_codons_for_aa
-            except ZeroDivisionError:
-                freqs[codon] = 0
-    return freqs
+    return frequencies
 
 def translate(dna_seq, genetic_code=11):
     """Translates a DNA sequence into amino acids.
@@ -419,5 +421,17 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
     else:
         return {k: v for d in output for k, v in d.items() }
 
+
+def CUB_vector(seq, genetic_code=11):
+    '''returns a vector containing codon frequency'''
+
+    frequencies = codon_frequencies(seq, genetic_code)
+
+    # convert into vector from dict with fixed order
+    frequencies = [x[1] for x in sorted(list(frequencies.items()), key=lambda x: x[0])]
+    assert len(frequencies) == 64
+
+    frequencies = np.array(frequencies)
+    assert np.isclose(sum(frequencies), 1)
     return frequencies
 
