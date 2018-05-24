@@ -22,7 +22,7 @@ VERSION = 0.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    "numpy", "click", "biopython"
+    "numpy", "click", "biopython", "pyyaml"
 ]
 
 # The rest you shouldn't have to touch too much :)
@@ -97,9 +97,7 @@ setup(
     # If your package is a single module, use this instead of 'packages':
     # py_modules=['mypackage'],
 
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
+    entry_points={'console_scripts': ['freqgen=cli:cli']},
     install_requires=REQUIRED,
     include_package_data=True,
     license='MIT',
