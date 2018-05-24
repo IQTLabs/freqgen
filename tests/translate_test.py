@@ -4,6 +4,7 @@ import pytest
 def test_standard_code():
     assert translate("ATTAATCAAACGGAGTTA") == "INQTEL"
     assert translate("GATACA") == "DT"
+    assert translate("GATACATGA") == "DT*"
 
 def test_bad_character():
     # invalid characters

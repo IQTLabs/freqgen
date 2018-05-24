@@ -1,8 +1,17 @@
 from collections import defaultdict, Counter, Iterable
 from itertools import islice, product, chain
-import numpy as np
-from CAI import genetic_codes
 from warnings import warn
+
+import numpy as np
+import Bio.Data.CodonTable
+
+# create the genetic_codes dict
+genetic_codes = {}
+for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
+    table = genetic_code.forward_table
+    for codon in genetic_code.stop_codons:
+        table[codon] = "*"
+    genetic_codes[code_id] = table
 
 def amino_acid_seq(length, frequencies):
     """Generates an amino acid sequence given frequencies of each amino acid.
@@ -237,9 +246,8 @@ def translate(dna_seq, genetic_code=11):
         str: The amino acid sequence.
 
     Raises:
-        ValueError: When there is an invalid character or when the sequence
-            length is not divisible into codons, i.e. when sequence length is not
-            divisible by three.
+        ValueError: When there is an invalid character
+        ValueError: when the sequence length is not divisible into codons, i.e. when sequence length is not divisible by three.
 
     Example:
         >>> translate("ATTAATCAAACGGAGTTA")
@@ -255,11 +263,7 @@ def translate(dna_seq, genetic_code=11):
     codons = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
     aa_seq = ""
     for i, codon in enumerate(codons):
-        try:
-            aa_seq += genetic_codes[genetic_code][codon]
-        except KeyError:
-            warn("Stop codon in sequence... Ignoring!")
-            pass
+        aa_seq += genetic_codes[genetic_code][codon]
     return aa_seq
 
 def k_mers(seq, k):
@@ -292,7 +296,7 @@ def k_mers(seq, k):
 
     # error checking
     if k > len(seq):
-        raise ValueError("k may not be less then length of seq.")
+        raise ValueError("k (%i) may not be less then length of seq (%i)."  % (k, len(seq)))
     elif len(seq) == 0:
         raise ValueError("seq length may not be zero")
     elif k <= 0:
@@ -320,6 +324,7 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
 
     Raises:
         ValueError: When an invalid value of k is provided or ``include_missing`` is False and ``vector`` is True.
+        ValueError: When ``k`` or ``seq`` is not provided.
 
     Example:
         >>> k_mer_frequencies("INQTEL", 1)
@@ -369,6 +374,10 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
 
     if not include_missing and vector:
         raise ValueError("May not create vector without including missing kmers.")
+    elif not k:
+        raise ValueError("Must provide a value for k")
+    elif not seq:
+        raise ValueError("Must provide seq(s)")
 
     if not isinstance(k, Iterable):
         k = [k]
@@ -377,7 +386,7 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
 
     output = []
 
-    if isinstance(seq, str):
+    if isinstance(seq, (str, bytes)):
         seq = [seq]
 
     for _k in k:

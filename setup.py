@@ -22,7 +22,7 @@ VERSION = 0.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    "numpy", "CAI"
+    "numpy", "click", "biopython"
 ]
 
 # The rest you shouldn't have to touch too much :)
