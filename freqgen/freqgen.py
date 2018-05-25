@@ -420,18 +420,3 @@ def k_mer_frequencies(seq, k, include_missing=False, vector=False):
         return np.array(list(chain.from_iterable(output)))
     else:
         return {k: v for d in output for k, v in d.items() }
-
-
-def CUB_vector(seq, genetic_code=11):
-    '''returns a vector containing codon frequency'''
-
-    frequencies = codon_frequencies(seq, genetic_code)
-
-    # convert into vector from dict with fixed order
-    frequencies = [x[1] for x in sorted(list(frequencies.items()), key=lambda x: x[0])]
-    assert len(frequencies) == 64
-
-    frequencies = np.array(frequencies)
-    assert np.isclose(sum(frequencies), 1)
-    return frequencies
-
