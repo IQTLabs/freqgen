@@ -1,7 +1,7 @@
 from pyeasyga.pyeasyga import GeneticAlgorithm
 from Bio import SeqIO
 from freqgen import *
-
+import yaml
 def dna_to_vector(seq):
 	seq = np.array(list(seq))
 	seq[seq == "T"] = 0
@@ -47,114 +47,125 @@ def CUB_vector(seq, genetic_code=11):
     assert np.isclose(sum(frequencies), 1)
     return frequencies
 
-def vector(seq):
-    return np.concatenate((CUB_vector(seq),
-                           # k_mer_frequencies(seq, 1, include_missing=True, vector=True),
-                           # k_mer_frequencies(seq, 2, include_missing=True, vector=True),
-                           # k_mer_frequencies(seq, 4, include_missing=True, vector=True),
-                           # k_mer_frequencies(seq, 5, include_missing=True, vector=True),
-                           k_mer_frequencies(seq, 2, include_missing=True, vector=True)
-                           ))
+def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, max_gens_since_improvement=50, genetic_code=11, verbose=False):
 
-# get target str
-target = ""
-for record in SeqIO.parse("ecoli.heg.fasta", "fasta"):
-    target += str(record.seq)
+    # back translate to an initial seq
+    insert = ""
+    for aa in insert_aa_seq:
+        try:
+            insert += Bio.Data.CodonTable.unambiguous_dna_by_id[genetic_code].back_table[aa]
+        except:
+            if aa == "*":
+                insert += Bio.Data.CodonTable.unambiguous_dna_by_id[genetic_code].back_table[None]
 
-# get insert str
-insert = str(SeqIO.read("gfp.fasta", "fasta").seq)
+    # create the genetic algorithm instance
+    ga = GeneticAlgorithm(dna_to_vector(insert),
+                          crossover_probability=0,
+                          maximise_fitness=False,
+                          population_size=population_size,
+                          mutation_probability=mutation_probability)
 
-print(f"Starting sequence: {insert}")
+    # get the target values of k
+    k = list(target_params.keys())
 
-ga = GeneticAlgorithm(dna_to_vector(insert), crossover_probability=0, maximise_fitness=False, population_size=100, mutation_probability=0.3)
+    # generate the target vector from the input dict
+    target = np.array([])
+    for _k in sorted([x for x in k if x != "codons"]):
+        target = np.concatenate((target, [x[1] for x in sorted(target_params[_k].items(), key=lambda x: x[0])]))
+    if "codons" in k:
+        target = np.concatenate((target, [x[1] for x in sorted(target_params["codons"].items(), key=lambda x: x[0])]))
 
-k = [3]
-insert_freqs = vector(insert) # k_mer_frequencies(insert, k, include_missing=True, vector=True)
-target = vector(target) # k_mer_frequencies(target, k, include_missing=True, vector=True)
-print(f"Starting freqs: {insert_freqs}\nTarget freqs: {target}")
-synonymous_codons = _synonymous_codons(genetic_codes[11])
+    def vector(seq):
+        output = k_mer_frequencies(seq, [x for x in k if x != "codons"], include_missing=True, vector=True)
+        if "codons" in k:
+            output = np.concatenate((output, [x[1] for x in sorted(codon_frequencies(seq, genetic_code).items(), key=lambda x: x[0])]))
+        return output
 
-def fitness(individual, data):
-    individual = vector_to_dna(individual)
-    fitness = np.linalg.norm(target - vector(individual)) # k_mer_frequencies(individual, k, include_missing=True, vector=True))
-    return fitness
-ga.fitness_function = fitness
+    def fitness(individual, data):
+        individual = vector_to_dna(individual)
+        fitness = np.linalg.norm(target - vector(individual))
+        return fitness
+    ga.fitness_function = fitness
 
-def mutate(individual):
+    synonymous_codons = _synonymous_codons(genetic_codes[genetic_code])
+    def mutate(individual):
+        while True:
+            # choose a random codon
+            codon_idx = np.random.randint(len(individual) / 6) * 6
 
-    while True:
-        # choose a random codon
-        codon_idx = np.random.randint(len(individual) / 6) * 6
+            # figure out which codon it is
+            codon = vector_to_dna(individual[codon_idx:codon_idx+6])
 
-        # figure out which codon it is
-        codon = vector_to_dna(individual[codon_idx:codon_idx+6])
+            # ensure that mutations actually change the sequence
+            if len(synonymous_codons[codon]) != 1:
+                break
 
-        # ensure that mutations actually change the sequence
-        if len(synonymous_codons[codon]) != 1:
-            break
+        # choose a new one at random for the AA
+        new_codon = dna_to_vector(np.random.choice([x for x in synonymous_codons[codon] if x != codon]))
 
-    # choose a new one at random for the AA
-    new_codon = dna_to_vector(np.random.choice([x for x in synonymous_codons[codon] if x != codon]))
+        # replace it in the individual
+        individual[codon_idx:codon_idx+6] = new_codon
 
-    # replace it in the individual
-    individual[codon_idx:codon_idx+6] = new_codon
+        return individual
+    ga.mutate_function = mutate
 
-    return individual
-ga.mutate_function = mutate
+    def create_individual(seed_data):
+        individual = vector_to_dna(seed_data)
+        new = ""
+        for codon in [individual[i:i+3] for i in range(0, len(individual), 3)]:
+            if len(synonymous_codons[codon]) == 1:
+                new += codon
+                continue
+            new += np.random.choice([x for x in synonymous_codons[codon] if x != codon])
 
-def create_individual(seed_data):
-    individual = vector_to_dna(seed_data)
-    new = ""
-    for codon in [individual[i:i+3] for i in range(0, len(individual), 3)]:
-        if len(synonymous_codons[codon]) == 1:
-            new += codon
-            continue
-        new += np.random.choice([x for x in synonymous_codons[codon] if x != codon])
+        return dna_to_vector(new)
+    ga.create_individual = create_individual
 
-    return dna_to_vector(new)
-ga.create_individual = create_individual
+    # set up for GA run
+    ga.create_first_generation()
+    gens_since_improvement = 0
+    best_indv_fitness = ga.best_individual()[0]
+    counter = 1
 
-ga.create_first_generation()
+    # run the GA
+    while gens_since_improvement < max_gens_since_improvement:
+        ga.create_next_generation()
+        if ga.best_individual()[0] < best_indv_fitness:
+            best_indv_fitness = ga.best_individual()[0]
+            gens_since_improvement = 0
+        else:
+            gens_since_improvement += 1
+        if verbose:
+            print("Gen: %s\tSince Improvement: %s/%s\tFitness: %s".expandtabs(15) % (counter, gens_since_improvement, max_gens_since_improvement, ga.best_individual()[0]), end="\r")
+        counter += 1
 
-gens_since_improvement = 0
-best_indv_fitness = ga.best_individual()[0]
-counter = 1
+    if verbose: print()
 
-while gens_since_improvement < 50:
-    ga.create_next_generation()
-    if ga.best_individual()[0] < best_indv_fitness:
-        best_indv_fitness = ga.best_individual()[0]
-        gens_since_improvement = 0
-    else:
-        gens_since_improvement += 1
-    print(f"Gen: {counter}\tSince Improvement: {gens_since_improvement}\tFitness: {best_indv_fitness}".expandtabs(15))
-    counter += 1
+    best_seq = vector_to_dna(ga.best_individual()[1])
+    best_freqs = vector(best_seq)
+    return best_seq
 
-best_seq = vector_to_dna(ga.best_individual()[1])
-print(f"Best sequence: {best_seq}")
-best_freqs = vector(best_seq) # k_mer_frequencies(best_seq, k, include_missing=True, vector=True)
-
-assert translate(best_seq) == translate(insert)
-
-print("plotting!")
-import numpy as np
-import matplotlib.pyplot as plt
-
-print("generating rectangles!")
-N = len(best_freqs)
-ind = np.arange(N)  # the x locations for the groups
-width = 0.2       # the width of the bars
-fig, ax = plt.subplots()
-rects1 = ax.bar(ind, insert_freqs, width, color='b')
-rects2 = ax.bar(ind + width, target, width, color='g')
-rects3 = ax.bar(ind + 2*width, best_freqs, width, color='r')
-
-print("fixing axes!")
-# add some text for labels, title and axes ticks
-ax.set_xticks(ind + 2*width / 2)
-ax.set_xticklabels([f"{i}" for i in range(len(target))])
-ax.legend((rects1[0], rects2[0], rects3[0]), ('Original', 'Target', "Optimized"))
-ax.set_xlabel("k")
-
-print("plotting!")
-plt.show()
+# assert translate(best_seq) == translate(insert)
+#
+# print("plotting!")
+# import numpy as np
+# import matplotlib.pyplot as plt
+#
+# print("generating rectangles!")
+# N = len(best_freqs)
+# ind = np.arange(N)  # the x locations for the groups
+# width = 0.2       # the width of the bars
+# fig, ax = plt.subplots()
+# rects1 = ax.bar(ind, insert_freqs, width, color='b')
+# rects2 = ax.bar(ind + width, target, width, color='g')
+# rects3 = ax.bar(ind + 2*width, best_freqs, width, color='r')
+#
+# print("fixing axes!")
+# # add some text for labels, title and axes ticks
+# ax.set_xticks(ind + 2*width / 2)
+# ax.set_xticklabels([f"{i}" for i in range(len(target))])
+# ax.legend((rects1[0], rects2[0], rects3[0]), ('Original', 'Target', "Optimized"))
+# ax.set_xlabel("k")
+#
+# print("plotting!")
+# plt.show()

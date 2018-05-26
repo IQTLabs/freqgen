@@ -77,27 +77,6 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
 
     return sequence
 
-def gc_content(dna_seq):
-    """Calculates the GC content of a sequence.
-
-    Args:
-        dna_seq (str): The DNA sequence whose GC content is being calculated.
-
-    Returns:
-        float: The GC content.
-
-    Raises:
-        ValueError: When there is an invalid character in the sequence, i.e. not A, T, G, or C.
-
-    Example:
-        >>> gc_content("GATTACA")
-        0.2857142857142857
-    """
-    for i in dna_seq:
-        if i not in ["A", "T", "G", "C"]:
-            raise ValueError("Invalid character in sequence.")
-    return (dna_seq.count("G") + dna_seq.count("C")) / len(dna_seq)
-
 def codons_for_aa(genetic_code):
     '''Generates a dict of the codons for each amino acid.
 
