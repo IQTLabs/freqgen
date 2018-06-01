@@ -21,7 +21,7 @@ def freqgen():
 def featurize(filepath, k, codon_usage, trans_table):
     # get the sequences as strs
     seqs = []
-    with open(filepath, "rU") as handle:
+    with open(filepath, "r") as handle:
         for seq in SeqIO.parse(handle, "fasta"):
             seqs.append(str(seq.seq))
 
@@ -47,7 +47,7 @@ def aa(filepath, mode, trans_table, length, stop_codon):
 
     # if using frequency mode
     seqs = []
-    with open(filepath, "rU") as handle:
+    with open(filepath, "r") as handle:
         for record in SeqIO.parse(handle, "fasta"):
             try:
                 aa_seq = str(record.seq.translate(table=trans_table))
