@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 def test_amino_acid():
-    assert k_mer_frequencies("INQTEL", 1) == {'E': 0.16666666666666666,
+    assert k_mer_frequencies("INQTEL", 1, include_missing=False) == {'E': 0.16666666666666666,
                                               'I': 0.16666666666666666,
                                               'L': 0.16666666666666666,
                                               'N': 0.16666666666666666,
@@ -11,7 +11,7 @@ def test_amino_acid():
                                               'T': 0.16666666666666666}
 
 def test_dna():
-    assert k_mer_frequencies("GATGATGGC", 3) == {'ATG': 0.2857142857142857,
+    assert k_mer_frequencies("GATGATGGC", 3, include_missing=False) == {'ATG': 0.2857142857142857,
                                                  'GAT': 0.2857142857142857,
                                                  'GGC': 0.14285714285714285,
                                                  'TGA': 0.14285714285714285,
@@ -69,7 +69,7 @@ def test_multiple_k():
                                                                                                         0.0,  0.0, 0.0, 0.0]))
 
 def test_multiple_seqs():
-    assert k_mer_frequencies(["A", "A"], 1) == {"A": 1.0}
-    assert k_mer_frequencies(["A", "T"], 1) == {"A": 0.5, "T": 0.5}
+    assert k_mer_frequencies(["A", "A"], 1, include_missing=False) == {"A": 1.0}
+    assert k_mer_frequencies(["A", "T"], 1, include_missing=False) == {"A": 0.5, "T": 0.5}
     assert k_mer_frequencies(["A", "T"], 1, include_missing=True) == {"A": 0.5, "T": 0.5, "G": 0.0, "C": 0.0}
     assert np.array_equal(k_mer_frequencies(["A", "T"], 1, include_missing=True, vector=True), np.array([0.5, 0.0, 0.0, 0.5]))

@@ -213,40 +213,6 @@ def codon_frequencies(seq, genetic_code=11):
 
     return frequencies
 
-def translate(dna_seq, genetic_code=11):
-    """Translates a DNA sequence into amino acids.
-
-    Args:
-        dna_seq (str): The DNA sequence to translate.
-        genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
-
-    Note:
-        If there is a stop codon in the sequence, it is ignored.
-
-    Returns:
-        str: The amino acid sequence.
-
-    Raises:
-        ValueError: When there is an invalid character
-        ValueError: when the sequence length is not divisible into codons, i.e. when sequence length is not divisible by three.
-
-    Example:
-        >>> translate("ATTAATCAAACGGAGTTA")
-        'INQTEL'
-    """
-
-    for base in dna_seq:
-        if base not in ["A", "T", "G", "C"]:
-            raise ValueError("Invalid character in sequence: ", base)
-    if len(dna_seq) % 3 != 0:
-        raise ValueError("Invalid sequence length.")
-
-    codons = [dna_seq[i:i+3] for i in range(0, len(dna_seq), 3)]
-    aa_seq = ""
-    for i, codon in enumerate(codons):
-        aa_seq += genetic_codes[genetic_code][codon]
-    return aa_seq
-
 def k_mers(seq, k):
     '''Yields all *k*-mers in the input sequence with repeats.
 
@@ -289,7 +255,7 @@ def k_mers(seq, k):
         result = result[1:] + (elem,)
         yield "".join(result)
 
-def k_mer_frequencies(seq, k, include_missing=False, vector=False):
+def k_mer_frequencies(seq, k, include_missing=True, vector=False):
     '''Calculates relative frequencies of each *k*-mer in the sequence.
 
     Args:
