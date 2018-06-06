@@ -273,7 +273,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         ValueError: When ``k`` or ``seq`` is not provided.
 
     Example:
-        >>> k_mer_frequencies("INQTEL", 1, including=False)
+        >>> k_mer_frequencies("INQTEL", 1, include_missing=False)
         {'E': 0.16666666666666666,
          'I': 0.16666666666666666,
          'L': 0.16666666666666666,
@@ -281,7 +281,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
          'Q': 0.16666666666666666,
          'T': 0.16666666666666666}
 
-        >>> k_mer_frequencies("GATGATGGC", [1, 2], including=False)
+        >>> k_mer_frequencies("GATGATGGC", [1, 2], include_missing=False)
         {'A': 0.2222222222222222,
          'AT': 0.25,
          'C': 0.1111111111111111,
@@ -292,7 +292,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
          'T': 0.2222222222222222,
          'TG': 0.25}
 
-        >>> k_mer_frequencies(["A", "T"], 1, including=False)
+        >>> k_mer_frequencies(["A", "T"], 1, include_missing=False)
         {"A": 0.5, "T": 0.5}
 
         >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True)
