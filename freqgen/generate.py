@@ -2,6 +2,9 @@ from pyeasyga.pyeasyga import GeneticAlgorithm
 from Bio import SeqIO
 from freqgen import *
 import yaml
+import dit
+from dit.divergences import jensen_shannon_divergence
+
 def dna_to_vector(seq):
 	seq = np.array(list(seq))
 	seq[seq == "T"] = 0
@@ -83,7 +86,8 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
 
     def fitness(individual, data):
         individual = vector_to_dna(individual)
-        fitness = np.linalg.norm(target - vector(individual))
+        # fitness = np.linalg.norm(target - vector(individual))
+        fitness = jensen_shannon_divergence([dit.ScalarDistribution(target), dit.ScalarDistribution(vector(individual))])
         return fitness
     ga.fitness_function = fitness
 

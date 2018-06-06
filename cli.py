@@ -6,7 +6,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import yaml
 
-from freqgen import k_mer_frequencies, codon_frequencies
+from freqgen import k_mer_frequencies, codon_frequencies, amino_acid_seq
 from freqgen import generate as _generate
 
 @click.group(cls=DefaultGroup, default='generate', default_if_no_args=True)
@@ -39,7 +39,9 @@ def featurize(filepath, k, codon_usage, trans_table):
 @click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-l", "--length", type=int, help="The length of the AA sequence to generate if --mode=freq.")
 @click.option("-s", "--stop-codon", is_flag=True, default=True, help="Whether to include a stop codon. Defaults to true.")
-def aa(filepath, mode, trans_table, length, stop_codon):
+@click.option("-v", "--verbose", is_flag=True, default=False, help="Whether to print final result. Defaults to false.")
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False))
+def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
     # translate the DNA seq, if using exact AA seq
     if mode == "seq":
         print(SeqIO.read(filepath, "fasta").seq.translate(table=trans_table))
@@ -60,7 +62,11 @@ def aa(filepath, mode, trans_table, length, stop_codon):
     aa_seq = amino_acid_seq(length, k_mer_frequencies("".join(seqs), 1))
     if stop_codon:
         aa_seq += "*"
-    print(aa_seq)
+    if output:
+        with open(output, "w+") as output_handle:
+            SeqIO.write(SeqRecord(Seq(aa_seq), id="Optimized by Freqgen", description=""), output_handle, "fasta")
+    if verbose:
+        print(aa_seq)
 
 @freqgen.command(help="Generate a new DNA sequence with matching features")
 @click.option("-a", '--aa-seq', type=click.Path(exists=True, dir_okay=False))

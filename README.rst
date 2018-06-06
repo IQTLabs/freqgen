@@ -18,11 +18,11 @@ Features
 Installation
 ------------
 
-Simply use::
+Simply run::
 
 $ pip install freqgen
 
-Or, to get the newest development version::
+Or, to get the latest (but not necessarily stable) development version::
 
 $ git clone https://github.com/benjamin-lee/freqgen.git
 $ cd freqgen

@@ -250,8 +250,6 @@ def translate(dna_seq, genetic_code=11):
 def k_mers(seq, k):
     '''Yields all *k*-mers in the input sequence with repeats.
 
-    Modified from this `StackOverflow answer <https://stackoverflow.com/questions/6822725/rolling-or-sliding-window-iterator>`_.
-
     Args:
         seq (str): The sequence for which to generate *k*-mers.
         k (int): the length of the *k*-mers.
