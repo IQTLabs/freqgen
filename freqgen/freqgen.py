@@ -4,6 +4,7 @@ from warnings import warn
 
 import numpy as np
 import Bio.Data.CodonTable
+from Bio.Seq import Seq
 
 # create the genetic_codes dict
 genetic_codes = {}
@@ -331,7 +332,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
     output = []
 
-    if isinstance(seq, (str, bytes)):
+    if isinstance(seq, (str, bytes, Seq)):
         seq = [seq]
 
     for _k in k:
