@@ -75,15 +75,17 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 @click.option("-i", type=int, default=50, help="How many generations to stop after no improvement. Defaults to 50.")
 @click.option("-p", type=int, default=100, help="Population size. Defaults to 100.")
 @click.option("-m", type=float, default=0.3, help="Mutation rate. Defaults to 0.3.")
+@click.option("-c", type=float, default=0.8, help="Crossover rate. Defaults to 0.8.")
 @click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False))
-def generate(aa_seq, freqs, verbose, i, p, m, trans_table, output):
+def generate(aa_seq, freqs, verbose, i, p, m, c, trans_table, output):
     optimized = _generate(yaml.load(open(freqs)),
                           SeqIO.read(aa_seq, "fasta").seq,
                           verbose=verbose,
                           max_gens_since_improvement=i,
                           population_size=p,
                           mutation_probability=m,
+                          crossover_probability=c,
                           genetic_code=trans_table)
     if verbose:
         print("Optimized sequence:", optimized)

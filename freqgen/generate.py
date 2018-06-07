@@ -4,6 +4,8 @@ from freqgen import *
 import yaml
 import dit
 from dit.divergences import jensen_shannon_divergence
+import random
+from Bio.Seq import Seq
 
 def dna_to_vector(seq):
 	seq = np.array(list(seq))
@@ -50,7 +52,7 @@ def CUB_vector(seq, genetic_code=11):
     assert np.isclose(sum(frequencies), 1)
     return frequencies
 
-def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, max_gens_since_improvement=50, genetic_code=11, verbose=False):
+def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
 
     # back translate to an initial seq
     insert = ""
@@ -63,7 +65,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
 
     # create the genetic algorithm instance
     ga = GeneticAlgorithm(dna_to_vector(insert),
-                          crossover_probability=0,
+                          crossover_probability=crossover_probability,
                           maximise_fitness=False,
                           population_size=population_size,
                           mutation_probability=mutation_probability)
@@ -113,6 +115,14 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
         return individual
     ga.mutate_function = mutate
 
+    def crossover(parent_1, parent_2):
+        parent_1, parent_2 = list(parent_1), list(parent_2)
+        index = random.randrange(1, len(parent_1) / 6) * 6
+        child_1 = parent_1[:index] + parent_2[index:]
+        child_2 = parent_2[:index] + parent_1[index:]
+        return child_1, child_2
+    ga.crossover_function = crossover
+
     def create_individual(seed_data):
         individual = vector_to_dna(seed_data)
         new = ""
@@ -132,24 +142,28 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     counter = 1
 
     # run the GA
-    while gens_since_improvement < max_gens_since_improvement:
-        ga.create_next_generation()
-        if ga.best_individual()[0] < best_indv_fitness:
-            best_indv_fitness = ga.best_individual()[0]
-            gens_since_improvement = 0
-        else:
-            gens_since_improvement += 1
-        if verbose:
-            print("Gen: %s\tSince Improvement: %s/%s\tFitness: %s".expandtabs(15) % (counter, gens_since_improvement, max_gens_since_improvement, ga.best_individual()[0]), end="\r")
-        counter += 1
+    try:
+	    while gens_since_improvement < max_gens_since_improvement:
+	        ga.create_next_generation()
+	        if ga.best_individual()[0] < best_indv_fitness:
+	            best_indv_fitness = ga.best_individual()[0]
+	            gens_since_improvement = 0
+	        else:
+	            gens_since_improvement += 1
+	        if verbose:
+	            print("Gen: %s\tSince Improvement: %s/%s\tFitness: %s".expandtabs(15) % (counter, gens_since_improvement, max_gens_since_improvement, ga.best_individual()[0]), end="\r")
+	        counter += 1
+    except KeyboardInterrupt:
+        print("\nStopping early...")
 
     if verbose: print()
 
     best_seq = vector_to_dna(ga.best_individual()[1])
     best_freqs = vector(best_seq)
+    assert Seq(best_seq).translate(genetic_code) == Seq(insert).translate(genetic_code)
     return best_seq
 
-# assert translate(best_seq) == translate(insert)
+
 #
 # print("plotting!")
 # import numpy as np
