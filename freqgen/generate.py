@@ -53,7 +53,21 @@ def CUB_vector(seq, genetic_code=11):
     return frequencies
 
 def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
+    '''Generate a sequence matching :math:`k`-mer usage.
 
+	Args:
+		target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}
+		insert_aa_seq (str): The amino acid sequence for the optimized sequence.
+		population_size (int, optional): The size of the population for the genetic algorithm. Defaults to 100.
+		mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
+		crossover_probability (float, optional): The likelihood of each member of the population undergoing crossover. Defaults to 0.8.
+		max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
+		genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
+		verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
+
+	Returns:
+		str: The generated sequence.
+	'''
     # back translate to an initial seq
     insert = ""
     for aa in insert_aa_seq:
