@@ -4,6 +4,9 @@ python:
   - "3.6"
 install:
     - pip install -e .
+    - pip install codecov
 script:
-    - pytest
+    - pytest --cov=freqgen
 cache: pip
+after_success:
+    - codecov
