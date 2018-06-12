@@ -1,6 +1,6 @@
 Freqgen
 =======
-|Build Status| |Docs|
+|Build Status| |Cov| |Docs|
 
 Freqgen is a tool to generate coding DNA sequences with specified GC content,
 amino acid usage, codon usage bias, and *k*-mer usage bias. Freqgen uses genetic
@@ -36,6 +36,9 @@ To be determined.
 
 .. |Build Status| image:: https://travis-ci.org/Benjamin-Lee/freqgen.svg?branch=master
    :target: https://travis-ci.org/Benjamin-Lee/freqgen
+
+.. |Cov| image:: https://codecov.io/gh/Benjamin-Lee/freqgen/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/Benjamin-Lee/freqgen
 
 .. |Docs| image:: http://readthedocs.org/projects/freqgen/badge/?version=latest
    :target: http://freqgen.readthedocs.io/en/latest/?badge=latest
