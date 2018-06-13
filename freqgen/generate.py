@@ -39,19 +39,6 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
     # Example: {'CTT': ['CTT', 'CTG', 'CTA', 'CTC', 'TTA', 'TTG'], 'ATG': ['ATG']...}
     return {codon : codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
 
-def CUB_vector(seq, genetic_code=11):
-    '''returns a vector containing codon frequency'''
-
-    frequencies = codon_frequencies(seq, genetic_code)
-
-    # convert into vector from dict with fixed order
-    frequencies = [x[1] for x in sorted(list(frequencies.items()), key=lambda x: x[0])]
-    assert len(frequencies) == 64
-
-    frequencies = np.array(frequencies)
-    assert np.isclose(sum(frequencies), 1)
-    return frequencies
-
 def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
     '''Generate a sequence matching :math:`k`-mer usage.
 
@@ -95,9 +82,11 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
         target = np.concatenate((target, [x[1] for x in sorted(target_params["codons"].items(), key=lambda x: x[0])]))
 
     def vector(seq):
-        output = k_mer_frequencies(seq, [x for x in k if x != "codons"], include_missing=True, vector=True)
+        output = np.array([])
+        if [k for k in k if k != "codons"]:
+            output = np.concatenate((output, k_mer_frequencies(seq, [x for x in k if x != "codons"], include_missing=True, vector=True)))
         if "codons" in k:
-            output = np.concatenate((output, [x[1] for x in sorted(codon_frequencies(seq, genetic_code).items(), key=lambda x: x[0])]))
+            output = np.concatenate((output, [x[1] for x in sorted(codon_frequencies(seq).items(), key=lambda x: x[0])]))
         return output
 
     def fitness(individual, data):
