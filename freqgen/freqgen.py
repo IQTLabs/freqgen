@@ -77,22 +77,24 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
     codons_dict = codons_for_aa[genetic_code]
 
     # generate the sequence
-    sequence = ""
+    sequence = []
     for aa in aa_seq:
         try:
             codons = codons_dict[aa]
-            sequence += np.random.choice(codons, p=[codon_frequencies[codon] for codon in codons])
+            sequence.append(np.random.choice(codons, p=[codon_frequencies[codon] for codon in codons]))
         except KeyError:
             pass
 
-    return sequence
+    if len(sequence) != len(aa_seq):
+        raise KeyError("Missing codon frequency.")
 
-def codon_frequencies(seq, genetic_code=11):
-    '''Calculates the frequency of each codon.
+    return "".join(sequence)
+
+def codon_frequencies(seq):
+    '''Calculates the absolute frequency of each codon.
 
     Args:
         seq (str): The DNA sequence.
-        genetic_code (int, optional): The genetic code to use. Defaults to the 11, standard genetic code.
 
     Returns:
         dict: The codon frequencies of each codon.
@@ -170,14 +172,19 @@ def codon_frequencies(seq, genetic_code=11):
          'TTT': 0.03225806451612903}
     '''
 
-    assert len(seq) % 3 == 0 # check to ensure sequence contains only complete codons
+    if len(seq) % 3 != 0: # check to ensure sequence contains only complete codons
+        raise ValueError("Sequence length must be divisible by 3.")
     seq = str(seq).upper()
 
     seq = [seq[i:i+3] for i in range(0, len(seq), 3)] # slices the sequence into individual codons
     codon_count = Counter(seq)
     frequencies = {key: (float(value) / len(seq)) for (key, value) in codon_count.items()}
-    # collections.Counter returns a dictionary with counts of all the codons present. To ensure a 64-D vector, we make sure all codons are present in the dictionary.
-    for codon in genetic_codes[genetic_code]:
+
+    # collections.Counter returns a dictionary with counts of all the codons
+    # present. To ensure a 64-D vector, we make sure all codons are present in
+    # the dictionary.
+    # NOTE: the genetic code doesn't actually matter, since the frequencies are absolute
+    for codon in genetic_codes[1]:
         try:
             frequencies[codon]
         except KeyError:
