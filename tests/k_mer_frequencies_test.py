@@ -79,4 +79,4 @@ def test_invalid_args():
     with pytest.raises(ValueError):
         k_mer_frequencies("A", 1, include_missing=False, vector=True)
     with pytest.raises(ValueError):
-        k_mer_frequencies("", 1, include_missing=False, vector=True)
+        k_mer_frequencies("", 1)
