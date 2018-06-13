@@ -6,13 +6,22 @@ import numpy as np
 import Bio.Data.CodonTable
 from Bio.Seq import Seq
 
-# create the genetic_codes dict
+# create the genetic_codes and codons_for_aa dicts
 genetic_codes = {}
+codons_for_aa = {}
+
 for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
+    # create genetic_codes dict
     table = genetic_code.forward_table
     for codon in genetic_code.stop_codons:
         table[codon] = "*"
     genetic_codes[code_id] = table
+
+    # create codons_for_aa dict
+    _codons_for_aa = defaultdict(list)
+    for key, value in table.items():
+    	_codons_for_aa[value].append(key)
+    codons_for_aa[code_id] = _codons_for_aa
 
 def amino_acid_seq(length, frequencies):
     """Generates an amino acid sequence given frequencies of each amino acid.
@@ -65,7 +74,7 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
         'ATAAATCAAACCGAACTT'
     '''
 
-    codons_dict = codons_for_aa(genetic_code)
+    codons_dict = codons_for_aa[genetic_code]
 
     # generate the sequence
     sequence = ""
@@ -77,44 +86,6 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
             pass
 
     return sequence
-
-def codons_for_aa(genetic_code):
-    '''Generates a dict of the codons for each amino acid.
-
-    Args:
-        genetic_code (int): The genetic code to use to create the dictionary.
-
-    Returns:
-        dict: A dict with the amino acids as keys and a list of codons for the amino acid as the values.
-
-    Example:
-        >>> codons_for_aa(1)
-        {'A': ['GCT', 'GCC', 'GCA', 'GCG'],
-         'C': ['TGT', 'TGC'],
-         'D': ['GAT', 'GAC'],
-         'E': ['GAA', 'GAG'],
-         'F': ['TTT', 'TTC'],
-         'G': ['GGT', 'GGC', 'GGA', 'GGG'],
-         'H': ['CAT', 'CAC'],
-         'I': ['ATT', 'ATC', 'ATA'],
-         'K': ['AAA', 'AAG'],
-         'L': ['TTA', 'TTG', 'CTT', 'CTC', 'CTA', 'CTG'],
-         'M': ['ATG'],
-         'N': ['AAT', 'AAC'],
-         'P': ['CCT', 'CCC', 'CCA', 'CCG'],
-         'Q': ['CAA', 'CAG'],
-         'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'],
-         'S': ['TCT', 'TCC', 'TCA', 'TCG', 'AGT', 'AGC'],
-         'T': ['ACT', 'ACC', 'ACA', 'ACG'],
-         'V': ['GTT', 'GTC', 'GTA', 'GTG'],
-         'W': ['TGG'],
-         'Y': ['TAT', 'TAC']}
-    '''
-    # create a translation table
-    codons_for_aa = defaultdict(list)
-    for key, value in genetic_codes[genetic_code].items():
-    	codons_for_aa[value].append(key)
-    return dict(codons_for_aa)
 
 def codon_frequencies(seq, genetic_code=11):
     '''Calculates the frequency of each codon.
