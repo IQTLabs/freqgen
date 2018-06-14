@@ -2,8 +2,8 @@ from freqgen import amino_acids_to_codons
 import pytest
 
 def test_amino_acids_to_codons():
-    amino_acids_to_codons("A", dict(GCA=1.0, GCT=0, GCG=0, GCC=0)) == "GCA"
-    amino_acids_to_codons("AAA", dict(GCA=1.0, GCT=0, GCG=0, GCC=0)) == "GCAGCAGCA"
+    assert amino_acids_to_codons("A", dict(GCA=1.0, GCT=0, GCG=0, GCC=0)) == "GCA"
+    assert amino_acids_to_codons("AAA", dict(GCA=1.0, GCT=0, GCG=0, GCC=0)) == "GCAGCAGCA"
 
 def test_bad_dict():
     with pytest.raises(ValueError):
