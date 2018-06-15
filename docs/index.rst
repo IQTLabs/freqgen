@@ -10,6 +10,7 @@
 
    examples
    api
+   cli
 
 Indices and tables
 ==================

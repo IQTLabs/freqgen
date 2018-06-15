@@ -4,3 +4,4 @@ biopython
 pyyaml
 click_default_group
 pyeasyga
+sphinxcontrib-programoutput
