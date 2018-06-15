@@ -21,7 +21,7 @@ def dna_to_vector(seq):
 
 def vector_to_dna(vector):
     dna = "".join(np.array(vector).astype(str))
-    dna = np.array([dna[i:i+2] for i in range(0, len(dna), 2)])
+    dna = np.array([dna[i:i + 2] for i in range(0, len(dna), 2)])
     dna[dna == "00"] = "T"
     dna[dna == "01"] = "C"
     dna[dna == "10"] = "A"
@@ -37,7 +37,7 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
 
     # create dictionary of synonmyous codons
     # Example: {'CTT': ['CTT', 'CTG', 'CTA', 'CTC', 'TTA', 'TTG'], 'ATG': ['ATG']...}
-    return {codon : codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
+    return {codon: codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
 
 def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
     '''Generate a sequence matching :math:`k`-mer usage.
@@ -97,13 +97,14 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     ga.fitness_function = fitness
 
     synonymous_codons = _synonymous_codons(genetic_codes[genetic_code])
+
     def mutate(individual):
         while True:
             # choose a random codon
             codon_idx = np.random.randint(len(individual) / 6) * 6
 
             # figure out which codon it is
-            codon = vector_to_dna(individual[codon_idx:codon_idx+6])
+            codon = vector_to_dna(individual[codon_idx:codon_idx + 6])
 
             # ensure that mutations actually change the sequence
             if len(synonymous_codons[codon]) != 1:
@@ -113,7 +114,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
         new_codon = dna_to_vector(np.random.choice([x for x in synonymous_codons[codon] if x != codon]))
 
         # replace it in the individual
-        individual[codon_idx:codon_idx+6] = new_codon
+        individual[codon_idx:codon_idx + 6] = new_codon
 
         return individual
     ga.mutate_function = mutate
@@ -129,7 +130,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     def create_individual(seed_data):
         individual = vector_to_dna(seed_data)
         new = ""
-        for codon in [individual[i:i+3] for i in range(0, len(individual), 3)]:
+        for codon in [individual[i:i + 3] for i in range(0, len(individual), 3)]:
             if len(synonymous_codons[codon]) == 1:
                 new += codon
                 continue
@@ -159,7 +160,8 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     except KeyboardInterrupt:
         print("\nStopping early...")
 
-    if verbose: print()
+    if verbose:
+        print()
 
     best_seq = vector_to_dna(ga.best_individual()[1])
     best_freqs = vector(best_seq)

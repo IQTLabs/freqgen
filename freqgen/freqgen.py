@@ -20,7 +20,7 @@ for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
     # create codons_for_aa dict
     _codons_for_aa = defaultdict(list)
     for key, value in table.items():
-    	_codons_for_aa[value].append(key)
+        _codons_for_aa[value].append(key)
     codons_for_aa[code_id] = _codons_for_aa
 
 def amino_acid_seq(length, frequencies):
@@ -176,7 +176,7 @@ def codon_frequencies(seq):
         raise ValueError("Sequence length must be divisible by 3.")
     seq = str(seq).upper()
 
-    seq = [seq[i:i+3] for i in range(0, len(seq), 3)] # slices the sequence into individual codons
+    seq = [seq[i:i + 3] for i in range(0, len(seq), 3)] # slices the sequence into individual codons
     codon_count = Counter(seq)
     frequencies = {key: (float(value) / len(seq)) for (key, value) in codon_count.items()}
 
@@ -220,7 +220,7 @@ def k_mers(seq, k):
 
     # error checking
     if k > len(seq):
-        raise ValueError("k (%i) may not be less then length of seq (%i)."  % (k, len(seq)))
+        raise ValueError("k (%i) may not be less then length of seq (%i)." % (k, len(seq)))
     elif len(seq) == 0:
         raise ValueError("seq length may not be zero")
     elif k <= 0:
@@ -326,7 +326,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
         # determine their frequencies
         count = Counter(_seqs)
-        frequencies = {key: value/sum(count.values()) for key, value in count.items()}
+        frequencies = {key: value / sum(count.values()) for key, value in count.items()}
 
         if include_missing:
             defaults = {"".join(x): 0 for x in list(product("ATGC", repeat=_k))}
@@ -341,4 +341,4 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
     elif vector:
         return np.array(list(chain.from_iterable(output)))
     else:
-        return {k: v for d in output for k, v in d.items() }
+        return {k: v for d in output for k, v in d.items()}
