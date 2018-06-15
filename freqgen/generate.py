@@ -8,25 +8,25 @@ import random
 from Bio.Seq import Seq
 
 def dna_to_vector(seq):
-	seq = np.array(list(seq))
-	seq[seq == "T"] = 0
-	seq[seq == "C"] = 1
-	seq[seq == "A"] = 2
-	seq[seq == "G"] = 3
-	seq = seq.astype(int)
-	seq = [np.binary_repr(x, width=2) for x in seq]
-	seq = [list(x) for x in seq]
-	seq = np.array(seq).flatten().astype(int)
-	return seq
+    seq = np.array(list(seq))
+    seq[seq == "T"] = 0
+    seq[seq == "C"] = 1
+    seq[seq == "A"] = 2
+    seq[seq == "G"] = 3
+    seq = seq.astype(int)
+    seq = [np.binary_repr(x, width=2) for x in seq]
+    seq = [list(x) for x in seq]
+    seq = np.array(seq).flatten().astype(int)
+    return seq
 
 def vector_to_dna(vector):
-	dna = "".join(np.array(vector).astype(str))
-	dna = np.array([dna[i:i+2] for i in range(0, len(dna), 2)])
-	dna[dna == "00"] = "T"
-	dna[dna == "01"] = "C"
-	dna[dna == "10"] = "A"
-	dna[dna == "11"] = "G"
-	return "".join(dna)
+    dna = "".join(np.array(vector).astype(str))
+    dna = np.array([dna[i:i+2] for i in range(0, len(dna), 2)])
+    dna[dna == "00"] = "T"
+    dna[dna == "01"] = "C"
+    dna[dna == "10"] = "A"
+    dna[dna == "11"] = "G"
+    return "".join(dna)
 
 def _synonymous_codons(genetic_code_dict): # from CAI source code
     # invert the genetic code dictionary to map each amino acid to its codons
@@ -42,19 +42,19 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
 def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
     '''Generate a sequence matching :math:`k`-mer usage.
 
-	Args:
-		target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}
-		insert_aa_seq (str): The amino acid sequence for the optimized sequence.
-		population_size (int, optional): The size of the population for the genetic algorithm. Defaults to 100.
-		mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
-		crossover_probability (float, optional): The likelihood of each member of the population undergoing crossover. Defaults to 0.8.
-		max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
-		genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
-		verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
+    Args:
+        target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}
+        insert_aa_seq (str): The amino acid sequence for the optimized sequence.
+        population_size (int, optional): The size of the population for the genetic algorithm. Defaults to 100.
+        mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
+        crossover_probability (float, optional): The likelihood of each member of the population undergoing crossover. Defaults to 0.8.
+        max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
+        genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
+        verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
 
-	Returns:
-		str: The generated sequence.
-	'''
+    Returns:
+        str: The generated sequence.
+    '''
     # back translate to an initial seq
     insert = ""
     for aa in insert_aa_seq:
@@ -146,16 +146,16 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
 
     # run the GA
     try:
-	    while gens_since_improvement < max_gens_since_improvement:
-	        ga.create_next_generation()
-	        if ga.best_individual()[0] < best_indv_fitness:
-	            best_indv_fitness = ga.best_individual()[0]
-	            gens_since_improvement = 0
-	        else:
-	            gens_since_improvement += 1
-	        if verbose:
-	            print("Gen: %s\tSince Improvement: %s/%s\tFitness: %s".expandtabs(15) % (counter, gens_since_improvement, max_gens_since_improvement, ga.best_individual()[0]), end="\r")
-	        counter += 1
+        while gens_since_improvement < max_gens_since_improvement:
+            ga.create_next_generation()
+            if ga.best_individual()[0] < best_indv_fitness:
+                best_indv_fitness = ga.best_individual()[0]
+                gens_since_improvement = 0
+            else:
+                gens_since_improvement += 1
+            if verbose:
+                print("Gen: %s\tSince Improvement: %s/%s\tFitness: %s".expandtabs(15) % (counter, gens_since_improvement, max_gens_since_improvement, ga.best_individual()[0]), end="\r")
+            counter += 1
     except KeyboardInterrupt:
         print("\nStopping early...")
 
