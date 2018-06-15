@@ -24,9 +24,7 @@ $ pip install freqgen
 
 Or, to get the latest (but not necessarily stable) development version::
 
-$ git clone https://github.com/benjamin-lee/freqgen.git
-$ cd freqgen
-$ python setup.py install
+$ pip install git+https://github.com/Benjamin-Lee/freqgen.git
 
 Citation
 --------
