@@ -5,6 +5,9 @@
 
 .. include:: ../README.rst
 
+Table of Contents
+-----------------
+
 .. toctree::
    :maxdepth: 2
 
@@ -13,7 +16,7 @@
    cli
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
