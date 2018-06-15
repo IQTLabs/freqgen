@@ -92,7 +92,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     def fitness(individual, data):
         individual = vector_to_dna(individual)
         # fitness = np.linalg.norm(target - vector(individual))
-        fitness = jensen_shannon_divergence([dit.ScalarDistribution(target), dit.ScalarDistribution(vector(individual))])
+        fitness = jensen_shannon_divergence([dit.ScalarDistribution(target / len(k)), dit.ScalarDistribution(vector(individual) / len(k))])
         return fitness
     ga.fitness_function = fitness
 
