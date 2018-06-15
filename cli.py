@@ -17,21 +17,28 @@ def freqgen():
 @click.argument('filepath', click.Path(exists=True, dir_okay=False))
 @click.option('-k', multiple=True, type=int, help="Values of k to featurize the seqs for. May be repeated.")
 @click.option("-c", "--codon-usage", is_flag=True, help="Whether to include a codon frequency featurization.")
-@click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
-def featurize(filepath, k, codon_usage, trans_table):
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output file.")
+def featurize(filepath, k, codon_usage, output):
     # get the sequences as strs
     seqs = []
     with open(filepath, "r") as handle:
         for seq in SeqIO.parse(handle, "fasta"):
-            seqs.append(str(seq.seq))
+            seq = str(seq.seq)
+            seqs.append(seq)
 
-    # get the k-mer k_mer_frequencies
-    for _k in k:
-        print(yaml.dump({_k: k_mer_frequencies(seqs, _k, include_missing=True)}, default_flow_style=False), end="")
+    result = {_k: k_mer_frequencies(seqs, _k, include_missing=True) for _k in k}
 
     # get the codon usage frequencies
     if codon_usage:
-        print(yaml.dump(dict(codons=codon_frequencies("".join(seqs), trans_table)), default_flow_style=False), end="")
+        for seq in seqs:
+            if len(seq) % 3 != 0:
+                raise ValueError("Cannot calculate codons for sequence whose length is not divisible by 3")
+        result["codons"] = codon_frequencies("".join(seqs))
+
+    if output:
+        yaml.dump(result, open(output, "w+"), default_flow_style=False)
+        return
+    print(yaml.dump(result, default_flow_style=False))
 
 @freqgen.command(help="Generate an amino acid sequence from FASTA")
 @click.argument('filepath', click.Path(exists=True, dir_okay=False))
