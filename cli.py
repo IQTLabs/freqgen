@@ -115,8 +115,8 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output):
                           mutation_probability=m,
                           crossover_probability=c,
                           genetic_code=trans_table)
-    if verbose:
-        print("Optimized sequence:", optimized)
+    if verbose or not output:
+        print(optimized)
     if output:
         with open(output, "w+") as output_handle:
             SeqIO.write(SeqRecord(Seq(optimized), id="Optimized by Freqgen", description=""), output_handle, "fasta")

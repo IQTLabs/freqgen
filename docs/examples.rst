@@ -161,9 +161,43 @@ To add codon usage to the features::
 Generate a sequence
 -------------------
 
+CLI
+~~~
+
+Assuming the same files as generated above, provide the ``freqgen`` command with
+the ``-s`` flag for the sequence and the ``-f`` flag for the target frequencies
+to generate a new sequence::
+
+    $ freqgen -s output_sequence.fasta -f reference_freqs.yaml
+    TTACTGCAAGCACTGGCGGCGTTG
+
+To take a look at the progress of optimization, use the ``-v`` flag:
+
+.. image :: _static/verbose.gif
+
+If optimization is taking too long, you can use ``^C`` (or ``control-C`` for
+those on Macs) to stop early::
+
+     freqgen -s output_sequence.fasta -f reference_freqs.yaml
+    ^C
+    Stopping early...
+    AGTAAGATAACCGAACGGGGCATG
+
+The ``-o`` flag for output file and ``-t`` for translation table work as usual.
+
 Python API
 ~~~~~~~~~~
 
-Assuming the same ``features`` and ``aa_sequence`` variables from above, generating a sequence with the desired parameters is easy::
+Assuming the same ``features`` and ``aa_sequence`` variables from above,
+generating a sequence with the desired parameters is easy with the
+:func:`~freqgen.generate` function::
 
     >>> generate(features, aa_sequence)
+    'TTACTGCAAGCACTGGCGGCGTTG'
+
+The ``verbose`` option can print out the progress as you go along, just as in
+the CLI::
+
+    >>> generate(features, aa_sequence, verbose=True)
+    Gen: 51        Since Improvement: 50/50      Fitness: 0.000401269136411031
+    'TTGCTGCAAGCGTTAGCGGCACTG'
