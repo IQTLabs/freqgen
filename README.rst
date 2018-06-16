@@ -1,5 +1,6 @@
 Freqgen
 =======
+
 |Build Status| |Cov| |CodeFactor| |Docs|
 
 Freqgen is a tool to generate coding DNA sequences with specified GC content,
