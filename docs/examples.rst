@@ -69,7 +69,7 @@ Python API
 
 We need an amino acid sequence as a string. To generate one from frequencies, we
 first need to calculate the frequencies of the amino acids. Luckily, that's
-pretty trivial with :func:`k_mer_frequencies`::
+pretty trivial with :func:`~freqgen.k_mer_frequencies`::
 
     >>> k_mer_frequencies("LLNL", 1, include_missing=False)
     {'L': 0.75, 'N': 0.25}
@@ -87,8 +87,49 @@ Finally, if there are stop codons in the sequence, we'll probably want to remove
     {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}
 
 Now that we have the frequencies of each amino acid we can generate a sequence
-using them with :func:`amino_acid_seq`::
+using them with :func:`~freqgen.amino_acid_seq`::
 
     >>> length = 8 # the length of the sequence to generate
     >>> amino_acid_seq(length, k_mer_frequencies("ALLQ", 1))
     'ALAAQLQL'
+
+Featurize reference sequences
+-----------------------------
+
+The next step of using Freqgen to generate a sequence is to tell it what
+features to optimize for. This can be :math:`k`-mers and/or codons.
+
+CLI
+~~~
+
+The CLI can be used to generate a YAML file containing the frequencies of each
+:math:`k`-mer in the reference set. To featurize the 1-mers of a sequence::
+
+    $ freqgen featurize reference_sequences.fasta -k 1
+    1:
+      A: 0.24778707477586917
+      C: 0.25553373220861103
+      G: 0.27406970099491756
+      T: 0.22260949202060226
+
+Just as before, the ``-o`` flag can give it an output file::
+
+    $ freqgen featurize reference_sequences.fasta -k 1 -o reference_freqs.yaml
+
+To include the codon usage, use the ``-c`` flag::
+
+    1:
+      A: 0.24778707477586917
+      C: 0.25553373220861103
+      G: 0.27406970099491756
+      T: 0.22260949202060226
+    codons:
+      AAA: 0.04896629238995924
+      AAC: 0.03350325268786685
+      AAG: 0.011909492399041792
+      AAT: 0.006312371567080301
+      ACA: 0.0020889862739977977
+      .
+      .
+      .
+
