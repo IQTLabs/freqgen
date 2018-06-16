@@ -64,3 +64,31 @@ The ``-o`` and ``-s`` commands work as before.
 If your sequences are using an alternate genetic code, you can use the ``-t``
 flag to provide Freqgen the alternate table's NCBI ID.
 
+Python API
+~~~~~~~~~~
+
+We need an amino acid sequence as a string. To generate one from frequencies, we
+first need to calculate the frequencies of the amino acids. Luckily, that's
+pretty trivial with :func:`k_mer_frequencies`::
+
+    >>> k_mer_frequencies("LLNL", 1, include_missing=False)
+    {'L': 0.75, 'N': 0.25}
+
+(Don't worry about the ``include_missing`` argument for now.)
+
+If we have numerous sequences, we'll want to concatenate them first::
+
+    >>> k_mer_frequencies("".join(["FIRST", "SECND"]), 1, include_missing=False)
+    {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}
+
+Finally, if there are stop codons in the sequence, we'll probably want to remove them::
+
+    >>> k_mer_frequencies("".join(["FIRST*", "SECND*"]).replace("*", ""), 1, include_missing=False)
+    {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}
+
+Now that we have the frequencies of each amino acid we can generate a sequence
+using them with :func:`amino_acid_seq`::
+
+    >>> length = 8 # the length of the sequence to generate
+    >>> amino_acid_seq(length, k_mer_frequencies("ALLQ", 1))
+    'ALAAQLQL'
