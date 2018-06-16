@@ -90,7 +90,8 @@ Now that we have the frequencies of each amino acid we can generate a sequence
 using them with :func:`~freqgen.amino_acid_seq`::
 
     >>> length = 8 # the length of the sequence to generate
-    >>> amino_acid_seq(length, k_mer_frequencies("ALLQ", 1))
+    >>> aa_sequence = amino_acid_seq(length, k_mer_frequencies("ALLQ", 1))
+    >>> aa_sequence
     'ALAAQLQL'
 
 Featurize reference sequences
@@ -133,3 +134,36 @@ To include the codon usage, use the ``-c`` flag::
       .
       .
 
+Python API
+~~~~~~~~~~
+
+We need to assemble a dictionary that looks like this::
+
+    {1: {'A': 0.24778707477586917,
+         'C': 0.25553373220861103,
+         'G': 0.27406970099491756,
+         'T': 0.22260949202060226}}
+
+To do so, let's find the 1-mers of a reference sequence::
+
+    >>> sequence = "ATGTGCAGTGGTCCGTCCCGATACGGCTAG"
+    >>> features = {i: k_mer_frequencies(sequence, i) for i in [1]}
+    >>> features
+    {1: {'A': 0.16666666666666666,
+         'C': 0.26666666666666666,
+         'G': 0.3333333333333333,
+         'T': 0.23333333333333334}}
+
+To add codon usage to the features::
+
+    features["codons"] = codon_frequencies(sequence)
+
+Generate a sequence
+-------------------
+
+Python API
+~~~~~~~~~~
+
+Assuming the same ``features`` and ``aa_sequence`` variables from above, generating a sequence with the desired parameters is easy::
+
+    >>> generate(features, aa_sequence)
