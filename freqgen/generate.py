@@ -1,5 +1,5 @@
-from pyeasyga.pyeasyga import GeneticAlgorithm
 from freqgen import *
+from .pyeasyga import GeneticAlgorithm
 import yaml
 import dit
 from dit.divergences import jensen_shannon_divergence
