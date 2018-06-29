@@ -1,5 +1,4 @@
 from pyeasyga.pyeasyga import GeneticAlgorithm
-from Bio import SeqIO
 from freqgen import *
 import yaml
 import dit
