@@ -3,4 +3,4 @@ click
 biopython
 pyyaml
 click_default_group
-pyeasyga
+dit

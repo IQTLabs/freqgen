@@ -22,7 +22,7 @@ VERSION = 0.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    "numpy", "click", "biopython", "pyyaml", "click_default_group", "pyeasyga", "dit"
+    "numpy", "click", "biopython", "pyyaml", "click_default_group", "dit"
 ]
 
 # The rest you shouldn't have to touch too much :)
