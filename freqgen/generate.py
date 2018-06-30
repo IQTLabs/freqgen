@@ -38,7 +38,7 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
     # Example: {'CTT': ['CTT', 'CTG', 'CTA', 'CTC', 'TTA', 'TTG'], 'ATG': ['ATG']...}
     return {codon: codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
 
-def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False):
+def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False, mode="JSD"):
     '''Generate a sequence matching :math:`k`-mer usage.
 
     Args:
@@ -50,6 +50,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
         max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
         genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
         verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
+        mode (str, optional): Whether to use Jensen-Shannon Divergence or Euclidean distance. Defaults to "JSD". Use "ED" for Euclidean distance.
 
     Returns:
         str: The generated sequence.
@@ -90,9 +91,12 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
 
     def fitness(individual, data):
         individual = vector_to_dna(individual)
-        # fitness = np.linalg.norm(target - vector(individual))
-        fitness = jensen_shannon_divergence([dit.ScalarDistribution(target / len(k)), dit.ScalarDistribution(vector(individual) / len(k))])
-        return fitness
+        if mode == "JSD":
+            return jensen_shannon_divergence([dit.ScalarDistribution(target / len(k)), dit.ScalarDistribution(vector(individual) / len(k))])
+        elif mode == "ED":
+            return np.linalg.norm(target - vector(individual))
+        else:
+            raise Exception("Fitness mode must be JSD or ED")
     ga.fitness_function = fitness
 
     synonymous_codons = _synonymous_codons(genetic_codes[genetic_code])
