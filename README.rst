@@ -27,6 +27,11 @@ Or, to get the latest (but not necessarily stable) development version::
 
 $ pip install git+https://github.com/Lab41/freqgen.git
 
+Documentation
+-------------
+
+Read the docs over at `freqgen.readthedocs.io <freqgen.readthedocs.io>`_.
+
 Citation
 --------
 
