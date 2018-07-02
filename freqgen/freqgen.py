@@ -94,7 +94,7 @@ def codon_frequencies(seq):
     '''Calculates the absolute frequency of each codon.
 
     Args:
-        seq (str): The DNA sequence.
+        seq (str or list): The DNA sequence(s).
 
     Returns:
         dict: The codon frequencies of each codon.
@@ -171,6 +171,12 @@ def codon_frequencies(seq):
          'TTG': 0,
          'TTT': 0.03225806451612903}
     '''
+
+    if isinstance(seq, (list, tuple)):
+        for _seq in seq:
+            if len(_seq) % 3 != 0: # check to ensure sequence contains only complete codons
+                raise ValueError("Sequence length must be divisible by 3.")
+        seq = "".join([str(seq) for seq in seq])
 
     if len(seq) % 3 != 0: # check to ensure sequence contains only complete codons
         raise ValueError("Sequence length must be divisible by 3.")
