@@ -158,6 +158,10 @@ To add codon usage to the features::
 
     features["codons"] = codon_frequencies(sequence)
 
+Note that :func:`~freqgen.k_mer_frequencies` and
+:func:`~freqgen.codon_frequencies` can take a single sequence or list of
+sequences as its arguments.
+
 Generate a sequence
 -------------------
 
