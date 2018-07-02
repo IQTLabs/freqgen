@@ -33,14 +33,14 @@ Citation
 To be determined.
 
 
-.. |Build Status| image:: https://travis-ci.org/Benjamin-Lee/freqgen.svg?branch=master
-   :target: https://travis-ci.org/Benjamin-Lee/freqgen
+.. |Build Status| image:: https://travis-ci.org/Lab41/freqgen.svg?branch=master
+   :target: https://travis-ci.org/Lab41/freqgen
 
-.. |Cov| image:: https://codecov.io/gh/Benjamin-Lee/freqgen/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/Benjamin-Lee/freqgen
+.. |Cov| image:: https://codecov.io/gh/Lab41/freqgen/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/Lab41/freqgen
 
 .. |Docs| image:: http://readthedocs.org/projects/freqgen/badge/?version=latest
    :target: http://freqgen.readthedocs.io/en/latest/?badge=latest
 
-.. |CodeFactor| image:: https://www.codefactor.io/repository/github/benjamin-lee/freqgen/badge
-   :target: https://www.codefactor.io/repository/github/benjamin-lee/freqgen/
+.. |CodeFactor| image:: https://www.codefactor.io/repository/github/Lab41/freqgen/badge
+   :target: https://www.codefactor.io/repository/github/Lab41/freqgen/
