@@ -32,15 +32,15 @@ Five-second CLI tutorial
 
 The basic flow of Freqgen can be summarized in three steps.
 
-#. Determine a target amino acid sequence::
+#. Generate a new amino acid sequence based on the amino acid usage profile of reference sequences. If you already have a specific amino acid sequence in mind (*i.e* for synthetic biology uses), skip this step::
 
     $ freqgen aa reference_sequences.fasta -o new_sequence.fasta -l LENGTH
 
-#. Find the :math:`k`-mer and/or codon frequencies to optimize the amino acid sequence towards::
+#. Create a YAML file containing *k*-mer frequencies for the amino acid sequence's DNA to have::
 
     $ freqgen featurize reference_sequences.fasta -k INT -o reference_sequences.yaml
 
-#. Perform the optimization::
+#. Generate the DNA sequence coding for the amino acid sequence::
 
     $ freqgen -f reference_sequences.yaml -s new_sequence.fasta -v
 
