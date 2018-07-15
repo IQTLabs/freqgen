@@ -27,6 +27,23 @@ Or, to get the latest (but not necessarily stable) development version::
 
 $ pip install git+https://github.com/Lab41/freqgen.git
 
+Five-second CLI tutorial
+------------------------
+
+The basic flow of Freqgen can be summarized in three steps.
+
+#. Determine a target amino acid sequence::
+
+    $ freqgen aa reference_sequences.fasta -o new_sequence.fasta -l LENGTH
+
+#. Find the :math:`k`-mer and/or codon frequencies to optimize the amino acid sequence towards::
+
+    $ freqgen featurize reference_sequences.fasta -k INT -o reference_sequences.yaml
+
+#. Perform the optimization::
+
+    $ freqgen -f reference_sequences.yaml -s new_sequence.fasta -v
+
 Documentation
 -------------
 

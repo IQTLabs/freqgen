@@ -5,25 +5,6 @@ There are two ways of using Freqgen: CLI and Python API. For each step, we'll
 look at how to use the CLI and then how to use the (more complicated yet
 flexible) Python API.
 
-
-Five-second CLI tutorial
-------------------------
-
-The basic flow of Freqgen can be summarized in three steps.
-
-#. Determine a target amino acid sequence::
-
-    $ freqgen aa reference_sequences.fasta -o new_sequence.fasta -l LENGTH
-
-#. Find the :math:`k`-mer and/or codon frequencies to optimize the amino acid sequence towards::
-
-    $ freqgen featurize reference_sequences.fasta -k INT -o reference_sequences.yaml
-
-#. Perform the optimization::
-
-    $ freqgen -f reference_sequences.yaml -s new_sequence.fasta -v
-
-
 Generate an amino acid sequence
 -------------------------------
 
