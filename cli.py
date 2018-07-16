@@ -106,6 +106,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 @click.option("-c", type=float, default=0.8, help="Crossover rate. Defaults to 0.8.")
 @click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False))
+@click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
 def generate(seq, freqs, verbose, i, p, m, c, trans_table, output):
     optimized = _generate(yaml.load(open(freqs)),
                           str(SeqIO.read(seq, "fasta").seq),
