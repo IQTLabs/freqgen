@@ -8,8 +8,9 @@ flexible) Python API.
 Generate an amino acid sequence
 -------------------------------
 
-The first step of using Freqgen is to have an amino acid sequence. In the case
-that you already have one, you can skip this step. If not, read on!
+The first step of using Freqgen is to have an amino acid sequence for which to
+generate a coding DNA sequence. If you already have one, you can skip this step.
+If not, read on!
 
 CLI
 ~~~
@@ -48,9 +49,9 @@ flag to provide Freqgen the alternate table's NCBI ID.
 Python API
 ~~~~~~~~~~
 
-We need an amino acid sequence as a string. To generate one from frequencies, we
-first need to calculate the frequencies of the amino acids. Luckily, that's
-pretty trivial with :func:`~freqgen.k_mer_frequencies`::
+To generate a new amino acid sequence from frequencies, we first need to
+calculate the frequencies of your reference set. Luckily, that's pretty trivial
+with :func:`~freqgen.k_mer_frequencies`::
 
     >>> k_mer_frequencies("LLNL", 1, include_missing=False)
     {'L': 0.75, 'N': 0.25}
@@ -78,14 +79,15 @@ using them with :func:`~freqgen.amino_acid_seq`::
 Featurize reference sequences
 -----------------------------
 
-The next step of using Freqgen to generate a sequence is to tell it what
-features to optimize for. This can be :math:`k`-mers and/or codons.
+The next step of using Freqgen to generate a coding DNA sequence is to tell it
+what features to optimize for. This can be :math:`k`-mers and/or codons.
 
 CLI
 ~~~
 
 The CLI can be used to generate a YAML file containing the frequencies of each
-:math:`k`-mer in the reference set. To featurize the 1-mers of a sequence::
+:math:`k`-mer in the reference set. For example, to featurize the 1-mers of a
+sequence::
 
     $ freqgen featurize reference_sequences.fasta -k 1
     1:
@@ -139,19 +141,20 @@ To add codon usage to the features::
 
     features["codons"] = codon_frequencies(sequence)
 
-Note that :func:`~freqgen.k_mer_frequencies` and
-:func:`~freqgen.codon_frequencies` can take a single sequence or list of
-sequences as its arguments.
+.. note::
 
-Generate a sequence
--------------------
+     :func:`~freqgen.k_mer_frequencies` and :func:`~freqgen.codon_frequencies`
+     can take a single sequence or list of sequences as its arguments.
+
+Generate a coding sequence
+--------------------------
 
 CLI
 ~~~
 
 Assuming the same files as generated above, provide the ``freqgen`` command with
-the ``-s`` flag for the sequence and the ``-f`` flag for the target frequencies
-to generate a new sequence::
+the ``-s`` flag for the amino acid sequence file and the ``-f`` flag for the
+target frequency file to generate a new coding sequence::
 
     $ freqgen -s output_sequence.fasta -f reference_freqs.yaml
     TTACTGCAAGCACTGGCGGCGTTG
