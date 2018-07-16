@@ -11,7 +11,7 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   examples
+   usage
    api
    cli
 
