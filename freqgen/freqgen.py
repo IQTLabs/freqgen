@@ -91,7 +91,7 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
     return "".join(sequence)
 
 def codon_frequencies(seq):
-    '''Calculates the absolute frequency of each codon.
+    '''Calculates the absolute frequency of each codon such that the total of the dictionary's values is equal to one.
 
     Args:
         seq (str or list): The DNA sequence(s).
