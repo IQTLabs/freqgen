@@ -42,7 +42,7 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     '''Generate a sequence matching :math:`k`-mer usage.
 
     Args:
-        target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}
+        target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}. Pass absolute codon usage with "codons" as the key.
         insert_aa_seq (str): The amino acid sequence for the optimized sequence.
         population_size (int, optional): The size of the population for the genetic algorithm. Defaults to 100.
         mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
