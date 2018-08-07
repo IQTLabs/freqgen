@@ -67,9 +67,9 @@ def test_one_codon():
                                         'TTG': 0,
                                         'TTT': 0}
 def test_two_codons():
-    assert codon_frequencies("AAAAAG") == {'AAA': 0.5,
+    assert codon_frequencies("AAATTT") == {'AAA': 0.5,
                                            'AAC': 0,
-                                           'AAG': 0.5,
+                                           'AAG': 0,
                                            'AAT': 0,
                                            'ACA': 0,
                                            'ACC': 0,
@@ -130,7 +130,7 @@ def test_two_codons():
                                            'TTA': 0,
                                            'TTC': 0,
                                            'TTG': 0,
-                                           'TTT': 0}
+                                           'TTT': 0.5}
 
 def test_multiple_seqs():
     assert codon_frequencies(["AAAAAG", "AAAAAG"]) == {'AAA': 0.5,
@@ -203,3 +203,12 @@ def test_bad_length():
         codon_frequencies("AT")
     with pytest.raises(ValueError):
         codon_frequencies(["AT"])
+
+def test_relative():
+    dummy_result = codon_frequencies("ATGGATGACTAG", mode="relative")
+    assert pytest.approx(dummy_result["GAT"], 0.5)
+
+def test_alternate_genetic_code():
+    dummy_result = codon_frequencies("ATGATATAG", mode="relative", genetic_code=2)
+    assert pytest.approx(dummy_result["ATG"], 0.5)
+    assert pytest.approx(dummy_result["ATA"], 0.5)

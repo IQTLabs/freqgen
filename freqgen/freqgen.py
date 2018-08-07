@@ -9,19 +9,26 @@ from Bio.Seq import Seq
 # create the genetic_codes and codons_for_aa dicts
 genetic_codes = {}
 codons_for_aa = {}
+synonymous_codons = {}
 
 for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
     # create genetic_codes dict
+    # Ex: {'TTT': 'F', 'TTC': 'F', 'TTA': 'L'...
     table = genetic_code.forward_table
     for codon in genetic_code.stop_codons:
         table[codon] = "*"
     genetic_codes[code_id] = table
 
     # create codons_for_aa dict
+    # Ex: defaultdict(<class 'list'>, {'F': ['TTT', 'TTC']...
     _codons_for_aa = defaultdict(list)
     for key, value in table.items():
         _codons_for_aa[value].append(key)
     codons_for_aa[code_id] = _codons_for_aa
+
+    # create a list of synonymous_codons for each codon, including the original codon
+    # Ex: {'TTT': ['TTT', 'TTC']...
+    synonymous_codons[code_id] = {codon: codons_for_aa[code_id][genetic_codes[code_id][codon]] for codon in genetic_codes[code_id].keys()}
 
 def amino_acid_seq(length, frequencies):
     """Generates an amino acid sequence given frequencies of each amino acid.
@@ -90,11 +97,16 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
 
     return "".join(sequence)
 
-def codon_frequencies(seq):
-    '''Calculates the absolute frequency of each codon such that the total of the dictionary's values is equal to one.
+def codon_frequencies(seq, mode="absolute", genetic_code=11):
+    '''Calculates the frequency of each codon
+
+    Abosolute mode is such that the total of the dictionary's values is equal to one.
+    Relative mode is such that the sum of each amino acid's codons' frequencies is equal to one.
 
     Args:
         seq (str or list): The DNA sequence(s).
+        mode (str, optional): One of "absolute" or "relative". Defaults to "absolute"
+        genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 11, the standard genetic code.
 
     Returns:
         dict: The codon frequencies of each codon.
@@ -189,14 +201,22 @@ def codon_frequencies(seq):
     # collections.Counter returns a dictionary with counts of all the codons
     # present. To ensure a 64-D vector, we make sure all codons are present in
     # the dictionary.
-    # NOTE: the genetic code doesn't actually matter, since the frequencies are absolute
-    for codon in genetic_codes[1]:
+    for codon in genetic_codes[genetic_code]:
         try:
             frequencies[codon]
         except KeyError:
             frequencies[codon] = 0
+    if mode == "absolute":
+        return frequencies
 
-    return frequencies
+    elif mode == "relative":
+        relative = {}
+        for i in synonymous_codons[genetic_code].keys():
+            try:
+                relative[i] = frequencies[i] / sum((frequencies[codon] for codon in synonymous_codons[genetic_code][i])) # divide the occurence of a codon by the total number of its synonyms
+            except ZeroDivisionError:
+                relative[i] = 1 / len(synonymous_codons[genetic_code][i]) # if an amino acid is never used in the reference set, then all its codons are used equally
+        return relative
 
 def k_mers(seq, k):
     '''Yields all *k*-mers in the input sequence with repeats.
