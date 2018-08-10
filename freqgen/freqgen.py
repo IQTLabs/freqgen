@@ -352,7 +352,8 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
         # determine their frequencies
         count = Counter(_seqs)
-        frequencies = {key: value / sum(count.values()) for key, value in count.items()}
+        total_k_mer_count = sum(count.values())
+        frequencies = {k_mer: value / total_k_mer_count for k_mer, value in count.items()}
 
         if include_missing:
             defaults = {"".join(x): 0 for x in list(product("ATGC", repeat=_k))}
