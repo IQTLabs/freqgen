@@ -1,7 +1,7 @@
 Freqgen
 =======
 
-|Build Status| |Cov| |CodeFactor| |Docs|
+|Build Status| |CodeFactor| |Docs|
 
 Freqgen is a tool to generate coding DNA sequences with specified GC content,
 amino acid usage, codon usage bias, and *k*-mer usage bias. Freqgen uses genetic
