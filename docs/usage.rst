@@ -9,8 +9,8 @@ Generate an amino acid sequence
 -------------------------------
 
 The first step of using Freqgen is to have an amino acid sequence for which to
-generate a coding DNA sequence. If you already have one, you can skip this step.
-If not, read on!
+generate a coding DNA sequence. If you already have one in mind, you can skip
+this step. If not, read on!
 
 CLI
 ~~~
@@ -43,8 +43,8 @@ provide ``-l``, the desired length of the sequence, excluding the stop codon::
 
 The ``-o`` and ``-s`` commands work as before.
 
-If your sequences are using an alternate genetic code, you can use the ``-t``
-flag to provide Freqgen the alternate table's NCBI ID.
+Additionally, if your sequences are using an alternate genetic code, you can use
+the ``-t`` flag to provide Freqgen the alternate table's NCBI ID.
 
 Python API
 ~~~~~~~~~~

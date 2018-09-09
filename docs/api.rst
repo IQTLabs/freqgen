@@ -1,7 +1,7 @@
 API Reference
 =============
 
-.. automodule:: freqgen
+.. automodule:: freqgen.freqgen
     :members:
-.. automodule:: generate
+.. automodule:: freqgen.generate
     :members:
