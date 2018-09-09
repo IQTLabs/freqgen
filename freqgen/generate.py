@@ -5,6 +5,7 @@ import dit
 from dit.divergences import jensen_shannon_divergence
 import random
 from Bio.Seq import Seq
+from warnings import warn
 
 def dna_to_vector(seq):
     seq = np.array(list(seq))
@@ -38,26 +39,30 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
     # Example: {'CTT': ['CTT', 'CTG', 'CTA', 'CTC', 'TTA', 'TTG'], 'ATG': ['ATG']...}
     return {codon: codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
 
-def generate(target_params, insert_aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False, mode="ED"):
+def generate(target_params, aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False, mode="ED"):
     '''Generate a sequence matching :math:`k`-mer usage.
 
     Args:
-        target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}. Pass absolute codon usage with "codons" as the key.
-        insert_aa_seq (str): The amino acid sequence for the optimized sequence.
+        target_params (dict): The parameters to optimize towards. Should be of the format {:math:`k_n`: {:math:`k_{n1}`: 0.2, :math:`k_{n2}`: 0.3,...}...}. Pass absolute codon usage with ``"codons"`` as the key.
+        aa_seq (str): The amino acid sequence for the optimized sequence.
         population_size (int, optional): The size of the population for the genetic algorithm. Defaults to 100.
         mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
         crossover_probability (float, optional): The likelihood of each member of the population undergoing crossover. Defaults to 0.8.
         max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
         genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
         verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
-        mode (str, optional): Whether to use Jensen-Shannon Divergence or Euclidean distance. Defaults to "ED". Use "JSD" for Jensen-Shannon Divergence.
+        mode (str, optional): Whether to use Jensen-Shannon Divergence or Euclidean distance. Defaults to ``"ED"``. Use ``"JSD"`` for Jensen-Shannon Divergence.
 
     Returns:
         str: The generated sequence.
     '''
+
+    if all([char in {"A", "T", "G", "C"} for char in aa_seq]):
+        warn("This appears to be a DNA sequence, not an amino acid sequence. Ensure that you are passing in an amino acid sequence.")
+
     # back translate to an initial seq
     insert = ""
-    for aa in insert_aa_seq:
+    for aa in aa_seq:
         try:
             insert += Bio.Data.CodonTable.unambiguous_dna_by_id[genetic_code].back_table[aa]
         except:
@@ -170,28 +175,3 @@ def generate(target_params, insert_aa_seq, population_size=100, mutation_probabi
     best_freqs = vector(best_seq)
     assert Seq(best_seq).translate(genetic_code) == Seq(insert).translate(genetic_code)
     return best_seq
-
-
-#
-# print("plotting!")
-# import numpy as np
-# import matplotlib.pyplot as plt
-#
-# print("generating rectangles!")
-# N = len(best_freqs)
-# ind = np.arange(N)  # the x locations for the groups
-# width = 0.2       # the width of the bars
-# fig, ax = plt.subplots()
-# rects1 = ax.bar(ind, insert_freqs, width, color='b')
-# rects2 = ax.bar(ind + width, target, width, color='g')
-# rects3 = ax.bar(ind + 2*width, best_freqs, width, color='r')
-#
-# print("fixing axes!")
-# # add some text for labels, title and axes ticks
-# ax.set_xticks(ind + 2*width / 2)
-# ax.set_xticklabels([f"{i}" for i in range(len(target))])
-# ax.legend((rects1[0], rects2[0], rects3[0]), ('Original', 'Target', "Optimized"))
-# ax.set_xlabel("k")
-#
-# print("plotting!")
-# plt.show()
