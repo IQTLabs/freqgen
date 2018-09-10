@@ -42,7 +42,7 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
 def generate(target_params,
              aa_seq,
              population_size=100,
-             utation_probability=0.3,
+             mutation_probability=0.3,
              crossover_probability=0.8,
              max_gens_since_improvement=50,
              genetic_code=11,
