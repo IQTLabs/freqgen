@@ -1,6 +1,10 @@
 Methods
 =======
 
+This section covers the nitty-gritty details of the method by which Freqgen
+operates. To get to the details of how to use the software to generate new DNA
+sequences, feel free to skip ahead to the :ref:`Usage` documentation page.
+
 Amino Acid Sequence Generation
 ------------------------------
 
