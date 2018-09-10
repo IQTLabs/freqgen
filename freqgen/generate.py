@@ -39,7 +39,15 @@ def _synonymous_codons(genetic_code_dict): # from CAI source code
     # Example: {'CTT': ['CTT', 'CTG', 'CTA', 'CTC', 'TTA', 'TTG'], 'ATG': ['ATG']...}
     return {codon: codons_for_amino_acid[genetic_code_dict[codon]] for codon in genetic_code_dict.keys()}
 
-def generate(target_params, aa_seq, population_size=100, mutation_probability=0.3, crossover_probability=0.8, max_gens_since_improvement=50, genetic_code=11, verbose=False, mode="ED"):
+def generate(target_params,
+             aa_seq,
+             population_size=100,
+             utation_probability=0.3,
+             crossover_probability=0.8,
+             max_gens_since_improvement=50,
+             genetic_code=11,
+             verbose=False,
+             mode="ED"):
     '''Generate a sequence matching :math:`k`-mer usage.
 
     Args:
