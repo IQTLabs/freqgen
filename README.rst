@@ -1,11 +1,12 @@
-.. image:: https://raw.githubusercontent.com/Lab41/freqgen/master/logo/Freqgen2-01_cropped.png
-   :align: center
-   :width: 750 px
+Freqgen
+=======
+
+.. image:: https://raw.githubusercontent.com/Lab41/freqgen/master/logo/Freqgen2-01_icon_only.png
 
 |Build Status| |CodeFactor| |Docs|
 
 Freqgen is a tool to generate coding DNA sequences with specified amino acid
-usage frequences or sequence, GC content, codon usage bias, and :math:`k`-mer
+usage frequences or sequence, GC content, codon usage bias, and *k*-mer
 usage bias. To accomplish this, Freqgen uses genetic algorithms to efficiently
 search the solution space of possible DNA sequences to find ones that most
 closely match the desired parameters.
@@ -38,7 +39,7 @@ The basic flow of Freqgen can be summarized in three steps:
 
     $ freqgen aa reference_sequences.fasta -o new_sequence.fasta -l LENGTH
 
-#. Create a YAML file containing :math:`k`-mer frequencies for the amino acid sequence's DNA to have::
+#. Create a YAML file containing *k*-mer frequencies for the amino acid sequence's DNA to have::
 
     $ freqgen featurize reference_sequences.fasta -k INT -o reference_freqs.yaml
 
