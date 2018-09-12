@@ -1,6 +1,6 @@
 .. image:: https://raw.githubusercontent.com/Lab41/freqgen/master/logo/Freqgen2-01_cropped.png
    :align: center
-   :scale: 75 %
+   :width: 750 px
 
 |Build Status| |CodeFactor| |Docs|
 
