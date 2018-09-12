@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'freqgen'
+project = 'Freqgen'
 copyright = '2018, In-Q-Tel, Inc'
 author = 'Benjamin Lee'
 
@@ -86,7 +86,9 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = dict(fixed_sidebar=True,
+                          show_related=True,
+                          logo="Freqgen2-01_icon_only.png")
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

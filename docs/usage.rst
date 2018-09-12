@@ -56,7 +56,7 @@ with :func:`~freqgen.k_mer_frequencies`::
     >>> k_mer_frequencies("LLNL", 1, include_missing=False)
     {'L': 0.75, 'N': 0.25}
 
-(Don't worry about the ``include_missing`` argument for now.)
+(Don't worry about the ``include_missing`` argument for now; it's for use on DNA.)
 
 If we have numerous sequences, we'll want to concatenate them first::
 
