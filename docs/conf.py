@@ -88,6 +88,7 @@ html_theme = 'alabaster'
 #
 html_theme_options = dict(fixed_sidebar=True,
                           show_related=True,
+                          logo_name=True,
                           logo="Freqgen2-01_icon_only.png")
 
 # Add any paths that contain custom static files (such as style sheets) here,
