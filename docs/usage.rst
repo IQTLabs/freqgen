@@ -61,12 +61,28 @@ with :func:`~freqgen.k_mer_frequencies`::
 If we have numerous sequences, we'll want to concatenate them first::
 
     >>> k_mer_frequencies("".join(["FIRST", "SECND"]), 1, include_missing=False)
-    {1: {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}}
+    {1: {'C': 0.1,
+         'D': 0.1,
+         'E': 0.1,
+         'F': 0.1,
+         'I': 0.1,
+         'N': 0.1,
+         'R': 0.1,
+         'S': 0.2,
+         'T': 0.1}}
 
 Finally, if there are stop codons in the sequence, we'll probably want to remove them::
 
     >>> k_mer_frequencies("".join(["FIRST*", "SECND*"]).replace("*", ""), 1, include_missing=False)
-    {1: {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}}
+    {1: {'C': 0.1,
+         'D': 0.1,
+         'E': 0.1,
+         'F': 0.1,
+         'I': 0.1,
+         'N': 0.1,
+         'R': 0.1,
+         'S': 0.2,
+         'T': 0.1}}
 
 Now that we have the frequencies of each amino acid we can generate a sequence
 using them with :func:`~freqgen.amino_acid_seq`::
