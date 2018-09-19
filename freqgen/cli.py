@@ -26,7 +26,7 @@ def featurize(filepath, k, codon_usage, output):
             seq = str(seq.seq)
             seqs.append(seq)
 
-    result = {_k: k_mer_frequencies(seqs, _k, include_missing=True) for _k in k}
+    result = k_mer_frequencies(seqs, k, include_missing=True)
 
     # get the codon usage frequencies
     if codon_usage:
@@ -80,7 +80,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
         seqs = seqs.replace("*", "")
 
         # generate a new sequence of the right length
-        aa_seq = amino_acid_seq(length, k_mer_frequencies(seqs, 1))
+        aa_seq = amino_acid_seq(length, k_mer_frequencies(seqs, 1)[1])
 
     # add a stop codon, if requested
     if stop_codon:
@@ -107,7 +107,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 @click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False))
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
-def generate(seq, freqs, verbose, i, p, m, c, trans_table, output):
+def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
     optimized = _generate(yaml.load(open(freqs)),
                           str(SeqIO.read(seq, "fasta").seq),
                           verbose=verbose,
@@ -115,7 +115,8 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output):
                           population_size=p,
                           mutation_probability=m,
                           crossover_probability=c,
-                          genetic_code=trans_table)
+                          genetic_code=trans_table,
+                          mode=mode)
     if verbose or not output:
         print(optimized)
     if output:

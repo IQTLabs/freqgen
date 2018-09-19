@@ -270,7 +270,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         vector (bool, optional): Return a 1-D Numpy array of the *k*-mer frequencies, ordered by *k*-mers alphabetically. If True, ``include_missing`` must also be True. Defaults to False.
 
     Returns:
-        dict: A dict in which the keys are *k*-mers and the values are floats of their frequencies.
+        dict: A dict in which the keys are *k* values and the values are dictionaries mapping *k*-mers to floats of their frequencies.
 
     Raises:
         ValueError: When an invalid value of k is provided or ``include_missing`` is False and ``vector`` is True.
@@ -278,44 +278,40 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
     Example:
         >>> k_mer_frequencies("INQTEL", 1, include_missing=False)
-        {'E': 0.16666666666666666,
-         'I': 0.16666666666666666,
-         'L': 0.16666666666666666,
-         'N': 0.16666666666666666,
-         'Q': 0.16666666666666666,
-         'T': 0.16666666666666666}
+        {1: {'E': 0.16666666666666666,
+             'I': 0.16666666666666666,
+             'L': 0.16666666666666666,
+             'N': 0.16666666666666666,
+             'Q': 0.16666666666666666,
+             'T': 0.16666666666666666}}
 
         >>> k_mer_frequencies("GATGATGGC", [1, 2], include_missing=False)
-        {'A': 0.2222222222222222,
-         'AT': 0.25,
-         'C': 0.1111111111111111,
-         'G': 0.4444444444444444,
-         'GA': 0.25,
-         'GC': 0.125,
-         'GG': 0.125,
-         'T': 0.2222222222222222,
-         'TG': 0.25}
+        {1: {'A': 0.2222222222222222,
+             'C': 0.1111111111111111,
+             'G': 0.4444444444444444,
+             'T': 0.2222222222222222},
+         2: {'AT': 0.25, 'GA': 0.25, 'GC': 0.125, 'GG': 0.125, 'TG': 0.25}}
 
         >>> k_mer_frequencies(["A", "T"], 1, include_missing=False)
-        {"A": 0.5, "T": 0.5}
+        {1: {'A': 0.5, 'T': 0.5}}
 
         >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True)
-        {'AA': 0,
-         'AC': 0,
-         'AG': 0,
-         'AT': 0.25,
-         'CA': 0,
-         'CC': 0,
-         'CG': 0,
-         'CT': 0,
-         'GA': 0.25,
-         'GC': 0.125,
-         'GG': 0.125,
-         'GT': 0,
-         'TA': 0,
-         'TC': 0,
-         'TG': 0.25,
-         'TT': 0}
+        {2: {'AA': 0,
+             'AC': 0,
+             'AG': 0,
+             'AT': 0.25,
+             'CA': 0,
+             'CC': 0,
+             'CG': 0,
+             'CT': 0,
+             'GA': 0.25,
+             'GC': 0.125,
+             'GG': 0.125,
+             'GT': 0,
+             'TA': 0,
+             'TC': 0,
+             'TG': 0.25,
+             'TT': 0}}
 
         >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True, vector=True)
         array([0.   , 0.   , 0.   , 0.25 , 0.   , 0.   , 0.   , 0.   , 0.25 ,
@@ -324,18 +320,20 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
     if not include_missing and vector:
         raise ValueError("May not create vector without including missing kmers.")
-    elif not k:
+    elif not k: # for when k == 0 or []
         raise ValueError("Must provide a value for k")
-    elif not seq:
+    elif not seq: # for when seq == ""
         raise ValueError("Must provide seq(s)")
 
+    # ensure there is a list of k values, even if it only has one element
     if not isinstance(k, Iterable):
         k = [k]
     else:
         k = sorted(k)
 
-    output = []
+    output = {}
 
+    # ditto for sequence(s)
     if isinstance(seq, (str, bytes, Seq)):
         seq = [seq]
 
@@ -361,11 +359,8 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         if vector:
             frequencies = sorted(list(frequencies.items()), key=lambda x: x[0])
             frequencies = np.fromiter((x[1] for x in frequencies), float, count=len(frequencies))
-        output.append(frequencies)
+        output[_k] = frequencies
 
-    if len(output) == 1:
-        return output[0]
-    elif vector:
-        return np.array(list(chain.from_iterable(output)))
-    else:
-        return {k: v for d in output for k, v in d.items()}
+    if vector:
+        return np.array(list(chain.from_iterable([output[_k] for _k in k])))
+    return output

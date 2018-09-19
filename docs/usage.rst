@@ -54,19 +54,19 @@ calculate the frequencies of your reference set. Luckily, that's pretty trivial
 with :func:`~freqgen.k_mer_frequencies`::
 
     >>> k_mer_frequencies("LLNL", 1, include_missing=False)
-    {'L': 0.75, 'N': 0.25}
+    {1: {'L': 0.75, 'N': 0.25}}
 
 (Don't worry about the ``include_missing`` argument for now; it's for use on DNA.)
 
 If we have numerous sequences, we'll want to concatenate them first::
 
     >>> k_mer_frequencies("".join(["FIRST", "SECND"]), 1, include_missing=False)
-    {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}
+    {1: {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}}
 
 Finally, if there are stop codons in the sequence, we'll probably want to remove them::
 
     >>> k_mer_frequencies("".join(["FIRST*", "SECND*"]).replace("*", ""), 1, include_missing=False)
-    {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}
+    {1: {'F': 0.1, 'I': 0.1, 'R': 0.1, 'S': 0.2, 'T': 0.1, 'E': 0.1, 'C': 0.1, 'N': 0.1, 'D': 0.1}}
 
 Now that we have the frequencies of each amino acid we can generate a sequence
 using them with :func:`~freqgen.amino_acid_seq`::
@@ -130,7 +130,7 @@ We need to assemble a dictionary that looks like this::
 To do so, let's find the 1-mers of a reference sequence::
 
     >>> sequence = "ATGTGCAGTGGTCCGTCCCGATACGGCTAG"
-    >>> features = {i: k_mer_frequencies(sequence, i) for i in [1]}
+    >>> features = k_mer_frequencies(sequence, 1)
     >>> features
     {1: {'A': 0.16666666666666666,
          'C': 0.26666666666666666,
