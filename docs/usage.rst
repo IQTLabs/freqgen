@@ -9,8 +9,8 @@ Generate an amino acid sequence
 -------------------------------
 
 The first step of using Freqgen is to have an amino acid sequence for which to
-generate a coding DNA sequence. If you already have one in mind, you can skip
-this step. If not, read on!
+generate a coding DNA sequence. If you already have one in mind, you can
+:ref:`skip this step <Featurize reference sequences>` If not, read on!
 
 CLI
 ~~~
