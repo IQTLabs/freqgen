@@ -354,7 +354,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         frequencies = {k_mer: value / total_k_mer_count for k_mer, value in count.items()}
 
         if include_missing:
-            defaults = {"".join(x): 0 for x in list(product("ATGC", repeat=_k))}
+            defaults = {"".join(x): 0 for x in product("ATGC", repeat=_k)}
             frequencies = {**defaults, **frequencies}
         if vector:
             frequencies = sorted(list(frequencies.items()), key=lambda x: x[0])
