@@ -48,9 +48,17 @@ def visualize(k_mers,
     else:
         offset = 0.15
 
+    y_max = max((max(target_freqs), max(optimized_freqs)))
+    if not isinstance(original_freqs, type(None)):
+        y_max = max((max(original_freqs), y_max))
+
     source = ColumnDataSource(data=data)
 
-    p = figure(x_range=k_mers, plot_height=plot_height, plot_width=plot_width, title=title)
+    p = figure(x_range=k_mers,
+               plot_height=plot_height,
+               plot_width=plot_width,
+               title=title,
+               y_range=(0, 1.2 * y_max))
 
     if not isinstance(original_freqs, type(None)):
         p.vbar(x=dodge('k_mers', -0.25, range=p.x_range), top='Original', width=0.2, source=source,
