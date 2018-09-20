@@ -22,7 +22,7 @@ VERSION = 0.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    "numpy", "click>=6.7", "biopython", "pyyaml", "click_default_group", "dit"
+    "numpy", "click>=6.7", "biopython", "pyyaml", "click_default_group", "dit", "bokeh"
 ]
 
 # The rest you shouldn't have to touch too much :)
