@@ -47,7 +47,11 @@ The basic flow of Freqgen can be summarized in three steps:
 
 3. Generate the DNA sequence coding for the amino acid sequence::
 
-        $ freqgen -f reference_freqs.yaml -s new_sequence.fasta -v
+        $ freqgen -f reference_freqs.yaml -s new_sequence.fasta -v -o optimized.fasta
+
+4. Visualize the results of the optimization (*optional*):
+
+    $ freqgen visualize --target reference_freqs.yaml -o optimized.fasta
 
 Documentation
 -------------
