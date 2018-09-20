@@ -129,8 +129,11 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
 @freqgen.command(help="Visualize the results of an optimization")
 @click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The original DNA sequence.")
 @click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
-@click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
-def visualize(original, target, optimized):
+@click.option("-o", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-l", "--title", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-w", "--width", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-h", "--height", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+def visualize(original, target, optimized, title, width, height):
     target = yaml.load(open(target))
 
     # create a list of the k_mers
@@ -149,4 +152,10 @@ def visualize(original, target, optimized):
     if original:
         original = k_mer_frequencies(SeqIO.read(original, "fasta").seq, k, vector=True)
 
-    _visualize(k_mers, target_vector, optimized, original_freqs=original)
+    _visualize(k_mers,
+               target_vector,
+               optimized,
+               original_freqs=original,
+               title=title,
+               plot_height=height,
+               plot_width=width,)
