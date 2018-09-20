@@ -5,3 +5,5 @@ API Reference
     :members:
 .. automodule:: freqgen.generate
     :members:
+.. automodule:: freqgen.visualize
+    :members:

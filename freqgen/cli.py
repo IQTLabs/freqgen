@@ -1,3 +1,5 @@
+from itertools import chain, product
+
 import click
 from click_default_group import DefaultGroup
 from Bio import SeqIO
@@ -8,6 +10,7 @@ import yaml
 
 from freqgen import k_mer_frequencies, codon_frequencies, amino_acid_seq
 from freqgen import generate as _generate
+from freqgen import visualize as _visualize
 
 @click.group(cls=DefaultGroup, default='generate', default_if_no_args=True)
 def freqgen():
@@ -57,7 +60,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
         except Bio.Data.CodonTable.TranslationError:
             print("Sequence is not able to be translated! Is it already an amino acid sequence?")
             return
-        aa_seq = aa_seq.replace("*", "")
+        aa_seq = str(aa_seq).replace("*", "")
 
     elif mode == "freq":
         # ensure we know how ling the new sequence should be
@@ -122,3 +125,28 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
     if output:
         with open(output, "w+") as output_handle:
             SeqIO.write(SeqRecord(Seq(optimized), id="Optimized by Freqgen", description=""), output_handle, "fasta")
+
+@freqgen.command(help="Visualize the results of an optimization")
+@click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The original DNA sequence.")
+@click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
+@click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+def visualize(original, target, optimized):
+    target = yaml.load(open(target))
+
+    # create a list of the k_mers
+    k = sorted((_k for _k in target.keys() if not isinstance(_k, str)))
+    k_mers = list(chain.from_iterable((("".join(k_mer) for k_mer in product("ACGT", repeat=_k)) for _k in k)))
+
+    # generate the target vector
+    target_vector = []
+    for _k in k:
+        k_mer_vector = [x[1] for x in sorted(list(target[_k].items()), key=lambda x: x[0])]
+        target_vector.extend(k_mer_vector)
+
+    optimized = k_mer_frequencies(SeqIO.read(optimized, "fasta").seq, k, vector=True)
+
+    # if the original sequence is given, calculate its k_mer_frequencies
+    if original:
+        original = k_mer_frequencies(SeqIO.read(original, "fasta").seq, k, vector=True)
+
+    _visualize(k_mers, target_vector, optimized, original_freqs=original)
