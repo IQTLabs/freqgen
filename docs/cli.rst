@@ -23,3 +23,8 @@ Sequence Featurization Reference
 --------------------------------
 
 .. command-output:: freqgen featurize --help
+
+Result Visualization Reference
+------------------------------
+
+.. command-output:: freqgen visualize --help
