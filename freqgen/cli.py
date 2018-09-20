@@ -130,9 +130,9 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
 @click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The original DNA sequence.")
 @click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
 @click.option("-o", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
-@click.option("-l", "--title", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
-@click.option("-w", "--width", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
-@click.option("-h", "--height", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-l", "--title", type=str, help="The title for the graph. Defaults to 'Freqgen Optimization Results'.")
+@click.option("-w", "--width", type=int, default=400, help="The optimized DNA sequence. Defaults to 400.")
+@click.option("-h", "--height", type=int, default=1200, help="The optimized DNA sequence. Defaults to 1200.")
 def visualize(original, target, optimized, title, width, height):
     target = yaml.load(open(target))
 
