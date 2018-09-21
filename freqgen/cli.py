@@ -20,7 +20,7 @@ def freqgen():
 @click.argument('filepath', click.Path(exists=True, dir_okay=False))
 @click.option('-k', multiple=True, type=int, help="Values of k to featurize the seqs for. May be repeated.")
 @click.option("-c", "--codon-usage", is_flag=True, help="Whether to include a codon frequency featurization.")
-@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output file.")
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output YAML file.")
 def featurize(filepath, k, codon_usage, output):
     # get the sequences as strs
     seqs = []
@@ -50,7 +50,7 @@ def featurize(filepath, k, codon_usage, output):
 @click.option("-l", "--length", type=int, help="The length of the AA sequence (excluding stop codon) to generate if --mode=freq.")
 @click.option("-s", "--stop-codon", is_flag=True, default=True, help="Whether to include a stop codon. Defaults to true.")
 @click.option("-v", "--verbose", is_flag=True, default=False, help="Whether to print final result if outputting to file. Defaults to false.")
-@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output file.")
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output FASTA file.")
 def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 
     # translate the DNA seq, if using exact AA seq
@@ -108,7 +108,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 @click.option("-m", type=float, default=0.3, help="Mutation rate. Defaults to 0.3.")
 @click.option("-c", type=float, default=0.8, help="Crossover rate. Defaults to 0.8.")
 @click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
-@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False))
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The path to the output FASTA file.")
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
 def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
     optimized = _generate(yaml.load(open(freqs)),
@@ -129,11 +129,13 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
 @freqgen.command(help="Visualize the results of an optimization")
 @click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The original DNA sequence.")
 @click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
-@click.option("-o", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
 @click.option("-l", "--title", type=str, help="The title for the graph. Defaults to 'Freqgen Optimization Results'.")
-@click.option("-w", "--width", type=int, default=1200, help="The optimized DNA sequence. Defaults to 1200.")
-@click.option("-h", "--height", type=int, default=400, help="The optimized DNA sequence. Defaults to 400.")
-def visualize(original, target, optimized, title, width, height):
+@click.option("-w", "--width", type=int, default=1200, help="The width of the output graph. Defaults to 1200.")
+@click.option("-h", "--height", type=int, default=400, help="The height of the output graph. Defaults to 400.")
+@click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), default="freqgen.html", help="The path to the output HTML file. Defaults to freqgen.html.")
+@click.option("-q", '--quiet', is_flag=True, help="Whether to show the resulting visualization file.")
+def visualize(original, target, optimized, title, width, height, output, quiet):
     target = yaml.load(open(target))
 
     # create a list of the k_mers
@@ -158,4 +160,6 @@ def visualize(original, target, optimized, title, width, height):
                original_freqs=original,
                title=title,
                plot_height=height,
-               plot_width=width,)
+               plot_width=width,
+               filepath=output,
+               show=not quiet)

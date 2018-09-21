@@ -1,6 +1,6 @@
 from bokeh.core.properties import value
 from bokeh.io import show as _show
-from bokeh.io import output_file
+from bokeh.io import output_file, save
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure
 from bokeh.transform import dodge
@@ -13,7 +13,8 @@ def visualize(k_mers,
               title="Freqgen Optimization Results",
               plot_height=400,
               plot_width=1200,
-              show=True):
+              show=True,
+              filepath="freqgen.html"):
     '''Creates a visualization of the results of a Freqgen optimization.
 
     Note:
@@ -29,12 +30,13 @@ def visualize(k_mers,
         plot_height (int): The height for the graph. Defaults to 400.
         plot_width (int): The width for the graph. Defaults to 1200.
         show (bool): Whether to show the plot or simply return it. Defaults to True.
+        filepath (str): The output filepath. Defaults to "freqgen.html".
 
     Returns:
         bokeh.plotting.figure.Figure: A Bokeh figure containing the bar graph.
     '''
 
-    output_file("freqgen.html")
+    output_file(filepath)
 
     categories = ['Original', 'Target', 'Optimized']
 
@@ -76,6 +78,9 @@ def visualize(k_mers,
     p.legend.orientation = "horizontal"
     p.legend.click_policy = "hide"
     p.xaxis.axis_label = 'k-mer'
-
-    _show(p)
+    p.yaxis.axis_label = 'frequency'
+    if show:
+        _show(p)
+    else:
+        save(p, filename=filepath)
     return p
