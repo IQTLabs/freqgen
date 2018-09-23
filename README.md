@@ -51,7 +51,7 @@ The basic flow of Freqgen can be summarized in three steps:
 
 4. Visualize the results of the optimization (*optional*):
 
-    $ freqgen visualize --target reference_freqs.yaml -o optimized.fasta
+        $ freqgen visualize --target reference_freqs.yaml -o optimized.fasta
 
 Documentation
 -------------
