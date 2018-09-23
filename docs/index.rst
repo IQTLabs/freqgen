@@ -8,11 +8,11 @@ Freqgen
 
 |Build Status| |CodeFactor| |Docs|
 
-Freqgen is a tool to generate coding DNA sequences with specified amino acid
-usage frequences or sequence, GC content, codon usage bias, and :math:`k`-mer
-usage bias. To accomplish this, Freqgen uses genetic algorithms to efficiently
-search the solution space of possible DNA sequences to find ones that most
-closely match the desired parameters.
+`Freqgen <https://github.com/Lab41/freqgen>`_ is a tool to generate coding DNA
+sequences with specified amino acid usage frequences or sequence, GC content,
+codon usage bias, and :math:`k`-mer usage bias. To accomplish this, Freqgen uses
+genetic algorithms to efficiently search the solution space of possible DNA
+sequences to find ones that most closely match the desired parameters.
 
 Features
 --------
