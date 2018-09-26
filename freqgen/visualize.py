@@ -44,12 +44,14 @@ def visualize(k_mers,
             'Target': target_freqs,
             'Optimized': optimized_freqs}
 
+    # adjust spacing depending on if there's three bars or two
     if not isinstance(original_freqs, type(None)):
         offset = 0.25
         data["Original"] = original_freqs
     else:
         offset = 0.15
 
+    # identify the greatest y value for setting bounds
     y_max = max((max(target_freqs), max(optimized_freqs)))
     if not isinstance(original_freqs, type(None)):
         y_max = max((max(original_freqs), y_max))
