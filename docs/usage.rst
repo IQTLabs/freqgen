@@ -176,8 +176,9 @@ To add codon usage to the features::
 
 .. note::
 
-     :func:`~freqgen.k_mer_frequencies` and :func:`~freqgen.codon_frequencies`
-     can take a single sequence or list of sequences as its arguments.
+     :func:`~freqgen.freqgen.k_mer_frequencies` and
+     :func:`~freqgen.freqgen.codon_frequencies` can take a single sequence or
+     list of sequences as its arguments.
 
 Generate a coding sequence
 --------------------------
