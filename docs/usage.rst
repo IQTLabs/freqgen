@@ -67,7 +67,7 @@ Python API
 
 To generate a new amino acid sequence from frequencies, we first need to
 calculate the frequencies of your reference set. Luckily, that's pretty trivial
-with :func:`~freqgen.k_mer_frequencies`::
+with :func:`~freqgen.freqgen.k_mer_frequencies`::
 
     >>> k_mer_frequencies("LLNL", 1, include_missing=False)
     {1: {'L': 0.75, 'N': 0.25}}
@@ -101,7 +101,7 @@ Finally, if there are stop codons in the sequence, we'll probably want to remove
          'T': 0.1}}
 
 Now that we have the frequencies of each amino acid we can generate a sequence
-using them with :func:`~freqgen.amino_acid_seq`::
+using them with :func:`~freqgen.freqgen.amino_acid_seq`::
 
     >>> length = 8 # the length of the sequence to generate
     >>> aa_sequence = amino_acid_seq(length, k_mer_frequencies("ALLQ", 1))
