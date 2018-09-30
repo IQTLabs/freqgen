@@ -46,17 +46,17 @@ def featurize(filepath, k, codon_usage, output):
 @freqgen.command(help="Generate an amino acid sequence from FASTA")
 @click.argument('filepath', click.Path(exists=True, dir_okay=False))
 @click.option("--mode", type=click.Choice(["freq", "seq"]), help="Whether to use the exact AA seq or its frequencies. Defaults to freq.", default="freq")
-@click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
+@click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-l", "--length", type=int, help="The length of the AA sequence (excluding stop codon) to generate if --mode=freq.")
 @click.option("-s", "--stop-codon", is_flag=True, default=True, help="Whether to include a stop codon. Defaults to true.")
 @click.option("-v", "--verbose", is_flag=True, default=False, help="Whether to print final result if outputting to file. Defaults to false.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The output FASTA file.")
-def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
+def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
 
     # translate the DNA seq, if using exact AA seq
     if mode == "seq":
         try:
-            aa_seq = SeqIO.read(filepath, "fasta").seq.translate(table=trans_table)
+            aa_seq = SeqIO.read(filepath, "fasta").seq.translate(table=genetic_code)
         except Bio.Data.CodonTable.TranslationError:
             print("Sequence is not able to be translated! Is it already an amino acid sequence?")
             return
@@ -73,7 +73,7 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
         with open(filepath, "r") as handle:
             for record in SeqIO.parse(handle, "fasta"):
                 try:
-                    aa_seq = str(record.seq.translate(table=trans_table)) # for DNA sequences, translate them
+                    aa_seq = str(record.seq.translate(table=genetic_code)) # for DNA sequences, translate them
                 except Bio.Data.CodonTable.TranslationError:
                     aa_seq = str(record.seq) # for amino acid sequences, just get the string
                 seqs.append(aa_seq)
@@ -107,10 +107,10 @@ def aa(filepath, mode, trans_table, length, stop_codon, output, verbose):
 @click.option("-p", type=int, default=100, help="Population size. Defaults to 100.")
 @click.option("-m", type=float, default=0.3, help="Mutation rate. Defaults to 0.3.")
 @click.option("-c", type=float, default=0.8, help="Crossover rate. Defaults to 0.8.")
-@click.option("-t", "--trans-table", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
+@click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The path to the output FASTA file.")
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
-def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
+def generate(seq, freqs, verbose, i, p, m, c, genetic_code, output, mode):
     optimized = _generate(yaml.load(open(freqs)),
                           str(SeqIO.read(seq, "fasta").seq),
                           verbose=verbose,
@@ -118,7 +118,7 @@ def generate(seq, freqs, verbose, i, p, m, c, trans_table, output, mode):
                           population_size=p,
                           mutation_probability=m,
                           crossover_probability=c,
-                          genetic_code=trans_table,
+                          genetic_code=genetic_code,
                           mode=mode)
     if verbose or not output:
         print(optimized)
