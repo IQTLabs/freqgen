@@ -170,9 +170,9 @@ To do so, let's find the 1-mers of a reference sequence::
          'G': 0.3333333333333333,
          'T': 0.23333333333333334}}
 
-To add codon usage to the features::
+If we wanted to add codon usage to the features, we can do so by passing ``codons=True``::
 
-    features["codons"] = codon_frequencies(sequence)
+    k_mer_frequencies(sequence, 1, codons=True)
 
 .. note::
 

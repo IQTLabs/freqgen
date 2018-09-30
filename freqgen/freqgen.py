@@ -260,7 +260,7 @@ def k_mers(seq, k):
         result = result[1:] + (elem,)
         yield "".join(result)
 
-def k_mer_frequencies(seq, k, include_missing=True, vector=False):
+def k_mer_frequencies(seq, k, include_missing=True, vector=False, codons=False, genetic_code=11):
     '''Calculates relative frequencies of each *k*-mer in the sequence.
 
     Args:
@@ -268,12 +268,15 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         k (int or list): the length of the *k*-mer(s).
         include_missing (bool, optional): If True, include missing *k*-mers as having a frequency of 0. Only supports DNA *k*-mers. Defaults to False.
         vector (bool, optional): Return a 1-D Numpy array of the *k*-mer frequencies, ordered by *k*-mers alphabetically. If True, ``include_missing`` must also be True. Defaults to False.
+        codons (bool, optional): Whether to include a codon usage entry in the resulting dictionary. Defaults to False.
+        genetic_code (int, optional): The genetic code to use when converting to DNA. Defaults to 11, the standard genetic code.
 
     Returns:
         dict: A dict in which the keys are *k* values and the values are dictionaries mapping *k*-mers to floats of their frequencies.
 
     Raises:
         ValueError: When an invalid value of k is provided or ``include_missing`` is False and ``vector`` is True.
+        ValueError: When ``codons`` and ``vector`` are both True.
         ValueError: When ``k`` or ``seq`` is not provided.
 
     Example:
@@ -324,6 +327,8 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
         raise ValueError("Must provide a value for k")
     elif not seq: # for when seq == ""
         raise ValueError("Must provide seq(s)")
+    elif codons and vector:
+        raise ValueError("Cannot vectorize codons.")
 
     # ensure there is a list of k values, even if it only has one element
     if not isinstance(k, Iterable):
@@ -345,7 +350,7 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
         # get all the k-mers for the seqs
         _seqs = []
-        for _seq in [list(k_mers(_seq, _k)) for _seq in seq]:
+        for _seq in [list(k_mers(_seq.upper(), _k)) for _seq in seq]:
             _seqs.extend(_seq)
 
         # determine their frequencies
@@ -363,4 +368,9 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False):
 
     if vector:
         return np.array(list(chain.from_iterable([output[_k] for _k in k])))
+
+    # syntactic sugar to make capturing codon usage easier
+    if codons:
+        output["codons"] = codon_frequencies(seq, genetic_code=genetic_code)
+
     return output

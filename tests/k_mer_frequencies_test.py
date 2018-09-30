@@ -1,6 +1,7 @@
-from freqgen import k_mer_frequencies
+from freqgen import k_mer_frequencies, codon_frequencies
 import numpy as np
 import pytest
+from hypothesis import assume, given, strategies as st
 
 def test_amino_acid():
     assert k_mer_frequencies("INQTEL", 1, include_missing=False) == {1: {'E': 0.16666666666666666,
@@ -34,18 +35,19 @@ def test_include_missing():
                                                                            'TC': 0,
                                                                            'TG': 0.25,
                                                                            'TT': 0}}
-
-def test_k_values():
+@given(st.text(alphabet="ATGCatgc"))
+def test_k_values(s):
+    assume(len(s) > 6)
     # make sure that the lengths are right
     for i in range(1, 6):
-        assert len(k_mer_frequencies("GATGATGGC", i, include_missing=True)[i]) == 4**i
-        assert len(k_mer_frequencies("GATGATGGC", i, include_missing=True, vector=True)) == 4**i
+        assert len(k_mer_frequencies(s, i, include_missing=True)[i]) == 4**i
+        assert len(k_mer_frequencies(s, i, include_missing=True, vector=True)) == 4**i
 
     # ensure invalid values of k raise an error
     with pytest.raises(ValueError):
-        k_mer_frequencies("GATTACA", 0)
+        k_mer_frequencies(s, 0)
     with pytest.raises(ValueError):
-        k_mer_frequencies("GATTACA", -1)
+        k_mer_frequencies(s, -1)
 
 def test_vectorization():
     # check that the ordering is alphabetical
@@ -81,3 +83,8 @@ def test_invalid_args():
         k_mer_frequencies("A", 1, include_missing=False, vector=True)
     with pytest.raises(ValueError):
         k_mer_frequencies("", 1)
+
+@given(st.text(alphabet="ATGCatgc"))
+def test_codon_frequencies(s):
+    assume(len(s) % 3 == 0 and len(s) > 0)
+    assert k_mer_frequencies(s, 1, codons=True)["codons"] == codon_frequencies(s)
