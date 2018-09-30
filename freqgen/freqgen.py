@@ -100,7 +100,7 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
 def codon_frequencies(seq, mode="absolute", genetic_code=11):
     '''Calculates the frequency of each codon
 
-    Abosolute mode is such that the total of the dictionary's values is equal to one.
+    Absolute mode is such that the total of the dictionary's values is equal to one.
     Relative mode is such that the sum of each amino acid's codons' frequencies is equal to one.
 
     Args:
