@@ -93,8 +93,8 @@ def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
         print(aa_seq)
 
 @freqgen.command(help="Generate a new DNA sequence with matching features")
-@click.option("-s", '--seq', type=click.Path(exists=True, dir_okay=False), help="The target amino acid sequence.")
-@click.option("-f", '--freqs', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
+@click.option("-s", '--seq', type=click.Path(exists=True, dir_okay=False), help="The target amino acid sequence.", required=True)
+@click.option("-f", '--freqs', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.", required=True)
 @click.option("-v", "--verbose", is_flag=True, default=False, help="Whether to show optimization progress. Defaults to false.")
 @click.option("-i", type=int, default=50, help="How many generations to stop after no improvement. Defaults to 50.")
 @click.option("-p", type=int, default=100, help="Population size. Defaults to 100.")
@@ -124,28 +124,49 @@ def generate(seq, freqs, verbose, i, p, m, c, genetic_code, output, mode):
 @click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
 @click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
 @click.option("-l", "--title", type=str, help="The title for the graph. Defaults to 'Freqgen Optimization Results'.")
-@click.option("-w", "--width", type=int, default=1200, help="The width of the output graph. Defaults to 1200.")
+@click.option("-w", "--width", type=int, help="The width of the output graph. Defaults to 1200.")
 @click.option("-h", "--height", type=int, default=400, help="The height of the output graph. Defaults to 400.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), default="freqgen.html", help="The path to the output HTML file. Defaults to freqgen.html.")
-@click.option("-q", '--quiet', is_flag=True, help="Whether to show the resulting visualization file.")
-def visualize(original, target, optimized, title, width, height, output, quiet):
+@click.option('--show/--no-show', default=True, help="Whether to show the resulting visualization file.")
+@click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
+def visualize(original, target, optimized, title, width, height, output, show, genetic_code):
     target = yaml.load(open(target))
 
     # create a list of the k_mers
     k = sorted((_k for _k in target.keys() if not isinstance(_k, str)))
     k_mers = list(chain.from_iterable((("".join(k_mer) for k_mer in product("ACGT", repeat=_k)) for _k in k)))
 
+    if "codons" in target.keys():
+        k_mers.extend([codon + "*" for codon in sorted(target["codons"].keys())])
+
     # generate the target vector
     target_vector = []
     for _k in k:
         k_mer_vector = [x[1] for x in sorted(list(target[_k].items()), key=lambda x: x[0])]
         target_vector.extend(k_mer_vector)
+    if "codons" in target.keys():
+        target_vector.extend([x[1] for x in sorted(list(target["codons"].items()), key=lambda x: x[0])])
 
-    optimized = k_mer_frequencies(SeqIO.read(optimized, "fasta").seq, k, vector=True)
+    seq = SeqIO.read(optimized, "fasta").seq
+    optimized = list(k_mer_frequencies(seq, k, vector=True))
+    if "codons" in target.keys():
+        optimized.extend([x[1] for x in sorted(list(codon_frequencies(seq).items()), key=lambda x: x[0])])
+
+    # print(list(zip(optimized, target_vector, k_mers)))
+    assert len(optimized) == len(target_vector) == len(k_mers) # sanity check
 
     # if the original sequence is given, calculate its k_mer_frequencies
     if original:
-        original = k_mer_frequencies(SeqIO.read(original, "fasta").seq, k, vector=True)
+        original_seq = SeqIO.read(original, "fasta").seq
+        original = list(k_mer_frequencies(original_seq, k, vector=True))
+        if "codons" in target.keys():
+            original.extend([x[1] for x in sorted(list(codon_frequencies(original_seq).items()), key=lambda x: x[0])])
+
+    if (max(k) >= 3 or "codons" in target.keys()) and width is None:
+        click.secho(
+            f"Displaying a large number of k-mers and/or codons. To view the results of each k-mer, use the zoom tool in the top right of the graph to zoom in or set the width of the graph manually using --width. Suggested width: {35*len(k_mers)}.", fg='yellow')
+        click.pause()
+        width = 1200
 
     _visualize(k_mers,
                target_vector,
@@ -155,4 +176,5 @@ def visualize(original, target, optimized, title, width, height, output, quiet):
                plot_height=height,
                plot_width=width,
                filepath=output,
-               show=not quiet)
+               codons="codons" in target.keys(),
+               show=show)

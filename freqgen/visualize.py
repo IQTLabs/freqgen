@@ -14,7 +14,8 @@ def visualize(k_mers,
               plot_height=400,
               plot_width=1200,
               show=True,
-              filepath="freqgen.html"):
+              filepath="freqgen.html",
+              codons=False):
     '''Creates a visualization of the results of a Freqgen optimization.
 
     Note:
@@ -26,11 +27,15 @@ def visualize(k_mers,
         target_freqs (list): A list of the target frequencies in the same order as the `k_mers` argument.
         optimized_freqs (list): A list of the resultant frequencies in the same order as the `k_mers` argument.
         original_freqs (list, optional): A list of the original frequencies in the same order as the `k_mers` argument.
-        title (str): A title to use for the graph. Defaults to "Freqgen Optimization Results".
-        plot_height (int): The height for the graph. Defaults to 400.
-        plot_width (int): The width for the graph. Defaults to 1200.
-        show (bool): Whether to show the plot or simply return it. Defaults to True.
-        filepath (str): The output filepath. Defaults to "freqgen.html".
+        title (str, optional): A title to use for the graph. Defaults to "Freqgen Optimization Results".
+        plot_height (int, optional): The height for the graph. Defaults to 400.
+        plot_width (int, optional): The width for the graph. Defaults to 1200.
+        show (bool, optional): Whether to show the plot or simply return it. Defaults to True.
+        filepath (str, optional): The output filepath. Defaults to "freqgen.html".
+        codons (bool, optional): Whether codons are included in the input vectors. If they are, the *x*-axis legend will updated accordingly.
+
+    Note:
+        Codons must be denoted with a ``*`` in the ``k_mers`` argument.
 
     Returns:
         bokeh.plotting.figure.Figure: A Bokeh figure containing the bar graph.
@@ -79,7 +84,7 @@ def visualize(k_mers,
     p.legend.location = "top_right"
     p.legend.orientation = "horizontal"
     p.legend.click_policy = "hide"
-    p.xaxis.axis_label = 'k-mer'
+    p.xaxis.axis_label = 'k-mer' if not codons else "k-mer (* denotes codon)"
     p.yaxis.axis_label = 'frequency'
     if show:
         _show(p)
