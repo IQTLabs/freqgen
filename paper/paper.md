@@ -27,7 +27,7 @@ bibliography: paper.bib
 A variety of forces affect the distribution of the frequencies of nucleotides in
 DNA. For example, GC-content, the ratio of the amount of Gs and Cs to As and Ts,
 is greater in regions with more recombination
-[@spencerHumanPolymorphismRecombination]. Generalizing beyond individual
+[@spencerHumanPolymorphismRecombination2006]. Generalizing beyond individual
 nucleotides, the distribution of $k$-mers, subsequences of length $k$, is also
 neither random nor uniform. These biases have been capitalized upon in genetic
 engineering [@al-saifUUUADinucleotide2012], vaccine production
