@@ -29,7 +29,14 @@ def featurize(filepath, k, codon_usage, output):
             seq = str(seq.seq)
             seqs.append(seq)
 
-    result = k_mer_frequencies(seqs, k, include_missing=True, codons=codon_usage)
+    result = k_mer_frequencies(seqs, k, include_missing=True)
+
+    # get the codon usage frequencies
+    if codon_usage:
+        for seq in seqs:
+            if len(seq) % 3 != 0:
+                raise ValueError("Cannot calculate codons for sequence whose length is not divisible by 3")
+        result["codons"] = codon_frequencies("".join(seqs))
 
     if output:
         yaml.dump(result, open(output, "w+"), default_flow_style=False)
