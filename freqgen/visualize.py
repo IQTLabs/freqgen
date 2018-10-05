@@ -35,11 +35,15 @@ def visualize(k_mers,
         codons (bool, optional): Whether codons are included in the input vectors. If they are, the *x*-axis legend will updated accordingly.
 
     Note:
-        Codons must be denoted with a ``*`` in the ``k_mers`` argument.
+        Codons must be denoted with a ``*`` in the ``k_mers`` argument. For example, the codon GAG should be passed as ``GAG*``
 
     Returns:
         bokeh.plotting.figure.Figure: A Bokeh figure containing the bar graph.
     '''
+
+    # validate that all the codons that should be there are there
+    if codons and len([k_mer for k_mer in k_mers if k_mer.endswith("*")]) != 64:
+        raise ValueError("You appear to be passing an incomplete list of codons.")
 
     output_file(filepath)
 
@@ -84,7 +88,15 @@ def visualize(k_mers,
     p.legend.location = "top_right"
     p.legend.orientation = "horizontal"
     p.legend.click_policy = "hide"
-    p.xaxis.axis_label = 'k-mer' if not codons else "k-mer (* denotes codon)"
+
+    # decide the x-axis label
+    if codons and all([k_mer.endswith("*") for k_mer in k_mers]):
+        p.xaxis.axis_label = "codon"
+    elif codons:
+        p.xaxis.axis_label = "k-mer (* denotes codon)"
+    else:
+        p.xaxis.axis_label = 'k-mer'
+
     p.yaxis.axis_label = 'frequency'
     if show:
         _show(p)
