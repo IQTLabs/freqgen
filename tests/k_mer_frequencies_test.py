@@ -75,6 +75,7 @@ def test_multiple_k():
 def test_multiple_seqs():
     assert k_mer_frequencies(["A", "A"], 1, include_missing=False) == {1: {"A": 1.0}}
     assert k_mer_frequencies(["A", "T"], 1, include_missing=False) == {1: {"A": 0.5, "T": 0.5}}
+    assert k_mer_frequencies(["AA", "TT"], 2, include_missing=False) == {2: {"AA": 0.5, "TT": 0.5}}
     assert k_mer_frequencies(["A", "T"], 1, include_missing=True) == {1: {"A": 0.5, "T": 0.5, "G": 0.0, "C": 0.0}}
     assert np.array_equal(k_mer_frequencies(["A", "T"], 1, include_missing=True, vector=True), np.array([0.5, 0.0, 0.0, 0.5]))
 
