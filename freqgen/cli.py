@@ -29,7 +29,10 @@ def featurize(filepath, k, codon_usage, output):
             seq = str(seq.seq)
             seqs.append(seq)
 
-    result = k_mer_frequencies(seqs, k, include_missing=True)
+    if k:
+        result = k_mer_frequencies(seqs, k, include_missing=True)
+    else:
+        result = {}
 
     # get the codon usage frequencies
     if codon_usage:
