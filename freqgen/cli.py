@@ -146,7 +146,7 @@ def visualize(original, target, optimized, title, width, height, output, show, g
     k = sorted((_k for _k in target.keys() if not isinstance(_k, str)))
     k_mers = list(chain.from_iterable((("".join(k_mer) for k_mer in product("ACGT", repeat=_k)) for _k in k)))
 
-    if "codons" in target.keys():
+    if "codons" in target.keys() and len(target.keys()):
         k_mers.extend([codon + "*" for codon in sorted(target["codons"].keys())])
 
     # generate the target vector
@@ -158,7 +158,10 @@ def visualize(original, target, optimized, title, width, height, output, show, g
         target_vector.extend([x[1] for x in sorted(list(target["codons"].items()), key=lambda x: x[0])])
 
     seq = SeqIO.read(optimized, "fasta").seq
-    optimized = list(k_mer_frequencies(seq, k, vector=True))
+    if k:
+        optimized = list(k_mer_frequencies(seq, k, vector=True))
+    else:
+        optimized = []
     if "codons" in target.keys():
         optimized.extend([x[1] for x in sorted(list(codon_frequencies(seq).items()), key=lambda x: x[0])])
 
@@ -168,15 +171,17 @@ def visualize(original, target, optimized, title, width, height, output, show, g
     # if the original sequence is given, calculate its k_mer_frequencies
     if original:
         original_seq = SeqIO.read(original, "fasta").seq
-        original = list(k_mer_frequencies(original_seq, k, vector=True))
+        if k:
+            original = list(k_mer_frequencies(original_seq, k, vector=True))
+        else:
+            original = []
         if "codons" in target.keys():
             original.extend([x[1] for x in sorted(list(codon_frequencies(original_seq).items()), key=lambda x: x[0])])
 
-    if (max(k) >= 3 or "codons" in target.keys()) and width is None:
+    if (max(k, default=0) >= 3 or "codons" in target.keys()):
         click.secho(
             f"Displaying a large number of k-mers and/or codons. To view the results of each k-mer, use the zoom tool in the top right of the graph to zoom in or set the width of the graph manually using --width. Suggested width: {35*len(k_mers)}.", fg='yellow')
         click.pause()
-        width = 1200
 
     _visualize(k_mers,
                target_vector,

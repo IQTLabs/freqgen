@@ -6,6 +6,8 @@ from bokeh.plotting import figure
 from bokeh.transform import dodge
 from bokeh.palettes import Set2_3
 
+import math
+
 def visualize(k_mers,
               target_freqs,
               optimized_freqs,
@@ -44,6 +46,11 @@ def visualize(k_mers,
     # validate that all the codons that should be there are there
     if codons and len([k_mer for k_mer in k_mers if k_mer.endswith("*")]) != 64:
         raise ValueError("You appear to be passing an incomplete list of codons.")
+
+    codons_only = False
+    if all([k_mer.endswith("*") for k_mer in k_mers]) and codons:
+        k_mers = [k_mer[:-1] for k_mer in k_mers]
+        codons_only = True
 
     output_file(filepath)
 
@@ -90,12 +97,15 @@ def visualize(k_mers,
     p.legend.click_policy = "hide"
 
     # decide the x-axis label
-    if codons and all([k_mer.endswith("*") for k_mer in k_mers]):
+    if codons_only:
         p.xaxis.axis_label = "codon"
     elif codons:
         p.xaxis.axis_label = "k-mer (* denotes codon)"
     else:
         p.xaxis.axis_label = 'k-mer'
+
+    if len(k_mers) >= 32:
+        p.xaxis.major_label_orientation = math.pi / 2
 
     p.yaxis.axis_label = 'frequency'
     if show:
