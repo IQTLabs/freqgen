@@ -45,6 +45,7 @@ def generate(target_params,
              mutation_probability=0.3,
              crossover_probability=0.8,
              max_gens_since_improvement=50,
+             improvement_rel_threshold=0.0,
              genetic_code=11,
              verbose=False,
              mode="ED"):
@@ -57,6 +58,7 @@ def generate(target_params,
         mutation_probability (float, optional): The likelihood of changing each member of each generation. Defaults to 0.3.
         crossover_probability (float, optional): The likelihood of each member of the population undergoing crossover. Defaults to 0.8.
         max_gens_since_improvement (int, optional): The number of generations of no improvement after which to stop optimization. Defaults to 50.
+        improvement_rel_threshold (float, optional): The minimum ftness improvement in precentage for which to reset the value of generations since improvement. Defaults to 0, meaning that any improvement resets the counter. Greater values will result in earlier stopping.
         genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
         verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
         mode (str, optional): Whether to use Jensen-Shannon Divergence or Euclidean distance. Defaults to ``"ED"``. Use ``"JSD"`` for Jensen-Shannon Divergence.
@@ -165,7 +167,7 @@ def generate(target_params,
     try:
         while gens_since_improvement < max_gens_since_improvement:
             ga.create_next_generation()
-            if ga.best_individual()[0] < best_indv_fitness:
+            if ga.best_individual()[0] < best_indv_fitness * (1 - improvement_rel_threshold):
                 best_indv_fitness = ga.best_individual()[0]
                 gens_since_improvement = 0
             else:
@@ -180,6 +182,5 @@ def generate(target_params,
         print()
 
     best_seq = vector_to_dna(ga.best_individual()[1])
-    best_freqs = vector(best_seq)
     assert Seq(best_seq).translate(genetic_code) == Seq(insert).translate(genetic_code)
     return best_seq

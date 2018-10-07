@@ -110,10 +110,11 @@ def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
 @click.option("-p", type=int, default=100, help="Population size. Defaults to 100.")
 @click.option("-m", type=float, default=0.3, help="Mutation rate. Defaults to 0.3.")
 @click.option("-c", type=float, default=0.8, help="Crossover rate. Defaults to 0.8.")
+@click.option("-r", type=float, default=0, help="Relative improvement threshold. Defaults to 0.0.")
 @click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The path to the output FASTA file.")
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
-def generate(seq, freqs, verbose, i, p, m, c, genetic_code, output, mode):
+def generate(seq, freqs, verbose, i, p, m, c, r, genetic_code, output, mode):
     optimized = _generate(yaml.load(open(freqs)),
                           str(SeqIO.read(seq, "fasta").seq),
                           verbose=verbose,
@@ -122,6 +123,7 @@ def generate(seq, freqs, verbose, i, p, m, c, genetic_code, output, mode):
                           mutation_probability=m,
                           crossover_probability=c,
                           genetic_code=genetic_code,
+                          improvement_rel_threshold=r,
                           mode=mode)
     if verbose or not output:
         print(optimized)
