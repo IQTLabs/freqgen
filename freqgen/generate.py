@@ -48,7 +48,8 @@ def generate(target_params,
              improvement_rel_threshold=0.0,
              genetic_code=11,
              verbose=False,
-             mode="ED"):
+             mode="ED",
+             fitness_function=None):
     '''Generate a sequence matching :math:`k`-mer usage.
 
     Args:
@@ -62,6 +63,7 @@ def generate(target_params,
         genetic_code (int, optional): The genetic code to use. Defaults to 11, the standard genetic code.
         verbose (bool, optional): Whether to print the generation number, generations since improvement, and fitness. Defaults to false.
         mode (str, optional): Whether to use Jensen-Shannon Divergence or Euclidean distance. Defaults to ``"ED"``. Use ``"JSD"`` for Jensen-Shannon Divergence.
+        fitness_function (function, optional): A function by which to measure the fitness of a potential sequence. Must take a vector representing a sequence and return a float, with lower scores indicating greater fitness. Defaults to None, in which case it uses either JSD or ED.
 
     Returns:
         str: The generated sequence.
@@ -112,7 +114,7 @@ def generate(target_params,
             return np.linalg.norm(target - vector(individual))
         else:
             raise Exception("Fitness mode must be JSD or ED")
-    ga.fitness_function = fitness
+    ga.fitness_function = fitness if not fitness_function else fitness_function
 
     synonymous_codons = _synonymous_codons(genetic_codes[genetic_code])
 
