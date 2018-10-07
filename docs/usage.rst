@@ -190,22 +190,22 @@ Assuming the same files as generated above, provide the ``freqgen`` command with
 the ``-s`` flag for the amino acid sequence file and the ``-f`` flag for the
 target frequency file to generate a new coding sequence::
 
-    $ freqgen -s gfp.faa -f ecoli.heg.yaml
+    $ freqgen --original gfp.faa --target ecoli.heg.yaml
     ATGAGCAAAGGCGAAGAACTTTTCACAGGCGTGGTGCCCATCT...
 
 To take a look at the progress of optimization, use the ``-v`` flag::
 
-    $ freqgen -s gfp.faa -f ecoli.heg.yaml -v
+    $ freqgen --original gfp.faa --target ecoli.heg.yaml -v
     Gen: 161        Since Improvement: 50/50      Fitness: 0.009440865845955711
 
 The ``-o`` flag for output file and ``-t`` for translation table work as usual::
 
-    $ freqgen -s gfp.faa -f ecoli.heg.yaml -o gfp_ecoli.fna
+    $ freqgen --original gfp.faa --target ecoli.heg.yaml -o gfp_ecoli.fna
 
 If optimization is taking too long, you can use ``^C`` (or ``control-C`` for
 those on Macs) to stop early::
 
-    $ freqgen -s gfp.faa -f ecoli.heg.yaml -o gfp_ecoli.fna
+    $ freqgen --original gfp.faa --target ecoli.heg.yaml -o gfp_ecoli.fna
     ^C
     Stopping early...
 

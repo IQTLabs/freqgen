@@ -103,8 +103,8 @@ def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
         print(aa_seq)
 
 @freqgen.command(help="Generate a new DNA sequence with matching features")
-@click.option("-s", '--seq', type=click.Path(exists=True, dir_okay=False), help="The target amino acid sequence.", required=True)
-@click.option("-f", '--freqs', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.", required=True)
+@click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The target amino acid sequence.", required=True)
+@click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.", required=True)
 @click.option("-v", "--verbose", is_flag=True, default=False, help="Whether to show optimization progress. Defaults to false.")
 @click.option("-i", type=int, default=50, help="How many generations to stop after no improvement. Defaults to 50.")
 @click.option("-p", type=int, default=100, help="Population size. Defaults to 100.")
@@ -114,9 +114,9 @@ def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
 @click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The path to the output FASTA file.")
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
-def generate(seq, freqs, verbose, i, p, m, c, r, genetic_code, output, mode):
-    optimized = _generate(yaml.load(open(freqs)),
-                          str(SeqIO.read(seq, "fasta").seq),
+def generate(original, target, verbose, i, p, m, c, r, genetic_code, output, mode):
+    optimized = _generate(yaml.load(open(target)),
+                          str(SeqIO.read(original, "fasta").seq),
                           verbose=verbose,
                           max_gens_since_improvement=i,
                           population_size=p,
@@ -133,8 +133,8 @@ def generate(seq, freqs, verbose, i, p, m, c, r, genetic_code, output, mode):
 
 @freqgen.command(help="Visualize the results of an optimization")
 @click.option("-s", '--original', type=click.Path(exists=True, dir_okay=False), help="The original DNA sequence.")
-@click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.")
-@click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.")
+@click.option("-t", '--target', type=click.Path(exists=True, dir_okay=False), help="The target frequencies.", required=True)
+@click.option("-r", "--optimized", type=click.Path(exists=True, dir_okay=False), help="The optimized DNA sequence.", required=True)
 @click.option("-l", "--title", type=str, help="The title for the graph.")
 @click.option("-w", "--width", type=int, default=1200, help="The width of the output graph. Defaults to 1200.")
 @click.option("-h", "--height", type=int, default=400, help="The height of the output graph. Defaults to 400.")
