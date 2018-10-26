@@ -2,6 +2,7 @@ from freqgen import k_mer_frequencies, codon_frequencies
 import numpy as np
 import pytest
 from hypothesis import assume, given, strategies as st
+from itertools import product
 
 def test_amino_acid():
     assert k_mer_frequencies("INQTEL", 1, include_missing=False) == {1: {'E': 0.16666666666666666,
@@ -85,7 +86,6 @@ def test_invalid_args():
     with pytest.raises(ValueError):
         k_mer_frequencies("", 1)
 
-@given(st.text(alphabet="ATGCatgc"))
+@given(st.lists(elements=st.sampled_from(["".join(codon) for codon in product("ATGC", repeat=3)]), min_size=1))
 def test_codon_frequencies(s):
-    assume(len(s) % 3 == 0 and len(s) > 0)
     assert k_mer_frequencies(s, 1, codons=True)["codons"] == codon_frequencies(s)
