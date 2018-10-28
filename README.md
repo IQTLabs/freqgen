@@ -37,7 +37,7 @@ Five-second CLI tutorial
 
 The basic flow of Freqgen can be summarized in three steps:
 
-1. Generate a new amino acid sequence based on the amino acid usage profile of reference sequences. If you already have a specific amino acid sequence in mind (*i.e* for synthetic biology uses), skip this step::
+1. Generate a new amino acid sequence based on the amino acid usage profile of reference sequences. If you already have a specific amino acid sequence in mind (*i.e* for synthetic biology uses), skip this step:
 
         $ freqgen aa reference_sequences.fna -o new_sequence.faa -l LENGTH
 
@@ -45,7 +45,7 @@ The basic flow of Freqgen can be summarized in three steps:
 
         $ freqgen featurize reference_sequences.fna -k INT -o reference_freqs.yaml
 
-3. Generate the DNA sequence coding for the amino acid sequence::
+3. Generate the DNA sequence coding for the amino acid sequence:
 
         $ freqgen -f reference_freqs.yaml -s new_sequence.faa -v -o optimized.fna
 
