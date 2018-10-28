@@ -41,7 +41,7 @@ The basic flow of Freqgen can be summarized in three steps:
 
         $ freqgen aa reference_sequences.fna -o new_sequence.faa -l LENGTH
 
-2. Create a YAML file containing *k*-mer frequencies for the amino acid sequence's DNA to have::
+2. Create a YAML file containing *k*-mer frequencies for the amino acid sequence's DNA to have:
 
         $ freqgen featurize reference_sequences.fna -k INT -o reference_freqs.yaml
 
