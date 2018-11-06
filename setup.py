@@ -109,6 +109,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
+        "Topic :: Scientific/Engineering :: Bio-Informatics"
     ],
     # $ setup.py publish support.
     cmdclass={
