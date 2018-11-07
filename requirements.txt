@@ -1,6 +1,0 @@
-numpy
-click>=6.7
-biopython
-pyyaml
-click_default_group
-dit
