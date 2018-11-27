@@ -209,7 +209,7 @@ def codon_frequencies(seq, mode="absolute", genetic_code=11):
     if mode == "absolute":
         return frequencies
 
-    elif mode == "relative":
+    if mode == "relative":
         relative = {}
         for i in synonymous_codons[genetic_code].keys():
             try:
@@ -217,6 +217,9 @@ def codon_frequencies(seq, mode="absolute", genetic_code=11):
             except ZeroDivisionError:
                 relative[i] = 1 / len(synonymous_codons[genetic_code][i]) # if an amino acid is never used in the reference set, then all its codons are used equally
         return relative
+
+    else:
+        raise ValueError("Mode must be either absolute or relative".)
 
 def k_mers(seq, k):
     '''Yields all *k*-mers in the input sequence with repeats.
@@ -247,7 +250,7 @@ def k_mers(seq, k):
     # error checking
     if k > len(seq):
         raise ValueError("k (%i) may not be less then length of seq (%i)." % (k, len(seq)))
-    elif len(seq) == 0:
+    elif not seq:
         raise ValueError("seq length may not be zero")
     elif k <= 0:
         raise ValueError("k may not be <= zero")
