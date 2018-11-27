@@ -1,5 +1,6 @@
 import random
 from warnings import warn
+from math import isclose
 
 import dit
 import numpy as np
@@ -76,12 +77,17 @@ def generate(target_params,
     if all([char in {"A", "T", "G", "C"} for char in aa_seq]):
         warn("This appears to be a DNA sequence, not an amino acid sequence. Ensure that you are passing in an amino acid sequence.")
 
+    for target, frequencies in target_params.items():
+        print(sum(frequencies.values()))
+        if not isclose(sum(frequencies.values()), 1):
+            raise ValueError("Target frequencies for " + str(target) + " do not sum to 1.0")
+
     # back translate to an initial seq
     insert = ""
     for aa in aa_seq:
         try:
             insert += Bio.Data.CodonTable.unambiguous_dna_by_id[genetic_code].back_table[aa]
-        except:
+        except KeyError:
             if aa == "*":
                 insert += Bio.Data.CodonTable.unambiguous_dna_by_id[genetic_code].back_table[None]
 
