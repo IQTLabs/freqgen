@@ -115,7 +115,7 @@ def aa(filepath, mode, genetic_code, length, stop_codon, output, verbose):
 @click.option("-o", '--output', type=click.Path(exists=False, dir_okay=False), help="The path to the output FASTA file.")
 @click.option("--mode", type=click.Choice(["JSD", "ED"]), default="ED", help="The fitness function to use. Defaults to Euclidean distance.")
 def generate(original, target, verbose, i, p, m, c, r, genetic_code, output, mode):
-    optimized = _generate(yaml.load(open(target)),
+    optimized = _generate(yaml.safe_load(open(target)),
                           str(SeqIO.read(original, "fasta").seq),
                           verbose=verbose,
                           max_gens_since_improvement=i,
@@ -142,13 +142,13 @@ def generate(original, target, verbose, i, p, m, c, r, genetic_code, output, mod
 @click.option('--show/--no-show', default=True, help="Whether to show the resulting visualization file.")
 @click.option("-g", "--genetic-code", type=int, default=11, help="The translation table to use. Defaults to 11, the standard genetic code.")
 def visualize(original, target, optimized, title, width, height, output, show, genetic_code):
-    target = yaml.load(open(target))
+    target = yaml.safe_load(open(target))
 
     # create a list of the k_mers
     k = sorted((_k for _k in target.keys() if not isinstance(_k, str)))
     k_mers = list(chain.from_iterable((("".join(k_mer) for k_mer in product("ACGT", repeat=_k)) for _k in k)))
 
-    if "codons" in target.keys() and len(target.keys()):
+    if "codons" in target.keys() and target.keys():
         k_mers.extend([codon + "*" for codon in sorted(target["codons"].keys())])
 
     # generate the target vector
