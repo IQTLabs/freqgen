@@ -4,15 +4,16 @@ from freqgen import generate
 def test_1mer():
     assert generate({1: dict(A=0.5, T=0.5, G=0, C=0)}, "FK") == "TTTAAA"
 
+
 def test_codon():
     targets = dict(codons={'AAA': 0,
                            'AAC': 0,
                            'AAG': 0,
                            'AAT': 0,
                            'ACA': 0,
-                           'ACC': 0.5,
+                           'ACC': 1 / 3,
                            'ACG': 0,
-                           'ACT': 0.5,
+                           'ACT': 1 / 3,
                            'AGA': 0,
                            'AGC': 0,
                            'AGG': 0,
@@ -55,7 +56,7 @@ def test_codon():
                            'GTT': 0,
                            'TAA': 0,
                            'TAC': 0,
-                           'TAG': 0,
+                           'TAG': 1 / 3,
                            'TAT': 0,
                            'TCA': 0,
                            'TCC': 0,
@@ -69,4 +70,4 @@ def test_codon():
                            'TTC': 0,
                            'TTG': 0,
                            'TTT': 0})
-    assert generate(targets, "TT") in ["ACTACC", "ACCACT"]
+    assert generate(targets, "TT*") in ["ACTACCTAG", "ACCACTTAG"]
