@@ -1,8 +1,12 @@
-from freqgen import k_mer_frequencies, codon_frequencies
+from itertools import product
+
 import numpy as np
 import pytest
-from hypothesis import assume, given, strategies as st
-from itertools import product
+from hypothesis import assume, given
+from hypothesis import strategies as st
+
+from freqgen import codon_frequencies, k_mer_frequencies
+
 
 def test_amino_acid():
     assert k_mer_frequencies("INQTEL", 1, include_missing=False) == {1: {'E': 0.16666666666666666,

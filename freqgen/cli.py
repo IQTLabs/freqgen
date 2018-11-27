@@ -1,16 +1,18 @@
 from itertools import chain, product
 
-import click
-from click_default_group import DefaultGroup
-from Bio import SeqIO
 import Bio.Data.CodonTable
+import click
+import yaml
+from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-import yaml
+from click_default_group import DefaultGroup
 
-from freqgen import k_mer_frequencies, codon_frequencies, amino_acid_seq
+from freqgen import amino_acid_seq, codon_frequencies
 from freqgen import generate as _generate
+from freqgen import k_mer_frequencies
 from freqgen import visualize as _visualize
+
 
 @click.group(cls=DefaultGroup, default='generate', default_if_no_args=True)
 def freqgen():

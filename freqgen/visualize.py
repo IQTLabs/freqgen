@@ -1,12 +1,13 @@
+import math
+
 from bokeh.core.properties import value
-from bokeh.io import show as _show
 from bokeh.io import output_file, save
+from bokeh.io import show as _show
 from bokeh.models import ColumnDataSource
+from bokeh.palettes import Set2_3
 from bokeh.plotting import figure
 from bokeh.transform import dodge
-from bokeh.palettes import Set2_3
 
-import math
 
 def visualize(k_mers,
               target_freqs,

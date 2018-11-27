@@ -1,5 +1,7 @@
 import pytest
+
 from freqgen import codon_frequencies
+
 
 def test_one_codon():
     assert codon_frequencies("AAA") == {'AAA': 1.0,

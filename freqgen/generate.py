@@ -1,11 +1,15 @@
-from freqgen import *
-from .pyeasyga import GeneticAlgorithm
-import yaml
-import dit
-from dit.divergences import jensen_shannon_divergence
 import random
-from Bio.Seq import Seq
 from warnings import warn
+
+import dit
+import numpy as np
+import yaml
+from Bio.Seq import Seq
+from dit.divergences import jensen_shannon_divergence
+
+from .freqgen import *
+from .pyeasyga import GeneticAlgorithm
+
 
 def dna_to_vector(seq):
     seq = np.array(list(seq))

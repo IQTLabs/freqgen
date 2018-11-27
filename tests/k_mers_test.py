@@ -1,6 +1,9 @@
-from freqgen import k_mers
 from types import GeneratorType
+
 import pytest
+
+from freqgen import k_mers
+
 
 def test_k_mers():
     assert list(k_mers("GATTACA", 1)) == ['G', 'A', 'T', 'T', 'A', 'C', 'A']

@@ -1,5 +1,7 @@
-from freqgen import amino_acids_to_codons
 import pytest
+
+from freqgen import amino_acids_to_codons
+
 
 def test_amino_acids_to_codons():
     assert amino_acids_to_codons("A", dict(GCA=1.0, GCT=0, GCG=0, GCC=0)) == "GCA"

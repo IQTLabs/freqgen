@@ -1,9 +1,9 @@
-from collections import defaultdict, Counter, Iterable
-from itertools import islice, product, chain
+from collections import Counter, Iterable, defaultdict
+from itertools import chain, islice, product
 from warnings import warn
 
-import numpy as np
 import Bio.Data.CodonTable
+import numpy as np
 from Bio.Seq import Seq
 
 # create the genetic_codes and codons_for_aa dicts
