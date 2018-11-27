@@ -120,10 +120,10 @@ def generate(target_params,
         individual = vector_to_dna(individual)
         if mode == "JSD":
             return jensen_shannon_divergence([dit.ScalarDistribution(target / len(k)), dit.ScalarDistribution(vector(individual) / len(k))])
-        elif mode == "ED":
+        if mode == "ED":
             return np.linalg.norm(target - vector(individual))
-        else:
-            raise Exception("Fitness mode must be JSD or ED")
+        raise Exception("Fitness mode must be JSD or ED")
+
     ga.fitness_function = fitness if not fitness_function else fitness_function
 
     synonymous_codons = _synonymous_codons(genetic_codes[genetic_code])
