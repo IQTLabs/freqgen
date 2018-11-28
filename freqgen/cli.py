@@ -184,7 +184,7 @@ def visualize(original, target, optimized, title, width, height, output, show, g
 
     if (max(k, default=0) >= 3 or "codons" in target.keys()):
         click.secho(
-            f"Displaying a large number of k-mers and/or codons. To view the results of each k-mer, use the zoom tool in the top right of the graph to zoom in or set the width of the graph manually using --width. Suggested width: {35*len(k_mers)}.", fg='yellow')
+            "Displaying a large number of k-mers and/or codons. To view the results of each k-mer, use the zoom tool in the top right of the graph to zoom in or set the width of the graph manually using --width. Suggested width: " + str(35 * len(k_mers)), fg='yellow')
         click.pause()
 
     _visualize(k_mers,
