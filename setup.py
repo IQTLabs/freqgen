@@ -13,12 +13,11 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'freqgen'
-DESCRIPTION = 'Generate sequences'
+DESCRIPTION = 'Generate DNA sequences with specified amino acid, codon, and k-mer frequencies.'
 URL = 'https://github.com/Lab41/freqgen'
 EMAIL = 'benjamindlee@me.com'
 AUTHOR = 'Benjamin Lee'
 REQUIRES_PYTHON = '>=3.5.0'
-VERSION = 0.1
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -39,12 +38,8 @@ with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-if not VERSION:
-    with open(os.path.join(here, NAME, '__version__.py')) as f:
-        exec(f.read(), about)
-else:
-    about['__version__'] = VERSION
-
+with open(os.path.join(here, NAME, '__version__.py')) as f:
+    exec(f.read(), about)
 
 class UploadCommand(Command):
     """Support setup.py upload."""
@@ -104,7 +99,7 @@ setup(
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
