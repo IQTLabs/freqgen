@@ -45,6 +45,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinxcontrib.programoutput',
     'sphinx.ext.autosectionlabel',
+    'sphinxcontrib.mermaid'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
