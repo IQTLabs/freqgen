@@ -47,7 +47,7 @@ sequence's DNA to have:
 
 3. Generate the DNA sequence coding for the amino acid sequence:
 
-        $ freqgen -f reference_freqs.yaml -s new_sequence.faa -v -o optimized.fna
+        $ freqgen -t reference_freqs.yaml -s new_sequence.faa -v -o optimized.fna
 
 4. Visualize the results of the optimization (*optional*):
 
