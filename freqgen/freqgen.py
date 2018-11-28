@@ -219,7 +219,7 @@ def codon_frequencies(seq, mode="absolute", genetic_code=11):
         return relative
 
     else:
-        raise ValueError("Mode must be either absolute or relative".)
+        raise ValueError("Mode must be either absolute or relative.")
 
 def k_mers(seq, k):
     '''Yields all *k*-mers in the input sequence with repeats.
