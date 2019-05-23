@@ -28,7 +28,11 @@ for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
 
     # create a list of synonymous_codons for each codon, including the original codon
     # Ex: {'TTT': ['TTT', 'TTC']...
-    synonymous_codons[code_id] = {codon: codons_for_aa[code_id][genetic_codes[code_id][codon]] for codon in genetic_codes[code_id].keys()}
+    synonymous_codons[code_id] = {
+        codon: codons_for_aa[code_id][genetic_codes[code_id][codon]]
+        for codon in genetic_codes[code_id].keys()
+    }
+
 
 def amino_acid_seq(length, frequencies):
     """Generates an amino acid sequence given frequencies of each amino acid.
@@ -62,8 +66,9 @@ def amino_acid_seq(length, frequencies):
         sequence += np.random.choice(amino_acids, p=frequencies)
     return sequence
 
+
 def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
-    '''Generates a DNA representation of an amino acid sequence.
+    """Generates a DNA representation of an amino acid sequence.
 
     Args:
         aa_seq (str): The amino acids to convert to DNA.
@@ -79,7 +84,7 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
         >>> frequencies = codon_frequencies(seq)
         >>> amino_acids_to_codons("INQTEL", frequencies)
         'ATAAATCAAACCGAACTT'
-    '''
+    """
 
     codons_dict = codons_for_aa[genetic_code]
 
@@ -88,7 +93,11 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
     for aa in aa_seq:
         try:
             codons = codons_dict[aa]
-            sequence.append(np.random.choice(codons, p=[codon_frequencies[codon] for codon in codons]))
+            sequence.append(
+                np.random.choice(
+                    codons, p=[codon_frequencies[codon] for codon in codons]
+                )
+            )
         except KeyError:
             pass
 
@@ -97,8 +106,9 @@ def amino_acids_to_codons(aa_seq, codon_frequencies, genetic_code=11):
 
     return "".join(sequence)
 
+
 def codon_frequencies(seq, mode="absolute", genetic_code=11):
-    '''Calculates the frequency of each codon
+    """Calculates the frequency of each codon
 
     Absolute mode is such that the total of the dictionary's values is equal to one.
     Relative mode is such that the sum of each amino acid's codons' frequencies is equal to one.
@@ -182,21 +192,27 @@ def codon_frequencies(seq, mode="absolute", genetic_code=11):
          'TTC': 0.04838709677419355,
          'TTG': 0,
          'TTT': 0.03225806451612903}
-    '''
+    """
 
     if isinstance(seq, (list, tuple)):
         for _seq in seq:
-            if len(_seq) % 3 != 0: # check to ensure sequence contains only complete codons
+            if (
+                len(_seq) % 3 != 0
+            ):  # check to ensure sequence contains only complete codons
                 raise ValueError("Sequence length must be divisible by 3.")
         seq = "".join([str(seq) for seq in seq])
 
-    if len(seq) % 3 != 0: # check to ensure sequence contains only complete codons
+    if len(seq) % 3 != 0:  # check to ensure sequence contains only complete codons
         raise ValueError("Sequence length must be divisible by 3.")
     seq = str(seq).upper()
 
-    seq = [seq[i:i + 3] for i in range(0, len(seq), 3)] # slices the sequence into individual codons
+    seq = [
+        seq[i : i + 3] for i in range(0, len(seq), 3)
+    ]  # slices the sequence into individual codons
     codon_count = Counter(seq)
-    frequencies = {key: (float(value) / len(seq)) for (key, value) in codon_count.items()}
+    frequencies = {
+        key: (float(value) / len(seq)) for (key, value) in codon_count.items()
+    }
 
     # collections.Counter returns a dictionary with counts of all the codons
     # present. To ensure a 64-D vector, we make sure all codons are present in
@@ -213,16 +229,21 @@ def codon_frequencies(seq, mode="absolute", genetic_code=11):
         relative = {}
         for i in synonymous_codons[genetic_code].keys():
             try:
-                relative[i] = frequencies[i] / sum((frequencies[codon] for codon in synonymous_codons[genetic_code][i])) # divide the occurence of a codon by the total number of its synonyms
+                relative[i] = frequencies[i] / sum(
+                    (frequencies[codon] for codon in synonymous_codons[genetic_code][i])
+                )  # divide the occurence of a codon by the total number of its synonyms
             except ZeroDivisionError:
-                relative[i] = 1 / len(synonymous_codons[genetic_code][i]) # if an amino acid is never used in the reference set, then all its codons are used equally
+                relative[i] = 1 / len(
+                    synonymous_codons[genetic_code][i]
+                )  # if an amino acid is never used in the reference set, then all its codons are used equally
         return relative
 
     else:
         raise ValueError("Mode must be either absolute or relative.")
 
+
 def k_mers(seq, k):
-    '''Yields all *k*-mers in the input sequence with repeats.
+    """Yields all *k*-mers in the input sequence with repeats.
 
     Args:
         seq (str): The sequence for which to generate *k*-mers.
@@ -245,11 +266,13 @@ def k_mers(seq, k):
         ['GATT', 'ATTA', 'TTAC', 'TACA']
         >>> k_mers("GATTACA", 4)
         <generator object k_mers at 0x10831d258>
-    '''
+    """
 
     # error checking
     if k > len(seq):
-        raise ValueError("k (%i) may not be less then length of seq (%i)." % (k, len(seq)))
+        raise ValueError(
+            "k (%i) may not be less then length of seq (%i)." % (k, len(seq))
+        )
     elif not seq:
         raise ValueError("seq length may not be zero")
     elif k <= 0:
@@ -263,8 +286,11 @@ def k_mers(seq, k):
         result = result[1:] + (elem,)
         yield "".join(result)
 
-def k_mer_frequencies(seq, k, include_missing=True, vector=False, codons=False, genetic_code=11):
-    '''Calculates relative frequencies of each *k*-mer in the sequence.
+
+def k_mer_frequencies(
+    seq, k, include_missing=True, vector=False, codons=False, genetic_code=11
+):
+    """Calculates relative frequencies of each *k*-mer in the sequence.
 
     Args:
         seq (str or list): The sequence(s) to for which to generate *k*-mer frequencies.
@@ -322,13 +348,13 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False, codons=False, 
         >>> k_mer_frequencies("GATGATGGC", 2, include_missing=True, vector=True)
         array([0.   , 0.   , 0.   , 0.25 , 0.   , 0.   , 0.   , 0.   , 0.25 ,
                0.125, 0.125, 0.   , 0.   , 0.   , 0.25 , 0.   ])
-    '''
+    """
 
     if not include_missing and vector:
         raise ValueError("May not create vector without including missing kmers.")
-    elif not k: # for when k == 0 or []
+    elif not k:  # for when k == 0 or []
         raise ValueError("Must provide a value for k")
-    elif not seq: # for when seq == ""
+    elif not seq:  # for when seq == ""
         raise ValueError("Must provide seq(s)")
     elif codons and vector:
         raise ValueError("Cannot vectorize codons.")
@@ -359,14 +385,18 @@ def k_mer_frequencies(seq, k, include_missing=True, vector=False, codons=False, 
         # determine their frequencies
         count = Counter(_seqs)
         total_k_mer_count = sum(count.values())
-        frequencies = {k_mer: value / total_k_mer_count for k_mer, value in count.items()}
+        frequencies = {
+            k_mer: value / total_k_mer_count for k_mer, value in count.items()
+        }
 
         if include_missing:
             defaults = {"".join(x): 0 for x in product("ATGC", repeat=_k)}
             frequencies = {**defaults, **frequencies}
         if vector:
             frequencies = sorted(list(frequencies.items()), key=lambda x: x[0])
-            frequencies = np.fromiter((x[1] for x in frequencies), float, count=len(frequencies))
+            frequencies = np.fromiter(
+                (x[1] for x in frequencies), float, count=len(frequencies)
+            )
         output[_k] = frequencies
 
     if vector:

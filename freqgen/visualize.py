@@ -9,17 +9,19 @@ from bokeh.plotting import figure
 from bokeh.transform import dodge
 
 
-def visualize(k_mers,
-              target_freqs,
-              optimized_freqs,
-              original_freqs=None,
-              title="Freqgen Optimization Results",
-              plot_height=400,
-              plot_width=1200,
-              show=True,
-              filepath="freqgen.html",
-              codons=False):
-    '''Creates a visualization of the results of a Freqgen optimization.
+def visualize(
+    k_mers,
+    target_freqs,
+    optimized_freqs,
+    original_freqs=None,
+    title="Freqgen Optimization Results",
+    plot_height=400,
+    plot_width=1200,
+    show=True,
+    filepath="freqgen.html",
+    codons=False,
+):
+    """Creates a visualization of the results of a Freqgen optimization.
 
     Note:
         Currently, this function does not support the visualization of codon
@@ -42,7 +44,7 @@ def visualize(k_mers,
 
     Returns:
         bokeh.plotting.figure.Figure: A Bokeh figure containing the bar graph.
-    '''
+    """
 
     # validate that all the codons that should be there are there
     if codons and len([k_mer for k_mer in k_mers if k_mer.endswith("*")]) != 64:
@@ -55,11 +57,9 @@ def visualize(k_mers,
 
     output_file(filepath)
 
-    categories = ['Original', 'Target', 'Optimized']
+    categories = ["Original", "Target", "Optimized"]
 
-    data = {'k_mers': k_mers,
-            'Target': target_freqs,
-            'Optimized': optimized_freqs}
+    data = {"k_mers": k_mers, "Target": target_freqs, "Optimized": optimized_freqs}
 
     # adjust spacing depending on if there's three bars or two
     if not isinstance(original_freqs, type(None)):
@@ -75,21 +75,45 @@ def visualize(k_mers,
 
     source = ColumnDataSource(data=data)
 
-    p = figure(x_range=k_mers,
-               plot_height=plot_height,
-               plot_width=plot_width,
-               title=title,
-               y_range=(0, 1.2 * y_max))
+    p = figure(
+        x_range=k_mers,
+        plot_height=plot_height,
+        plot_width=plot_width,
+        title=title,
+        y_range=(0, 1.2 * y_max),
+    )
 
     if not isinstance(original_freqs, type(None)):
-        p.vbar(x=dodge('k_mers', -0.25, range=p.x_range), top='Original', width=0.2, source=source,
-               color=Set2_3[0], legend=value("Original"))
+        p.vbar(
+            x=dodge("k_mers", -0.25, range=p.x_range),
+            top="Original",
+            width=0.2,
+            source=source,
+            color=Set2_3[0],
+            legend=value("Original"),
+        )
 
-    p.vbar(x=dodge('k_mers',  0.0 if not isinstance(original_freqs, type(None)) else -offset,  range=p.x_range), top='Target', width=0.2, source=source,
-           color=Set2_3[1], legend=value("Target"))
+    p.vbar(
+        x=dodge(
+            "k_mers",
+            0.0 if not isinstance(original_freqs, type(None)) else -offset,
+            range=p.x_range,
+        ),
+        top="Target",
+        width=0.2,
+        source=source,
+        color=Set2_3[1],
+        legend=value("Target"),
+    )
 
-    p.vbar(x=dodge('k_mers',  offset, range=p.x_range), top='Optimized', width=0.2, source=source,
-           color=Set2_3[2], legend=value("Optimized"))
+    p.vbar(
+        x=dodge("k_mers", offset, range=p.x_range),
+        top="Optimized",
+        width=0.2,
+        source=source,
+        color=Set2_3[2],
+        legend=value("Optimized"),
+    )
 
     p.x_range.range_padding = 0.05
     p.xgrid.grid_line_color = None
@@ -103,12 +127,12 @@ def visualize(k_mers,
     elif codons:
         p.xaxis.axis_label = "k-mer (* denotes codon)"
     else:
-        p.xaxis.axis_label = 'k-mer'
+        p.xaxis.axis_label = "k-mer"
 
     if len(k_mers) >= 32:
         p.xaxis.major_label_orientation = math.pi / 2
 
-    p.yaxis.axis_label = 'frequency'
+    p.yaxis.axis_label = "frequency"
     if show:
         _show(p)
     else:
