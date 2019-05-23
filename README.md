@@ -1,8 +1,8 @@
-# Freqgen
-
 <p align ="center">
 <img src='https://raw.githubusercontent.com/Lab41/freqgen/master/logo/logo5x.png' height="150">
 </p>
+
+# Freqgen
 
 [![Build Status](https://travis-ci.org/Lab41/freqgen.svg?branch=master)](https://travis-ci.org/Lab41/freqgen) [![Documentation Status](https://readthedocs.org/projects/freqgen/badge/?version=latest)](https://freqgen.readthedocs.io/en/latest/?badge=latest) [![CodeFactor](https://www.codefactor.io/repository/github/lab41/freqgen/badge)](https://www.codefactor.io/repository/github/lab41/freqgen)
 
