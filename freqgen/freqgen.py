@@ -24,7 +24,7 @@ for code_id, genetic_code in Bio.Data.CodonTable.unambiguous_dna_by_id.items():
     _codons_for_aa = defaultdict(list)
     for key, value in table.items():
         _codons_for_aa[value].append(key)
-    codons_for_aa[code_id] = _codons_for_aa
+    codons_for_aa[code_id] = dict(_codons_for_aa)
 
     # create a list of synonymous_codons for each codon, including the original codon
     # Ex: {'TTT': ['TTT', 'TTC']...
