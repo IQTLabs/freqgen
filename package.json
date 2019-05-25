@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Benjamin-Lee/freqgen#readme",
   "dependencies": {
     "biojs-io-fasta": "^0.1.17",
+    "chalk": "^2.4.2",
     "chance": "^1.0.18",
     "commander": "^2.20.0",
     "genetic-js": "^0.1.14",
