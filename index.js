@@ -4,7 +4,7 @@ var _ = require('lodash')
 
 freqgen.kmers = function (seq, k, overlap = true) {
   if (k == null) {
-    throw 'k value is required'
+    throw new Error('k value is required')
   }
 
   let numKmers = overlap ? seq.length - k + 1 : Math.floor(seq.length / k)
@@ -21,7 +21,7 @@ freqgen.kmerCounts = function (kmers) {
 
   for (let i = 0; i < kmers.length; i++) {
     let kmer = kmers[i]
-    counts[kmer] = (counts[kmer] || 0) + 1
+    counts[kmer] = (counts[kmer] || 0) + 1 // counts[kmer] || 0 is 0 or the k-mer count, whichever is greater
   }
   return counts
 }
