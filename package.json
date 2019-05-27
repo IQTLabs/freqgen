@@ -21,16 +21,6 @@
     "url": "https://github.com/Benjamin-Lee/freqgen/issues"
   },
   "homepage": "https://github.com/Benjamin-Lee/freqgen#readme",
-  "dependencies": {
-    "biojs-io-fasta": "^0.1.17",
-    "chalk": "^2.4.2",
-    "chance": "^1.0.18",
-    "commander": "^2.20.0",
-    "genetic-js": "^0.1.14",
-    "js-yaml": "^3.13.1",
-    "lodash": "^4.17.11",
-    "ora": "^3.4.0"
-  },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
@@ -40,6 +30,10 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.5.0",
-    "mocha": "^6.1.4"
+    "lerna": "^3.14.1"
+  },
+  "dependencies": {
+    "freqgen-cli": "file:packages/freqgen-cli",
+    "freqgen-core": "file:packages/freqgen-core"
   }
 }

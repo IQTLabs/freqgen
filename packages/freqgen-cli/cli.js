@@ -1,6 +1,6 @@
 const fs = require('fs')
 const yaml = require('js-yaml')
-const freqgen = require('./index.js')
+const freqgen = require('freqgen')
 const ora = require('ora')
 const Fasta = require('biojs-io-fasta')
 const _ = require('lodash')

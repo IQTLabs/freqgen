@@ -1,0 +1,18 @@
+{
+  "name": "freqgen-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "biojs-io-fasta": "^0.1.17",
+    "commander": "^2.20.0",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.11",
+    "ora": "^3.4.0"
+  }
+}
