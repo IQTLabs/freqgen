@@ -1,5 +1,5 @@
 {
-  "name": "freqgen-cli",
+  "name": "@freqgen/cli",
   "version": "1.0.0",
   "description": "",
   "main": "cli.js",
