@@ -1,5 +1,5 @@
 {
-  "name": "freqgen-core",
+  "name": "@freqgen/core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

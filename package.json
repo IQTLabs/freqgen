@@ -2,27 +2,20 @@
   "name": "freqgen",
   "version": "1.0.0",
   "description": "<p align =\"center\"> <img src='https://raw.githubusercontent.com/Lab41/freqgen/master/logo/logo5x.png' height=\"150\"> </p>",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "tests"
-  },
   "scripts": {
-    "test": "mocha"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Benjamin-Lee/freqgen.git"
   },
-  "author": "",
+  "author": "Benjamin D. Lee <benjamindlee@me.com> (https://lab41.org)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/Benjamin-Lee/freqgen/issues"
   },
   "homepage": "https://github.com/Benjamin-Lee/freqgen#readme",
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
@@ -30,6 +23,7 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.5.0",
+    "jest": "^24.8.0",
     "lerna": "^3.14.1"
   },
   "dependencies": {
