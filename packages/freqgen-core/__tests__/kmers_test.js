@@ -2,7 +2,7 @@
 var kmers = require('..').kmers
 
 describe('k-mer calculation', function () {
-  context('with overlap', function () {
+  describe('with overlap', function () {
     test('k=1', function () {
       let result = kmers('GATTACA', 1)
       expect(result).toEqual(['G', 'A', 'T', 'T', 'A', 'C', 'A'])
@@ -24,30 +24,30 @@ describe('k-mer calculation', function () {
     })
   })
 
-  context('no overlap', function () {
+  describe('no overlap', function () {
     test('k=1', function () {
       let result = kmers('GATTACA', 1, overlap = false)
-      result.should.eql(['G', 'A', 'T', 'T', 'A', 'C', 'A'])
+      expect(result).toEqual(['G', 'A', 'T', 'T', 'A', 'C', 'A'])
     })
 
     test('k=2 with end cut off', function () {
       let result = kmers('GATTACA', 2, overlap = false)
-      result.should.eql(['GA', 'TT', 'AC'])
+      expect(result).toEqual(['GA', 'TT', 'AC'])
     })
 
     test('k=2', function () {
       let result = kmers('GATTACAT', 2, overlap = false)
-      result.should.eql(['GA', 'TT', 'AC', 'AT'])
+      expect(result).toEqual(['GA', 'TT', 'AC', 'AT'])
     })
 
     test('k=3 with end cut off', function () {
       let result = kmers('GATTACA', 3, overlap = false)
-      result.should.eql(['GAT', 'TAC'])
+      expect(result).toEqual(['GAT', 'TAC'])
     })
 
     test('k=4', function () {
       let result = kmers('GATTACAT', 4, overlap = false)
-      result.should.eql(['GATT', 'ACAT'])
+      expect(result).toEqual(['GATT', 'ACAT'])
     })
   })
 })
