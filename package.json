@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "<p align =\"center\"> <img src='https://raw.githubusercontent.com/Lab41/freqgen/master/logo/logo5x.png' height=\"150\"> </p>",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ./packages/*/*.js",
+    "pretest": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,7 @@
     "lerna": "^3.14.1"
   },
   "dependencies": {
-    "freqgen-cli": "file:packages/freqgen-cli",
-    "freqgen-core": "file:packages/freqgen-core"
+    "@freqgen/cli": "file:packages/freqgen-cli",
+    "@freqgen/core": "file:packages/freqgen-core"
   }
 }
