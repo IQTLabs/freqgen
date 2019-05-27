@@ -34,12 +34,12 @@ module.exports = function generate (
   // Check that all frequencies sum to 1
   if (
     _.max(
-      _.values(
-        _.mapValues(targetFreqs, k => _.sum(_.values(k)))
+      Object.values(
+        _.mapValues(targetFreqs, k => _.sum(Object.values(k)))
       )
     ) > 1
   ) {
-    let totalProbs = _.mapValues(targetFreqs, k => _.sum(_.values(k)))
+    let totalProbs = _.mapValues(targetFreqs, k => _.sum(Object.values(k)))
     let badValue = _.findKey(totalProbs, totalProb => totalProb > 1)
     let errMessage = isNaN(Number(badValue)) ? 'codon usage' : `k=${badValue}`
     throw new Error(`Target frequencies for ${errMessage} do not sum to 1.0.`)

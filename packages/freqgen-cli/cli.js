@@ -34,7 +34,7 @@ program
     for (let k of options.kMers) {
       spinner.text = `Counting ${k}-mers...`
       for (let seq of seqs) {
-        let counts = freqgen.kmerCounts(freqgen.kmers(seq, k))
+        let counts = freqgen.kmerCounts(freqgen.kmers(seq, k, true))
 
         // add the new counts to the existing k-mer counts
         totalKmerCounts[k] = _.mergeWith({}, totalKmerCounts[k],
@@ -48,7 +48,7 @@ program
     if (!(options.codons == null)) {
       spinner.text = `Counting codons...`
       for (let seq of seqs) {
-        let counts = freqgen.kmerCounts(freqgen.kmers(seq, 3, overlap = false))
+        let counts = freqgen.kmerCounts(freqgen.kmers(seq, 3, false))
 
         // add the new counts to the existing codon counts
         totalKmerCounts['codons'] = _.mergeWith({}, totalKmerCounts['codons'],

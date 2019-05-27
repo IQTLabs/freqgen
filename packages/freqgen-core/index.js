@@ -2,8 +2,8 @@ var freqgen = module.exports
 
 var _ = require('lodash')
 
-freqgen.kmers = function (seq, k, overlap = true) {
-  if (k == null) {
+freqgen.kmers = function (seq, k, overlap) {
+  if (!k) {
     throw new Error('k value is required')
   }
 
@@ -27,6 +27,6 @@ freqgen.kmerCounts = function (kmers) {
 }
 
 freqgen.kmerFrequencies = function (counts) {
-  let totalKmers = _.sum(_.values(counts))
+  let totalKmers = _.sum(Object.values(counts))
   return _.mapValues(counts, x => x / totalKmers)
 }
