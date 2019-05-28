@@ -1,6 +1,6 @@
-const Genetic = require('genetic-js')
-const yaml = require('js-yaml')
-const fs = require('fs')
+// const Genetic = require('genetic-js')
+// const yaml = require('js-yaml')
+// const fs = require('fs')
 const _ = require('lodash')
 
 // configure warnings a la parcel/packages/core/test-utils/src/utils.js#L15 @ 30624f7

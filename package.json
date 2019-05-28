@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "<p align =\"center\"> <img src='https://raw.githubusercontent.com/Lab41/freqgen/master/logo/logo5x.png' height=\"150\"> </p>",
   "scripts": {
-    "test": "jest",
+    "test": "npm run fix && npm run lint && jest",
     "lint": "eslint ./packages/*/*.js",
-    "pretest": "npm run lint"
+    "fix": "standard --fix packages/*/*.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.5.0",
     "jest": "^24.8.0",
-    "lerna": "^3.14.1"
+    "lerna": "^3.14.1",
+    "standard": "^12.0.1"
   },
   "dependencies": {
     "@freqgen/cli": "file:packages/freqgen-cli",
