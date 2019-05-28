@@ -2,14 +2,10 @@ var freqgen = module.exports
 
 var _ = require('lodash')
 
-freqgen.kmers = function (seq, k, overlap) {
+freqgen.kmers = function (seq, k, { overlap = true } = {}) {
   if (k === undefined || k < 1) {
     throw new Error('k value >= 0 is required')
   }
-
-  if (overlap === undefined) {
-    overlap = true
-  } // default to using normal overlapping k-mers
 
   let numKmers = overlap ? seq.length - k + 1 : Math.floor(seq.length / k)
   let result = new Array(numKmers)
