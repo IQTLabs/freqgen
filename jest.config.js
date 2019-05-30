@@ -3,8 +3,6 @@ module.exports = {
     {
       displayName: 'test',
       roots: ['packages/'],
-      collectCoverage: true,
-      collectCoverageFrom: ['packages/**/*.js', '!**/node_modules/**'],
     },
     {
       displayName: 'lint',
@@ -12,4 +10,6 @@ module.exports = {
       roots: ['packages/'],
     },
   ],
+  collectCoverage: true,
+  collectCoverageFrom: ['packages/**/*.js', '!**/node_modules/**'],
 }
