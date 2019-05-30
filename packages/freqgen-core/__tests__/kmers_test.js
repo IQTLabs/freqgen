@@ -1,4 +1,3 @@
-
 var kmers = require('..').kmers
 
 describe('k-mer array generation', () => {
@@ -38,27 +37,27 @@ describe('k-mer array generation', () => {
 
   describe('no overlap', () => {
     test('k=1', () => {
-      let result = kmers('GATTACA', 1, {overlap: false})
+      let result = kmers('GATTACA', 1, { overlap: false })
       expect(result).toEqual(['G', 'A', 'T', 'T', 'A', 'C', 'A'])
     })
 
     test('k=2 with end cut off', () => {
-      let result = kmers('GATTACA', 2, {overlap: false})
+      let result = kmers('GATTACA', 2, { overlap: false })
       expect(result).toEqual(['GA', 'TT', 'AC'])
     })
 
     test('k=2', () => {
-      let result = kmers('GATTACAT', 2, {overlap: false})
+      let result = kmers('GATTACAT', 2, { overlap: false })
       expect(result).toEqual(['GA', 'TT', 'AC', 'AT'])
     })
 
     test('k=3 with end cut off', () => {
-      let result = kmers('GATTACA', 3, {overlap: false})
+      let result = kmers('GATTACA', 3, { overlap: false })
       expect(result).toEqual(['GAT', 'TAC'])
     })
 
     test('k=4', () => {
-      let result = kmers('GATTACAT', 4, {overlap: false})
+      let result = kmers('GATTACAT', 4, { overlap: false })
       expect(result).toEqual(['GATT', 'ACAT'])
     })
   })

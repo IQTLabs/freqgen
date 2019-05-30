@@ -12,31 +12,33 @@ console.warn = (...args) => {
 
 const DNA_BASES = new Set(['A', 'T', 'G', 'C'])
 
-module.exports = function generate (
+module.exports = function generate(
   targetFreqs,
   targetAminoAcidSeq,
-  populationSize = 100,
-  mutationProb = 0.3,
-  crossoverProb = 0.8,
-  maxGensSinceImprovement = 50,
-  improvementRelThreshold = 0.0,
-  geneticCode = 11,
-  verbose = false,
-  fitnessFunction = null
+  {
+    populationSize = 100,
+    mutationProb = 0.3,
+    crossoverProb = 0.8,
+    maxGensSinceImprovement = 50,
+    improvementRelThreshold = 0.0,
+    geneticCode = 11,
+    verbose = false,
+    fitnessFunction = null,
+  } = {}
 ) {
   // Do some quick sequence validation
-  if (targetAminoAcidSeq.split('')
-    .every(aminoAcid => DNA_BASES.has(aminoAcid))
+  if (
+    targetAminoAcidSeq.split('').every(aminoAcid => DNA_BASES.has(aminoAcid))
   ) {
-    console.warn('This appears to be a DNA sequence, not an amino acid sequence. Ensure that you are passing an amino acid sequence.')
+    console.warn(
+      'This appears to be a DNA sequence, not an amino acid sequence. Ensure that you are passing an amino acid sequence.'
+    )
   }
 
   // Check that all frequencies sum to 1
   if (
     _.max(
-      Object.values(
-        _.mapValues(targetFreqs, k => _.sum(Object.values(k)))
-      )
+      Object.values(_.mapValues(targetFreqs, k => _.sum(Object.values(k))))
     ) > 1
   ) {
     let totalProbs = _.mapValues(targetFreqs, k => _.sum(Object.values(k)))
