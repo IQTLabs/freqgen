@@ -5,6 +5,10 @@
 # Freqgen
 
 [![Build Status](https://travis-ci.org/Lab41/freqgen.svg?branch=master)](https://travis-ci.org/Lab41/freqgen) [![Documentation Status](https://readthedocs.org/projects/freqgen/badge/?version=latest)](https://freqgen.readthedocs.io/en/latest/?badge=latest) [![CodeFactor](https://www.codefactor.io/repository/github/lab41/freqgen/badge)](https://www.codefactor.io/repository/github/lab41/freqgen)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 
 
 Freqgen is a tool to generate coding DNA sequences with specified amino acid
