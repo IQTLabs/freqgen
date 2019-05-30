@@ -39,7 +39,7 @@ freqgen.kmerCounts = function (kmers) {
   return counts
 }
 
-freqgen.kmerFrequencies = function (counts, { validation = true, verbose = false } = {}) {
+freqgen.kmerFrequencies = function (counts, { validation = true } = {}) {
   /* Optionally check that all of the k-mers in counts Object are of the same
      length. Because this adds overhead, we can skip it if we generate the
      counts Object from freqgen.kmerCounts since it already did the checking. */
@@ -54,8 +54,6 @@ freqgen.kmerFrequencies = function (counts, { validation = true, verbose = false
     }
 
     validateKmerMap(counts)
-  } else if (verbose) {
-    console.warn("Skipping validation... I hope you know what you're doing!")
   }
 
   // sum up all of the values in the Map
