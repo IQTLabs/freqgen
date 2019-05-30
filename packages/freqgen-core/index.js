@@ -29,7 +29,7 @@ freqgen.kmerCounts = function (kmers) {
 
   for (let i = 0; i < kmers.length; i++) {
     let kmer = kmers[i]
-    if (kmer.length != k) {
+    if (kmer.length !== k) {
       throw new Error(`Not all k-mers are of length ${k}. At index ${i}, got ${kmer}, which is of length ${kmer.length}.`)
     }
     counts[kmer] = (counts[kmer] || 0) + 1 // counts[kmer] || 0 is 0 or the k-mer count, whichever is greater
@@ -37,17 +37,17 @@ freqgen.kmerCounts = function (kmers) {
   return counts
 }
 
-freqgen.kmerFrequencies = function (counts, {validation = true, verbose = false} = {}) {
+freqgen.kmerFrequencies = function (counts, { validation = true, verbose = false } = {}) {
   /* Optionally check that all of the k-mers in counts Object are of the same
      length. Because this adds overhead, we can skip it if we generate the
      counts Object from freqgen.kmerCounts since it already did the checking. */
   if (validation) {
     let kmers = Object.keys(counts)
     let kValues = kmers.map(key => key.length)
-    k = kValues[0]
+    let k = kValues[0]
     for (let i = 0; i < kValues.length; i++) {
       let kmer = kmers[i]
-      if (kmer.length != k) {
+      if (kmer.length !== k) {
         throw new Error(`Not all k-mers are of length ${k}. Got ${kmer}, which is of length ${kmer.length}.`)
       }
     }
@@ -58,3 +58,6 @@ freqgen.kmerFrequencies = function (counts, {validation = true, verbose = false}
   let totalKmers = _.sum(Object.values(counts))
   return _.mapValues(counts, x => x / totalKmers)
 }
+
+// a helper function that utilizes the performance boost of skipping validation in kmerFrequencies
+freqgen.kmerFrequenciesFromSeq = (seq, k) => freqgen.kmerFrequencies(freqgen.kmerCounts(freqgen.kmers(seq, k)), { validation: false })
