@@ -4,7 +4,7 @@
   "description": "<p align =\"center\"> <img src='https://raw.githubusercontent.com/Lab41/freqgen/master/logo/logo5x.png' height=\"150\"> </p>",
   "scripts": {
     "test": "npm run fix && npm run lint && jest",
-    "lint": "eslint ./packages/**/*.js",
+    "lint": "eslint ./packages/**/*.js packages/*/__tests__/*.js",
     "fix": "prettier packages/**/*.js packages/*/__tests__/*.js --write",
     "watch": "jest --watch"
   },
@@ -20,10 +20,12 @@
   "homepage": "https://github.com/Benjamin-Lee/freqgen#readme",
   "devDependencies": {
     "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.5.0",

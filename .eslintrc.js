@@ -5,7 +5,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: 'eslint:recommended',
+  extends: 'prettier',
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -14,10 +14,8 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    indent: ['error', 2],
-    'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'never'],
     'no-console': 'off',
+    'prettier/prettier': 'error',
   },
+  plugins: ['prettier'],
 }
