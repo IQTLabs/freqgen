@@ -1,7 +1,6 @@
 // const Genetic = require('genetic-js')
 // const yaml = require('js-yaml')
 // const fs = require('fs')
-const _ = require('lodash')
 
 // configure warnings a la parcel/packages/core/test-utils/src/utils.js#L15 @ 30624f7
 const chalk = require('chalk')
@@ -9,6 +8,8 @@ const warning = chalk.keyword('orange')
 console.warn = (...args) => {
   console.error(warning(...args))
 }
+
+const utilities = require('./utilities')
 
 const DNA_BASES = new Set(['A', 'T', 'G', 'C'])
 
@@ -35,17 +36,12 @@ module.exports = function generate(
     )
   }
 
-  // Check that all frequencies sum to 1
-  if (
-    _.max(
-      Object.values(_.mapValues(targetFreqs, k => _.sum(Object.values(k))))
-    ) > 1
-  ) {
-    let totalProbs = _.mapValues(targetFreqs, k => _.sum(Object.values(k)))
-    let badValue = _.findKey(totalProbs, totalProb => totalProb > 1)
-    let errMessage = isNaN(Number(badValue)) ? 'codon usage' : `k=${badValue}`
-    throw new Error(`Target frequencies for ${errMessage} do not sum to 1.0.`)
+  // although we want a Map, don't break if given an Object
+  if (!(targetFreqs instanceof Map)) {
+    targetFreqs = new Map(Object.entries(targetFreqs))
   }
+
+  utilities.validateKmerFrequencyMap(targetFreqs)
 }
 
 // codons_for_aa = yaml.load(fs.readFileSync('data/codons_for_aa.yaml', 'utf8'))

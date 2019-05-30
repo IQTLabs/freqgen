@@ -1,14 +1,7 @@
 var freqgen = module.exports
 freqgen.generate = require('./generate')
 
-// configure warnings a la parcel/packages/core/test-utils/src/utils.js#L15 @ 30624f7
-const chalk = require('chalk')
-const warning = chalk.keyword('orange')
-console.warn = (...args) => {
-  console.error(warning(...args))
-}
-
-const validateKmerMap = require('./validateKmerMap')
+const utilities = require('./utilities')
 
 freqgen.kmers = function(seq, k, { overlap = true } = {}) {
   if (k === undefined || k < 1) {
@@ -57,14 +50,10 @@ freqgen.kmerFrequencies = function(counts, { validation = true } = {}) {
       return new Map()
     }
 
-    validateKmerMap(counts)
+    utilities.validateKmerCountMap(counts)
   }
 
-  // sum up all of the values in the Map
-  let totalKmers = 0
-  for (let kmerCount of counts.values()) {
-    totalKmers += kmerCount
-  }
+  let totalKmers = utilities.sumMapValues(counts)
 
   counts.forEach((v, k, m) => m.set(k, v / totalKmers))
 
