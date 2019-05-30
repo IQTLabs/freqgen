@@ -1,7 +1,4 @@
 const kmerFrequenciesFromSeq = require('..').kmerFrequenciesFromSeq
-const kmers = require('..').kmers
-const kmerCounts = require('..').kmerCounts
-const kmerFrequencies = require('..').kmerFrequencies
 
 describe('Test kmerFrequenciesFromSeq shortcut', () => {
   test('Basic test', () => {
