@@ -1,8 +1,36 @@
 const distance = require('../distance')
 
-// describe('Euclidean distance', () => {
-//
-// })
+describe('Euclidean distance', () => {
+  test('Base case with empty maps', () => {
+    expect(distance.euclidean(new Map(), new Map())).toEqual(0)
+  })
+
+  test('Fully defined maps', () => {
+    map1 = new Map()
+      .set(0, 1)
+      .set(1, 2)
+      .set(2, 0)
+      .set(3, 5)
+    map2 = new Map()
+      .set(0, 3)
+      .set(1, 0)
+      .set(2, 4)
+      .set(3, 6)
+    expect(distance.euclidean(map1, map2)).toBeCloseTo(5)
+  })
+
+  test('Sparsely defined maps', () => {
+    map1 = new Map()
+      .set(0, 1)
+      .set(1, 2)
+      .set(3, 5)
+    map2 = new Map()
+      .set(0, 3)
+      .set(2, 4)
+      .set(3, 6)
+    expect(distance.euclidean(map1, map2)).toBeCloseTo(5)
+  })
+})
 
 describe('Cosine similarity', () => {
   test('Base case with empty maps', () => {
