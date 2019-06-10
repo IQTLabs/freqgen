@@ -2,7 +2,7 @@ const operators = require('../operators')
 
 describe('Seed testing', () => {
   test('Ensure that the seed of one-codon AAs matches', () => {
-    expect(new operators('FK', null, 1, { populationSize: 2 }).seed()).toEqual([
+    expect(new operators('FK', new Map(), 1, 2).seed()).toEqual([
       'TTTAAA',
       'TTTAAA',
     ])
@@ -11,17 +11,15 @@ describe('Seed testing', () => {
 
 describe('Crossover testing', () => {
   test('One codon seqs should just get swapped', () => {
-    expect(new operators().crossover('ATG', 'GTA')).toIncludeSameMembers([
-      'GTA',
-      'ATG',
-    ])
+    expect(
+      new operators(null, new Map()).crossover('ATG', 'GTA')
+    ).toIncludeSameMembers(['GTA', 'ATG'])
   })
 
   test('Two codon seqs should have second codons swapped', () => {
-    expect(new operators().crossover('AAAAAA', 'TTTTTT')).toIncludeSameMembers([
-      'AAATTT',
-      'TTTAAA',
-    ])
+    expect(
+      new operators(null, new Map()).crossover('AAAAAA', 'TTTTTT')
+    ).toIncludeSameMembers(['AAATTT', 'TTTAAA'])
   })
 
   test('Three codon seqs should be in list of possibilities', () => {
@@ -30,16 +28,18 @@ describe('Crossover testing', () => {
       'AAATTTTTT',
       'TTTTTTAAA',
       'TTTAAAAAA',
-    ]).toIncludeAllMembers(new operators().crossover('AAAAAAAAA', 'TTTTTTTTT'))
+    ]).toIncludeAllMembers(
+      new operators(null, new Map()).crossover('AAAAAAAAA', 'TTTTTTTTT')
+    )
   })
 })
 
 describe('Mutation testing', () => {
   test("Fail gracefully when sequence can't be mutated since there are no synonyms", () => {
-    expect(new operators(null, null, 1).mutate('ATG')).toEqual('ATG')
+    expect(new operators(null, new Map(), 1).mutate('ATG')).toEqual('ATG')
   })
 
   test('If a seq has one codon with one synonym, mutate should return that synonym', () => {
-    expect(new operators(null, null, 1).mutate('TGT')).toEqual('TGC')
+    expect(new operators(null, new Map(), 1).mutate('TGT')).toEqual('TGC')
   })
 })

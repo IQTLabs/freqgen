@@ -24,17 +24,16 @@ const codonsWithoutSynonyms = yaml.load(
 )
 
 class Operators {
-  constructor(
-    targetAminoAcidSeq,
-    targetFreqs,
-    geneticCode,
-    { populationSize = 100 } = {}
-  ) {
+  constructor(targetAminoAcidSeq, targetFreqs, geneticCode, populationSize) {
     this.targetAminoAcidSeq = targetAminoAcidSeq
     this.targetFreqs = targetFreqs
+    this.populationSize = populationSize
+
+    // store some useful mappings
     this.codonsForAminoAcid = codonsForAminoAcid[geneticCode]
     this.codonsWithoutSynonyms = codonsWithoutSynonyms[geneticCode]
     this.synonmyousCodons = synonmyousCodons[geneticCode]
+    this.k = Array.from(targetFreqs.keys())
 
     this.seed = () => {
       let dnaSeq = ''
@@ -43,7 +42,7 @@ class Operators {
         dnaSeq += this.codonsForAminoAcid[letter][0]
       }
 
-      return Array.from({ length: populationSize }, () => dnaSeq)
+      return Array.from({ length: this.populationSize }, () => dnaSeq)
 
       // return
     }
