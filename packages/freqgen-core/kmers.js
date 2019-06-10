@@ -39,10 +39,6 @@ module.exports.kmerFrequencies = function(counts, { validation = true } = {}) {
      counts Object from module.exports.kmerCounts since it already did the checking. */
 
   if (validation) {
-    if (!(counts instanceof Map)) {
-      counts = new Map(Object.entries(counts))
-    }
-
     if (counts.size === 0) {
       return new Map()
     }
