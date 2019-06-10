@@ -2,7 +2,10 @@ const operators = require('../operators')
 
 describe('Seed testing', () => {
   test('Ensure that the seed of one-codon AAs matches', () => {
-    expect(new operators('FK', null, 1).seed()).toEqual('TTTAAA')
+    expect(new operators('FK', null, 1, { populationSize: 2 }).seed()).toEqual([
+      'TTTAAA',
+      'TTTAAA',
+    ])
   })
 })
 
