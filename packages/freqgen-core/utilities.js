@@ -35,12 +35,8 @@ utilities.sumMapValues = function(map) {
   return sum
 }
 
-utilities.mapDotProduct = function(map1, map2) {
-  let product = 0
-  // first pass through map1
-  for (let entry of map1.entries()) {
-    product += entry[1] * (map2.get(entry[0]) == null ? 0 : map2.get(entry[0]))
-  }
-
-  return product
+utilities.getRandomInt = (min, max) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min)) + min //The maximum is exclusive and the minimum is inclusive
 }

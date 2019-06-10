@@ -1,7 +1,4 @@
-var distance = module.exports
-
-const utilities = require('./utilities')
-distance.euclidean = function(map1, map2) {
+module.exports.euclidean = function(map1, map2) {
   let seenKeys = new Set()
 
   let sum = 0
@@ -27,9 +24,13 @@ distance.euclidean = function(map1, map2) {
   return Math.sqrt(sum)
 }
 
-distance.cosine = function(map1, map2) {
-  return (
-    utilities.mapDotProduct(map1, map2) /
-    (distance.euclidean(map1) * distance.euclidean(map2))
-  )
+module.exports.cosine = function(map1, map2) {
+  let dotProduct = 0
+  // first pass through map1
+  for (let entry of map1.entries()) {
+    dotProduct +=
+      entry[1] * (map2.get(entry[0]) == null ? 0 : map2.get(entry[0]))
+  }
+
+  return dotProduct / (this.euclidean(map1) * this.euclidean(map2))
 }

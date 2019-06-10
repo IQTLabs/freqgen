@@ -10,7 +10,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^2.4.2",
-    "genetic-js": "^0.1.14",
     "js-yaml": "^3.13.1"
   }
 }

@@ -3,6 +3,7 @@ module.exports = {
     {
       displayName: 'test',
       roots: ['packages/'],
+      setupFilesAfterEnv: ['jest-extended'],
     },
     {
       displayName: 'lint',

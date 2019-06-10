@@ -1,5 +1,4 @@
 const utilities = require('./utilities')
-const kmers = module.exports
 
 module.exports.kmers = function(seq, k, { overlap = true } = {}) {
   if (k === undefined || k < 1) {
