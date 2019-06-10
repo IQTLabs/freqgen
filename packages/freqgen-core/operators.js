@@ -3,7 +3,7 @@ const fs = require('fs')
 const kmers = require('./kmers')
 const distance = require('./distance')
 const path = require('path')
-const utilities = require('./utilities')
+const random = require('lodash.random')
 
 const codonsForAminoAcid = yaml.load(
   fs.readFileSync(path.resolve(__dirname, './data/codons_for_aa.yaml'), 'utf8')
@@ -51,7 +51,7 @@ class Operators {
   }
 
   crossover(parent_1, parent_2) {
-    let idx = utilities.getRandomInt(1, parent_1.length / 3) * 3
+    let idx = random(1, parent_1.length / 3 - 1) * 3
 
     let child_1 = parent_1.slice(0, idx) + parent_2.slice(idx)
     let child_2 = parent_2.slice(0, idx) + parent_1.slice(idx)
