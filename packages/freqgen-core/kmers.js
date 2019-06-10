@@ -54,10 +54,18 @@ module.exports.kmerFrequencies = function(counts, { validation = true } = {}) {
 }
 
 // a helper function that utilizes the performance boost of skipping validation in kmerFrequencies
-module.exports.kmerFrequenciesFromSeq = (seq, k) =>
-  module.exports.kmerFrequencies(
-    module.exports.kmerCounts(module.exports.kmers(seq, k)),
-    {
-      validation: false,
-    }
-  )
+module.exports.kmerFrequenciesFromSeq = function(seq, k) {
+  let result = new Map()
+  for (let _k of k) {
+    result.set(
+      _k,
+      module.exports.kmerFrequencies(
+        module.exports.kmerCounts(module.exports.kmers(seq, _k)),
+        {
+          validation: false,
+        }
+      )
+    )
+  }
+  return result
+}
