@@ -64,4 +64,18 @@ describe('Cosine similarity', () => {
       )
     ).toBeCloseTo(42 ** 0.5 / 14)
   })
+
+  test('Make sure that sparsely defined maps are equivalent to calling with a complete map', () => {
+    expect(
+      distance.cosine(
+        new Map([[0, 0.25], [1, 0.5], [2, 0]]),
+        new Map([[0, 0.25], [1, 0.5], [2, 0.2]])
+      )
+    ).toBeCloseTo(
+      distance.cosine(
+        new Map([[0, 0.25], [1, 0.5]]),
+        new Map([[0, 0.25], [1, 0.5], [2, 0.2]])
+      )
+    )
+  })
 })

@@ -29,6 +29,10 @@ class Operators {
     this.targetFreqs = targetFreqs
     this.populationSize = populationSize
 
+    this.targetFreqsFlat = new Map(
+      [...targetFreqs.values()].map(x => Array.from(x.entries())).flat()
+    )
+
     // store some useful mappings
     this.codonsForAminoAcid = codonsForAminoAcid[geneticCode]
     this.codonsWithoutSynonyms = codonsWithoutSynonyms[geneticCode]
@@ -43,16 +47,17 @@ class Operators {
       }
 
       return Array.from({ length: this.populationSize }, () => dnaSeq)
-
-      // return
     }
 
-    // NOTE: this only works for 1-mers right now
     this.fitness = seq => {
-      return distance.cosine(
-        new Map([[1, kmers.kmerFrequenciesFromSeq(seq, 1)]]).get(1),
-        this.targetFreqs.get(1)
+      // first, convert it to a flat map (e.g. {A => 0.5, T => 0.5, AT => 1.0})
+      let freqs = kmers.kmerFrequenciesFromSeq(seq, this.k)
+      freqs = new Map(
+        [...freqs.values()].map(x => Array.from(x.entries())).flat()
       )
+
+      // then compare with flat map we precalculated
+      return distance.cosine(freqs, this.targetFreqsFlat)
     }
 
     this.crossover = (parent_1, parent_2) => {
