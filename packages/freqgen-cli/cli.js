@@ -1,9 +1,8 @@
 const fs = require('fs')
-const yaml = require('js-yaml')
+const yaml = require('./yaml')
 const freqgen = require('@freqgen/core')
 const ora = require('ora')
 const Fasta = require('biojs-io-fasta')
-const _ = require('lodash')
 
 var program = require('commander')
 
@@ -35,26 +34,26 @@ program
     }
 
     // parse the FASTA files into a flat list. Ex: ["ATGC...", "GTCAA...", ...]
-    let seqs = files.map(file =>
-      Fasta.parse(fs.readFileSync(file, 'utf8')).map(obj => obj.seq)
-    )
-    seqs = _.flatten(seqs)
+    let seqs = files
+      .map(file =>
+        Fasta.parse(fs.readFileSync(file, 'utf8')).map(obj => obj.seq)
+      )
+      .flat()
 
-    let totalKmerCounts = {} // will map k values to objs with k-mers and counts. Ex: {1: {"A": n, "T": n}...}
+    let totalKmerCounts = new Map() // will map k values to maps with k-mers and counts. Ex: {1: {"A": n, "T": n}...}
     for (let k of options.kMers) {
       spinner.text = `Counting ${k}-mers...`
       for (let seq of seqs) {
         let counts = freqgen.kmerCounts(freqgen.kmers(seq, k, true))
 
-        // add the new counts to the existing k-mer counts
-        totalKmerCounts[k] = _.mergeWith(
-          {},
-          totalKmerCounts[k],
-          counts,
-          function(objValue, srcValue) {
-            return _.isNumber(objValue) ? objValue + srcValue : srcValue
-          }
-        )
+        if (totalKmerCounts.get(k)) {
+          totalKmerCounts.set(
+            k,
+            freqgen.utilities.addMaps(totalKmerCounts.get(k), counts)
+          )
+        } else {
+          totalKmerCounts.set(k, counts)
+        }
       }
     }
 
@@ -64,21 +63,22 @@ program
       for (let seq of seqs) {
         let counts = freqgen.kmerCounts(freqgen.kmers(seq, 3, false))
 
-        // add the new counts to the existing codon counts
-        totalKmerCounts['codons'] = _.mergeWith(
-          {},
-          totalKmerCounts['codons'],
-          counts,
-          function(objValue, srcValue) {
-            return _.isNumber(objValue) ? objValue + srcValue : srcValue
-          }
-        )
+        if (totalKmerCounts.get('codons')) {
+          totalKmerCounts.set(
+            'codons',
+            freqgen.utilities.addMaps(totalKmerCounts.get('codons'), counts)
+          )
+        } else {
+          totalKmerCounts.set('codons', counts)
+        }
       }
     }
 
-    let kmerFrequencies = _.mapValues(totalKmerCounts, kmerCounts =>
-      freqgen.kmerFrequencies(kmerCounts)
-    )
+    let kmerFrequencies = new Map()
+
+    for (let entry of totalKmerCounts.entries()) {
+      kmerFrequencies.set(entry[0], freqgen.kmerFrequencies(entry[1]))
+    }
 
     spinner.succeed(
       `Done featurizing ${files.length} file${files.length > 1 ? 's' : ''}! ${
@@ -90,18 +90,10 @@ program
 
     // either write to a file or print it out
     if (options.output == null) {
-      console.log(yaml.safeDump(kmerFrequencies))
+      console.log(yaml(kmerFrequencies))
     } else {
-      fs.writeFileSync(options.output, yaml.safeDump(kmerFrequencies))
+      fs.writeFileSync(options.output, yaml(kmerFrequencies))
     }
   })
 
 program.parse(process.argv)
-
-// if (program.kMers !== undefined) console.log(program.kMers)
-//
-// if (program.codons) {
-//   console.log('featurizing codons!')
-// }
-
-// console.log(yaml.safeDump(f reqgen.kmers()))
