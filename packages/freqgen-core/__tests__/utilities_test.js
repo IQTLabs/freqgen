@@ -28,14 +28,3 @@ test("A negative test case where k-mers don't have matching lengths", () => {
   freqMap.set(2, new Map([['AT', 0.5], ['TA', 0.5]]))
   expect(() => utilities.validateKmerFrequencyMap(freqMap)).toThrow()
 })
-
-describe('addMaps testing', () => {
-  test('Basic test', () => {
-    expect(
-      utilities.addMaps(
-        new Map([['A', 2], ['T', 4]]),
-        new Map([['A', 1], ['C', 1]])
-      )
-    ).toEqual(new Map([['A', 3], ['C', 1], ['T', 4]]))
-  })
-})

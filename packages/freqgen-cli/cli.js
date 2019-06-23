@@ -3,7 +3,7 @@ const yaml = require('./yaml')
 const freqgen = require('@freqgen/core')
 const ora = require('ora')
 const Fasta = require('biojs-io-fasta')
-
+const addMaps = require('./addMaps')
 var program = require('commander')
 
 function commaSeparatedIntList(value) {
@@ -47,10 +47,7 @@ program
         let counts = freqgen.kmerCounts(freqgen.kmers(seq, k, true))
 
         if (totalKmerCounts.get(k)) {
-          totalKmerCounts.set(
-            k,
-            freqgen.utilities.addMaps(totalKmerCounts.get(k), counts)
-          )
+          totalKmerCounts.set(k, addMaps(totalKmerCounts.get(k), counts))
         } else {
           totalKmerCounts.set(k, counts)
         }
@@ -66,7 +63,7 @@ program
         if (totalKmerCounts.get('codons')) {
           totalKmerCounts.set(
             'codons',
-            freqgen.utilities.addMaps(totalKmerCounts.get('codons'), counts)
+            addMaps(totalKmerCounts.get('codons'), counts)
           )
         } else {
           totalKmerCounts.set('codons', counts)
