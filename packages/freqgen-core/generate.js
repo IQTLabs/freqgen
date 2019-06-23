@@ -26,6 +26,7 @@ module.exports = function generate(
     mutationProb = 0.3,
     crossoverProb = 0.8,
     maxGensSinceImprovement = 50,
+    maxGensTotal = 10000,
     improvementRelThreshold = 0.0,
     geneticCode = 11,
     verbose = false,
@@ -58,7 +59,7 @@ module.exports = function generate(
     populationSize
   )
 
-  const algo = new GenAlgo.GenAlgo({ iterationNumber: 1000000 })
+  const algo = new GenAlgo.GenAlgo({ iterationNumber: maxGensTotal })
 
   algo.setCrossoverFunction(target.crossover)
   algo.setFitnessEvaluator(target.fitness)
