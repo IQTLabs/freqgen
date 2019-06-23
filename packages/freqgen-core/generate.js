@@ -1,6 +1,13 @@
-// const Genetic = require('genetic-js')
-// const yaml = require('js-yaml')
-// const fs = require('fs')
+const yaml = require('js-yaml')
+const fs = require('fs')
+const path = require('path')
+const GenAlgo = require('GenAlgo')
+
+// local packages
+const kmers = require('./kmers')
+const Operators = require('./operators')
+const distance = require('./distance')
+const utilities = require('./utilities')
 
 // configure warnings a la parcel/packages/core/test-utils/src/utils.js#L15 @ 30624f7
 const chalk = require('chalk')
@@ -9,13 +16,11 @@ console.warn = (...args) => {
   console.error(warning(...args))
 }
 
-const utilities = require('./utilities')
-
 const DNA_BASES = new Set(['A', 'T', 'G', 'C'])
 
 module.exports = function generate(
-  targetFreqs,
   targetAminoAcidSeq,
+  targetFreqs,
   {
     populationSize = 100,
     mutationProb = 0.3,
@@ -36,116 +41,64 @@ module.exports = function generate(
     )
   }
 
-  // although we want a Map, don't break if given an Object
-  if (!(targetFreqs instanceof Map)) {
-    targetFreqs = new Map(Object.entries(targetFreqs))
+  for (let k of targetFreqs.keys()) {
+    if (!(typeof k == 'number' || k == 'codons')) {
+      throw new Error(
+        'targetFreqs must be a map from k values to frequency maps.'
+      )
+    }
   }
 
   utilities.validateKmerFrequencyMap(targetFreqs)
+
+  let target = new Operators(
+    targetAminoAcidSeq,
+    targetFreqs,
+    geneticCode,
+    populationSize
+  )
+
+  const algo = new GenAlgo.GenAlgo({ iterationNumber: 1000000 })
+
+  algo.setCrossoverFunction(target.crossover)
+  algo.setFitnessEvaluator(target.fitness)
+  algo.setMutationFunction(target.mutate)
+  algo.setSeed(target.seed())
+
+  // Will be called at each iteration
+  const iterationCallback = ({
+    bestIndividual,
+    elapsedTime,
+    iterationNumber,
+  }) => {
+    // if (iterationNumber % 10 == 0) {
+    //   console.log('Iteration ' + iterationNumber)
+    //   console.log('Best fitness : ' + bestIndividual.fitness)
+    //   console.log('Elapsed time : ' + elapsedTime)
+    //   console.log('Gens since improvement : ' + algo.gensSinceImprovement)
+    // }
+
+    if (bestIndividual.fitness > algo.bestFitness) {
+      algo.bestFitness = bestIndividual.fitness
+      algo.gensSinceImprovement = 0
+    } else {
+      algo.gensSinceImprovement += 1
+    }
+    if (algo.gensSinceImprovement > maxGensSinceImprovement) {
+      return false
+    }
+    return true
+  }
+  algo.setIterationCallback(iterationCallback)
+
+  algo.gensSinceImprovement = 0
+  algo.bestFitness = 0
+
+  algo
+    .start()
+    .then(res =>
+      console.log(res[0], kmers.kmerFrequenciesFromSeq(res[0].entity, [1, 2]))
+    )
+
+  return
 }
-
-// codons_for_aa = yaml.load(fs.readFileSync('data/codons_for_aa.yaml', 'utf8'))
-// console.log(codons_for_aa)
-
-// var genetic = Genetic.create()
-// genetic.optimize = Genetic.Optimize.Maximize
-// genetic.select1 = Genetic.Select1.Tournament2
-// genetic.select2 = Genetic.Select2.FittestRandom
-//
-// genetic.seed = function () {
-//   var a = []
-//   // create coefficients for polynomial with values between (-0.5, 0.5)
-//
-//   var i
-//   for (i = 0; i < this.userData.foods.length; ++i) {
-//     a.push(Math.random() < 0.5)
-//   }
-//
-//   return a
-// }
-//
-// genetic.mutate = function (entity) {
-//   var idx = Math.floor(Math.random() * entity.length)
-//   entity[idx] = !entity[idx]
-//
-//   return entity
-// }
-//
-// genetic.crossover = function (mother, father) {
-//   var idx = Math.floor(Math.random() * mother.length)
-//
-//   var m1 = mother.slice(0, idx),
-//     m2 = mother.slice(idx),
-//     f1 = father.slice(0, idx),
-//     f2 = father.slice(idx)
-//
-//   var son = m1.concat(f2)
-//   var daughter = f1.concat(m2)
-//
-//   return [son, daughter]
-// }
-//
-// genetic.fitness = function (entity) {
-//   let putative = {
-//     calories: 0,
-//     carbs: 0,
-//     fat: 0,
-//     protein: 0
-//   }
-//
-//   var sumSqErr = 0
-//
-//   // calculate the total macros of the solution
-//   for (let i = 0; i < entity.length; i++) {
-//     if (entity[i]) {
-//       for (let macro of ['calories', 'protein', 'fat', 'carbs']) {
-//         putative[macro] += this.userData.foods[i][macro]
-//       }
-//     }
-//   }
-//
-//   for (let macro of ['calories', 'protein', 'fat', 'carbs']) {
-//     sumSqErr += (this.userData.target[macro] - putative[macro]) ** 2
-//   }
-//
-//   return 1 / Math.sqrt(sumSqErr)
-// }
-//
-// genetic.notification = function (pop, gen, stats, isFinished) {
-//   if (isFinished) {
-//     // console.log(pop, gen, stats);
-//     console.log(solutionToFoods(pop[0], this.userData.foods))
-//   }
-// }
-//
-// genetic.generation = function (pop, gen, stats) {
-//   if (stats.maximum > this.best_fitness) {
-//     this.best_fitness = stats.maximum
-//     this.gens_since_improvement = 0
-//   } else {
-//     this.gens_since_improvement += 1
-//   }
-//   if (this.gens_since_improvement > 50) {
-//     return false
-//   }
-// }
-//
-// genetic.best_fitness = 0
-// genetic.gens_since_improvement = 0
-//
-// // console.log(genetic);
-// var config = {
-//   'iterations': 500,
-//   'size': foods.length > 500 ? 500 : foods.length * 10,
-//   'crossover': 0.8,
-//   'mutation': 0.2,
-//   'skip': 10
-// }
-//
-// var userData = {
-//   // genomeSize: 10,
-//   foods: foods,
-//   target: target
-// }
-//
-// genetic.evolve(config, userData)
