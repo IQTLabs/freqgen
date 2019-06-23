@@ -94,11 +94,5 @@ module.exports = function generate(
   algo.gensSinceImprovement = 0
   algo.bestFitness = 0
 
-  algo
-    .start()
-    .then(res =>
-      console.log(res[0], kmers.kmerFrequenciesFromSeq(res[0].entity, [1, 2]))
-    )
-
-  return
+  return algo.start()
 }
