@@ -42,8 +42,9 @@ describe('k-mer array generation', () => {
     })
 
     test('k=2 with end cut off', () => {
-      let result = kmers('GATTACA', 2, { overlap: false })
-      expect(result).toEqual(['GA', 'TT', 'AC'])
+      expect(() => {
+        kmer('GATTACA', 2, { overlap: false })
+      }).toThrow()
     })
 
     test('k=2', () => {
@@ -52,8 +53,9 @@ describe('k-mer array generation', () => {
     })
 
     test('k=3 with end cut off', () => {
-      let result = kmers('GATTACA', 3, { overlap: false })
-      expect(result).toEqual(['GAT', 'TAC'])
+      expect(() => {
+        kmer('GATTACA', 3, { overlap: false })
+      }).toThrow()
     })
 
     test('k=4', () => {

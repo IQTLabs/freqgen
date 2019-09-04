@@ -5,6 +5,11 @@ module.exports.kmers = function(seq, k, { overlap = true } = {}) {
     throw new Error('k value >= 0 is required')
   }
 
+  if (seq.length % k != 0 && !overlap) {
+    throw new Error(
+      `Sequence is of length ${seq.length}, which is not unabiguously divisible into overlapping ${k}-mers.`
+    )
+  }
   let numKmers = overlap ? seq.length - k + 1 : Math.floor(seq.length / k)
   let result = new Array(numKmers)
   let spacing = overlap ? 1 : k
@@ -23,9 +28,7 @@ module.exports.kmerCounts = function(kmers) {
     let kmer = kmers[i]
     if (kmer.length !== k) {
       throw new Error(
-        `Not all k-mers are of length ${k}. At index ${i}, got ${kmer}, which is of length ${
-          kmer.length
-        }.`
+        `Not all k-mers are of length ${k}. At index ${i}, got ${kmer}, which is of length ${kmer.length}.`
       )
     }
     counts.set(kmer, (counts.get(kmer) || 0) + 1) // counts.get(kmer) || 0 is 0 or the k-mer count, whichever is greater
