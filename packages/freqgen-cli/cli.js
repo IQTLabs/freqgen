@@ -42,7 +42,7 @@ program
 
     let totalKmerCounts = new Map() // will map k values to maps with k-mers and counts. Ex: {1: {"A": n, "T": n}...}
     for (let k of options.kMers) {
-      spinner.text = `Counting ${k}-mers...`
+      spinner.text = `Counting ${k}-mers for ${seqs.length} sequence(s)...`
       for (let seq of seqs) {
         let counts = freqgen.kmerCounts(freqgen.kmers(seq, k, true))
 
@@ -56,9 +56,11 @@ program
 
     // if codon featurization is requested, count the codons of every seq
     if (!(options.codons == null)) {
-      spinner.text = 'Counting codons...'
+      spinner.text = `Counting codons for ${seqs.length} sequence(s)...`
       for (let seq of seqs) {
-        let counts = freqgen.kmerCounts(freqgen.kmers(seq, 3, false))
+        let counts = freqgen.kmerCounts(
+          freqgen.kmers(seq, 3, { overlap: false })
+        )
 
         if (totalKmerCounts.get('codons')) {
           totalKmerCounts.set(
@@ -78,7 +80,9 @@ program
     }
 
     spinner.succeed(
-      `Done featurizing ${files.length} file${files.length > 1 ? 's' : ''}! ${
+      `Done featurizing ${files.length} file${
+        files.length > 1 ? 's' : ''
+      } with ${seqs.length} sequence(s)! ${
         options.output == null
           ? ''
           : 'Output written to ' + options.output + '.'
