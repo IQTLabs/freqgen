@@ -9,7 +9,7 @@ module.exports = function(mapToSerialize) {
   let result = ''
   for (let entry of mapToSerialize.entries()) {
     result += `${entry[0]}:\n` // add the key with no indentation
-    for (let kmer of entry[1].entries()) {
+    for (let kmer of [...entry[1].entries()].sort()) {
       result += `  ${kmer[0]}: ${kmer[1]}\n`
     }
   }
