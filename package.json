@@ -30,13 +30,14 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.5.0",
     "jest": "^24.8.0",
-    "jest-extended": "^0.11.1",
+    "jest-extended": "^0.11.2",
     "jest-runner-eslint": "^0.7.4",
     "lerna": "^3.15.0",
     "prettier": "^1.18.2"
   },
   "dependencies": {
     "@freqgen/cli": "file:packages/freqgen-cli",
-    "@freqgen/core": "file:packages/freqgen-core"
+    "@freqgen/core": "file:packages/freqgen-core",
+    "js-yaml": "^3.13.1"
   }
 }
