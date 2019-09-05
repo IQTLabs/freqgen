@@ -1,12 +1,7 @@
-const yaml = require('js-yaml')
-const fs = require('fs')
-const path = require('path')
 const GenAlgo = require('GenAlgo')
 
 // local packages
-const kmers = require('./kmers')
 const Operators = require('./operators')
-const distance = require('./distance')
 const utilities = require('./utilities')
 
 // configure warnings a la parcel/packages/core/test-utils/src/utils.js#L15 @ 30624f7
@@ -23,14 +18,12 @@ module.exports = function generate(
   targetFreqs,
   {
     populationSize = 100,
-    mutationProb = 0.3,
-    crossoverProb = 0.8,
+    mutationProbability = 0.3,
+    crossoverProbability = 0.8,
     maxGensSinceImprovement = 50,
     maxGensTotal = 10000,
-    improvementRelThreshold = 0.0,
     geneticCode = 11,
-    verbose = false,
-    fitnessFunction = null,
+    emitter = null,
   } = {}
 ) {
   // Do some quick sequence validation
@@ -59,7 +52,11 @@ module.exports = function generate(
     populationSize
   )
 
-  const algo = new GenAlgo.GenAlgo({ iterationNumber: maxGensTotal })
+  const algo = new GenAlgo.GenAlgo({
+    iterationNumber: maxGensTotal,
+    crossoverProbability,
+    mutationProbability,
+  })
 
   algo.setCrossoverFunction(target.crossover)
   algo.setFitnessEvaluator(target.fitness)
@@ -72,13 +69,16 @@ module.exports = function generate(
     elapsedTime,
     iterationNumber,
   }) => {
-    // if (iterationNumber % 10 == 0) {
-    //   console.log('Iteration ' + iterationNumber)
-    //   console.log('Best fitness : ' + bestIndividual.fitness)
-    //   console.log('Elapsed time : ' + elapsedTime)
-    //   console.log('Gens since improvement : ' + algo.gensSinceImprovement)
-    // }
-
+    // send an optional emitter information during optimization
+    if (emitter !== null) {
+      emitter.emit('generation', {
+        iterationNumber,
+        bestIndividualFitness: bestIndividual.fitness,
+        elapsedTime,
+        gensSinceImprovement: algo.gensSinceImprovement,
+      })
+    }
+    // stop early if the fitness has stopped improving
     if (bestIndividual.fitness > algo.bestFitness) {
       algo.bestFitness = bestIndividual.fitness
       algo.gensSinceImprovement = 0
