@@ -59,6 +59,7 @@ module.exports = function generate(
   })
 
   algo.setCrossoverFunction(target.crossover)
+  algo.setSelectPairFunction(GenAlgo.tournament3Pair)
   algo.setFitnessEvaluator(target.fitness)
   algo.setMutationFunction(target.mutate)
   algo.setSeed(target.seed())
@@ -86,6 +87,9 @@ module.exports = function generate(
       algo.gensSinceImprovement += 1
     }
     if (algo.gensSinceImprovement > maxGensSinceImprovement) {
+      if (emitter != null) {
+        emitter.emit('complete')
+      }
       return false
     }
     return true
