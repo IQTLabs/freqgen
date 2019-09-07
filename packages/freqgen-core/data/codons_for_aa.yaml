@@ -1,0 +1,2151 @@
+1:
+  '*':
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+2:
+  '*':
+  - TAA
+  - TAG
+  - AGA
+  - AGG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATA
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+3:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  M:
+  - ATA
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+4:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+5:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATA
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  - AGA
+  - AGG
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+6:
+  '*':
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - TAA
+  - TAG
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+9:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  - AAA
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  - AGA
+  - AGG
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+10:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  - TGA
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+11:
+  '*':
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+12:
+  '*':
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - CTG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+13:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - AGA
+  - AGG
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATA
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+14:
+  '*':
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  - AAA
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  - AGA
+  - AGG
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+  - TAA
+15:
+  '*':
+  - TAA
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - TAG
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+16:
+  '*':
+  - TAA
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - TAG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+21:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  K:
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATA
+  - ATG
+  N:
+  - AAT
+  - AAC
+  - AAA
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  - AGA
+  - AGG
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+22:
+  '*':
+  - TCA
+  - TAA
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - TAG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+23:
+  '*':
+  - TTA
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+24:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  - AGG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  - AGA
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+25:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - TGA
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+26:
+  '*':
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - CTG
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+27:
+  '*':
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - TAA
+  - TAG
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+28:
+  '*':
+  - TAA
+  - TAG
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+29:
+  '*':
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+  - TAA
+  - TAG
+30:
+  '*':
+  - TGA
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - TAA
+  - TAG
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGG
+  Y:
+  - TAT
+  - TAC
+31:
+  '*':
+  - TAA
+  - TAG
+  A:
+  - GCT
+  - GCC
+  - GCA
+  - GCG
+  C:
+  - TGT
+  - TGC
+  D:
+  - GAT
+  - GAC
+  E:
+  - GAA
+  - GAG
+  F:
+  - TTT
+  - TTC
+  G:
+  - GGT
+  - GGC
+  - GGA
+  - GGG
+  H:
+  - CAT
+  - CAC
+  I:
+  - ATT
+  - ATC
+  - ATA
+  K:
+  - AAA
+  - AAG
+  L:
+  - TTA
+  - TTG
+  - CTT
+  - CTC
+  - CTA
+  - CTG
+  M:
+  - ATG
+  N:
+  - AAT
+  - AAC
+  P:
+  - CCT
+  - CCC
+  - CCA
+  - CCG
+  Q:
+  - CAA
+  - CAG
+  R:
+  - CGT
+  - CGC
+  - CGA
+  - CGG
+  - AGA
+  - AGG
+  S:
+  - TCT
+  - TCC
+  - TCA
+  - TCG
+  - AGT
+  - AGC
+  T:
+  - ACT
+  - ACC
+  - ACA
+  - ACG
+  V:
+  - GTT
+  - GTC
+  - GTA
+  - GTG
+  W:
+  - TGA
+  - TGG
+  Y:
+  - TAT
+  - TAC
+
