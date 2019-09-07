@@ -1,9 +1,11 @@
 const fs = require('fs')
-const yaml = require('./yaml')
+const events = require('events')
+const mapYaml = require('./yaml')
 const freqgen = require('@freqgen/core')
 const ora = require('ora')
 const Fasta = require('biojs-io-fasta')
 const addMaps = require('./addMaps')
+const yaml = require('js-yaml')
 var program = require('commander')
 
 function commaSeparatedIntList(value) {
@@ -15,11 +17,11 @@ program
   .description('Featurize one or more FASTA files')
   .option(
     '-k, --k-mers <int>',
-    'Comma separated list of k values to featurize. Example: -k 1,2,3',
+    'comma separated list of k values to featurize, e.g. "-k 1,2,3"',
     commaSeparatedIntList
   )
-  .option('-c, --codons', 'Whether to featurize codons')
-  .option('-o, --output <file>', 'The output YAML file')
+  .option('-c, --codons', 'whether to featurize codons')
+  .option('-o, --output <file>', 'the output YAML file')
   .action(function(files, options) {
     // start up a pretty spinner (and correctly use file vs files!)
     const spinner = ora(
@@ -93,8 +95,56 @@ program
     if (options.output == null) {
       console.log(yaml(kmerFrequencies))
     } else {
-      fs.writeFileSync(options.output, yaml(kmerFrequencies))
+      fs.writeFileSync(options.output, mapYaml(kmerFrequencies))
     }
   })
+program
+  .command('generate')
+  .description(
+    'Given a set of target k-mer and/or codon frequencies and an amino acid sequence, generate a DNA sequence.'
+  )
+  .option(
+    '-s, --seq <file>',
+    'the input FASTA file containing the amino acid sequence'
+  )
+  .option(
+    '-f, --freq <file>',
+    'the input YAML file containing the k-mer and/or codon frequencies to target'
+  )
+  .option(
+    '-o, --output <file>',
+    'the output FASTA file (if not provided, writes to stdout)'
+  )
+  .option('-g, --genetic-code <int>', 'the genetic code to use (default: 11)')
+  .action(function(options) {
+    // read in the freqs
+    const spinner = ora(
+      `Reading target frequencies from ${options.freq}`
+    ).start()
+    freqs = Object.entries(yaml.safeLoad(fs.readFileSync(options.freq, 'utf8')))
+    freqs = freqs.map(x => [
+      x[0] == 'codons' ? 'codons' : Number(x[0]),
+      new Map(Object.entries(x[1])),
+    ])
+    freqs = new Map(freqs)
 
+    // read in the seq
+    spinner.text = `Reading target amino acid sequence from ${options.seq}`
+    seq = Fasta.parse(fs.readFileSync(options.seq, 'utf8'))[0].seq
+
+    // show progress updates
+    var emitter = new events.EventEmitter()
+    emitter.on('generation', x => {
+      spinner.text = `Generation number:\t${
+        x.iterationNumber
+      }\n  Current fitness:\t${x.bestIndividualFitness.toFixed(
+        4
+      )}\n  Since increase:\t${x.gensSinceImprovement}`
+    })
+    emitter.on('complete', x => spinner.succeed('Done!'))
+    freqgen.generate(seq, freqs, { emitter }).then(res => {
+      console.log(res[0].entity)
+    })
+    // spinner.stop()
+  })
 program.parse(process.argv)
