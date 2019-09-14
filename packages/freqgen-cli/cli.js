@@ -137,7 +137,7 @@ program
     50
   )
   .option(
-    '--population-count <int>',
+    '--pop-count <int>',
     'how many populations to optimize, returning the best result (default: 1)',
     1
   )
@@ -162,7 +162,7 @@ program
     var emitter = new events.EventEmitter()
     emitter.on('generation', x => {
       // don't show the details when optimizing multiple populations
-      if (options.populationCount > 1) {
+      if (options.popCount > 1) {
         return
       }
       spinner.text = `Generation number:\t${
@@ -171,14 +171,6 @@ program
         4
       )}\n  Since increase:\t${x.gensSinceImprovement}`
     })
-
-    const generate = async () =>
-      await freqgen.generate(seq, freqs, {
-        emitter,
-        mutationProbability: Number(options.mutationRate),
-        crossoverProbability: Number(options.crossoverRate),
-        populationSize: Number(options.popSize),
-      })
 
     // .then(res => {
     //   console.log(
@@ -189,12 +181,15 @@ program
     // })
     const evolvePopulations = async () => {
       fittestInPopulations = []
-      for (let index = 0; index < options.populationCount; index++) {
+      for (let index = 0; index < options.popCount; index++) {
         // update the spinner
-        spinner.text = `Optimizing population ${index + 1}/${
-          options.populationCount
-        }`
-        result = await generate()
+        spinner.text = `Optimizing population ${index + 1}/${options.popCount}`
+        result = await freqgen.generate(seq, freqs, {
+          emitter,
+          mutationProbability: Number(options.mutationRate),
+          crossoverProbability: Number(options.crossoverRate),
+          populationSize: Number(options.popSize),
+        })
         fittestInPopulations.push(result[0])
       }
       spinner.succeed(

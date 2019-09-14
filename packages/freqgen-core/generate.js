@@ -1,5 +1,4 @@
 const GenAlgo = require('GenAlgo')
-const XXH = require('xxhashjs')
 
 // local packages
 const Operators = require('./operators')
