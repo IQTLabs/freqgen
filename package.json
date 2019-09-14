@@ -38,6 +38,7 @@
   "dependencies": {
     "@freqgen/cli": "file:packages/freqgen-cli",
     "@freqgen/core": "file:packages/freqgen-core",
+    "fast-memoize": "^2.5.1",
     "js-yaml": "^3.13.1"
   }
 }

@@ -1,4 +1,5 @@
 const GenAlgo = require('GenAlgo')
+const XXH = require('xxhashjs')
 
 // local packages
 const Operators = require('./operators')
@@ -17,13 +18,15 @@ module.exports = function generate(
   targetAminoAcidSeq,
   targetFreqs,
   {
-    populationSize = 100,
     mutationProbability = 0.3,
     crossoverProbability = 0.8,
     maxGensSinceImprovement = 50,
     maxGensTotal = 10000,
     geneticCode = 11,
     emitter = null,
+    operators = null,
+    cache = true,
+    populationSize = 100,
   } = {}
 ) {
   // Do some quick sequence validation
@@ -45,24 +48,24 @@ module.exports = function generate(
 
   utilities.validateKmerFrequencyMap(targetFreqs)
 
-  let target = new Operators(
+  operators = new Operators(
     targetAminoAcidSeq,
     targetFreqs,
     geneticCode,
-    populationSize
+    cache,
+    { populationSize }
   )
-
   const algo = new GenAlgo.GenAlgo({
     iterationNumber: maxGensTotal,
     crossoverProbability,
     mutationProbability,
   })
 
-  algo.setCrossoverFunction(target.crossover)
+  algo.setCrossoverFunction(operators.crossover)
   algo.setSelectPairFunction(GenAlgo.tournament3Pair)
-  algo.setFitnessEvaluator(target.fitness)
-  algo.setMutationFunction(target.mutate)
-  algo.setSeed(target.seed())
+  algo.setFitnessEvaluator(operators.fitness)
+  algo.setMutationFunction(operators.mutate)
+  algo.setSeed(operators.seed())
 
   // Will be called at each iteration
   const iterationCallback = ({
@@ -89,6 +92,7 @@ module.exports = function generate(
     if (algo.gensSinceImprovement > maxGensSinceImprovement) {
       if (emitter != null) {
         emitter.emit('complete')
+        // emitter.emit('stats', operators.stats)
       }
       return false
     }

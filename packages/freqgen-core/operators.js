@@ -4,6 +4,7 @@ const kmers = require('./kmers')
 const distance = require('./distance')
 const path = require('path')
 const random = require('lodash.random')
+const memoize = require('fast-memoize')
 
 const codonsForAminoAcid = yaml.load(
   fs.readFileSync(path.resolve(__dirname, './data/codons_for_aa.yaml'), 'utf8')
@@ -24,7 +25,13 @@ const codonsWithoutSynonyms = yaml.load(
 )
 
 class Operators {
-  constructor(targetAminoAcidSeq, targetFreqs, geneticCode, populationSize) {
+  constructor(
+    targetAminoAcidSeq,
+    targetFreqs,
+    geneticCode,
+    cache,
+    { populationSize = 100 }
+  ) {
     this.targetAminoAcidSeq = targetAminoAcidSeq
     this.targetFreqs = targetFreqs
     this.populationSize = populationSize
@@ -40,16 +47,20 @@ class Operators {
     this.k = Array.from(targetFreqs.keys())
 
     this.seed = () => {
-      let dnaSeq = ''
-
-      for (let letter of this.targetAminoAcidSeq) {
-        dnaSeq += this.codonsForAminoAcid[letter][0]
+      let population = []
+      for (let index = 0; index < populationSize; index++) {
+        let dnaSeq = ''
+        for (let letter of this.targetAminoAcidSeq) {
+          dnaSeq += this.codonsForAminoAcid[letter][
+            Math.floor(Math.random() * this.codonsForAminoAcid[letter].length)
+          ]
+        }
+        population.push(dnaSeq)
       }
-
-      return Array.from({ length: this.populationSize }, () => dnaSeq)
+      return population
     }
 
-    this.fitness = seq => {
+    let fitness = seq => {
       // first, convert it to a flat map (e.g. {A => 0.5, T => 0.5, AT => 1.0})
       let freqs = kmers.kmerFrequenciesFromSeq(seq, this.k)
       freqs = new Map(
@@ -58,6 +69,29 @@ class Operators {
 
       // then compare with flat map we precalculated
       return distance.cosine(freqs, this.targetFreqsFlat)
+    }
+
+    // in the real world, use the fast-memoize package
+    if (cache) {
+      this.fitness = memoize(fitness)
+    }
+    // otherwise, use our own (probably slow) implementation that tracks stats
+    // else if (cache && verbose) {
+    //   let cacheMap = new Map()
+    //   this.stats = { hits: 0, misses: 0 }
+    //   this.fitness = seq => {
+    //     if (cacheMap.has(seq)) {
+    //       this.stats.hits++
+    //     } else {
+    //       this.stats.misses++
+    //       cacheMap.set(seq, fitness(seq))
+    //     }
+    //     return cacheMap.get(seq)
+    //   }
+    // }
+    // or, turn off caching altogether
+    else {
+      this.fitness = fitness
     }
 
     this.crossover = (parent_1, parent_2) => {
