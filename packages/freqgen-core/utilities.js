@@ -18,7 +18,8 @@ utilities.validateKmerCountMap = function(kmerCountMap) {
 utilities.validateKmerFrequencyMap = function(kmerFrequencyMap) {
   kmerFrequencyMap.forEach((v, k) => {
     utilities.validateKmerCountMap(v) // first check to make sure that all the k-mers are of the same length
-    if (utilities.sumMapValues(v) !== 1) {
+    // for float imprecision, make it fixed and compare to a string
+    if (utilities.sumMapValues(v).toFixed(10) !== '1.0000000000') {
       throw new Error(`Values for k=${k} do not sum to 1.`)
     }
   })
