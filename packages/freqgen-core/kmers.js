@@ -60,11 +60,10 @@ module.exports.kmerFrequencies = function(counts, { validation = true } = {}) {
 module.exports.kmerFrequenciesFromSeq = function(seq, k) {
   let result = new Map()
   for (let _k of k) {
+    let overlap = { overlap: true }
     if (_k == 'codons') {
       _k = 3
       overlap = { overlap: false }
-    } else {
-      overlap = { overlap: true }
     }
     result.set(
       _k,
