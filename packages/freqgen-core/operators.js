@@ -35,7 +35,6 @@ class Operators {
     this.targetAminoAcidSeq = targetAminoAcidSeq
     this.targetFreqs = targetFreqs
     this.populationSize = populationSize
-
     this.targetFreqsFlat = new Map(
       [...targetFreqs.values()].map(x => Array.from(x.entries())).flat()
     )
@@ -44,6 +43,20 @@ class Operators {
     this.codonsForAminoAcid = codonsForAminoAcid[geneticCode]
     this.codonsWithoutSynonyms = codonsWithoutSynonyms[geneticCode]
     this.synonmyousCodons = synonmyousCodons[geneticCode]
+
+    // input validation
+    if (this.targetFreqs.get(3) && this.targetFreqs.get('codons')) {
+      throw new Error("Can't have k=3 and codons set.")
+    }
+
+    // convert to using a string as the map key and tracking if k=3 refers to codons as a bool
+    // this is to make kmerFrequenciesFromSeq monadic
+    if (this.targetFreqs.get('codons')) {
+      this.targetFreqs.set(3, this.targetFreqs.get('codons'))
+      this.targetFreqs.delete('codons')
+      this.codons = true
+    }
+
     this.k = Array.from(targetFreqs.keys())
 
     this.seed = () => {
@@ -62,7 +75,9 @@ class Operators {
 
     let fitness = seq => {
       // first, convert it to a flat map (e.g. {A => 0.5, T => 0.5, AT => 1.0})
-      let freqs = kmers.kmerFrequenciesFromSeq(seq, this.k)
+      let freqs = kmers.kmerFrequenciesFromSeq(seq, this.k, {
+        codons: this.codons,
+      })
       freqs = new Map(
         [...freqs.values()].map(x => Array.from(x.entries())).flat()
       )

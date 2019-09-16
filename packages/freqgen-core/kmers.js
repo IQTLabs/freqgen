@@ -45,30 +45,24 @@ module.exports.kmerFrequencies = function(counts, { validation = true } = {}) {
     if (counts.size === 0) {
       return new Map()
     }
-
     utilities.validateKmerCountMap(counts)
   }
 
   let totalKmers = utilities.sumMapValues(counts)
-
   counts.forEach((v, k, m) => m.set(k, v / totalKmers))
-
   return counts
 }
 
 // a helper function that utilizes the performance boost of skipping validation in kmerFrequencies
-module.exports.kmerFrequenciesFromSeq = function(seq, k) {
+module.exports.kmerFrequenciesFromSeq = function(seq, k, { codons = false }) {
   let result = new Map()
   for (let _k of k) {
-    let overlap = { overlap: true }
-    if (_k == 'codons') {
-      _k = 3
-      overlap = { overlap: false }
-    }
     result.set(
       _k,
       module.exports.kmerFrequencies(
-        module.exports.kmerCounts(module.exports.kmers(seq, _k, overlap)),
+        module.exports.kmerCounts(
+          module.exports.kmers(seq, _k, { overlap: !(codons && _k == 3) })
+        ),
         {
           validation: false,
         }
