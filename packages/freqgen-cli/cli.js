@@ -189,6 +189,7 @@ program
         spinner.text = `Optimizing population ${index + 1}/${options.popCount}`
         // GenAlgo is async, so we have to wait
         result = await freqgen.generate(seq, freqs, {
+          cache: options.cache,
           emitter,
           mutationProbability: Number(options.mutationRate),
 
