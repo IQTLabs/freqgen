@@ -205,6 +205,6 @@ program
       }
       return fittestInPopulations[0]
     }
-    evolvePopulations()
+    evolvePopulations().catch(e => spinner.fail(e.message))
   })
 program.parse(process.argv)
