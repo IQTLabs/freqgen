@@ -17,15 +17,16 @@ module.exports = function generate(
   targetAminoAcidSeq,
   targetFreqs,
   {
-    mutationProbability = 0.3,
+    cache = true,
     crossoverProbability = 0.8,
+    emitter = null,
+    geneticCode = 11,
     maxGensSinceImprovement = 50,
     maxGensTotal = 10000,
-    geneticCode = 11,
-    emitter = null,
+    mutationProbability = 0.3,
     operators = null,
-    cache = true,
     populationSize = 100,
+    relTol = 0.0001,
   } = {}
 ) {
   // Do some quick sequence validation
@@ -82,7 +83,7 @@ module.exports = function generate(
       })
     }
     // stop early if the fitness has stopped improving
-    if (bestIndividual.fitness > algo.bestFitness) {
+    if (bestIndividual.fitness > algo.bestFitness * (1 + relTol)) {
       algo.bestFitness = bestIndividual.fitness
       algo.gensSinceImprovement = 0
     } else {

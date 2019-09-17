@@ -1,4 +1,7 @@
 const utilities = require('./utilities')
+const yaml = require('js-yaml')
+const fs = require('fs')
+const path = require('path')
 
 module.exports.kmers = function(seq, k, { overlap = true } = {}) {
   if (k === undefined || k < 1) {
@@ -70,4 +73,14 @@ module.exports.kmerFrequenciesFromSeq = function(seq, k, { codons = false }) {
     )
   }
   return result
+}
+const geneticCodes = yaml.load(
+  fs.readFileSync(path.resolve(__dirname, './data/genetic_codes.yaml'), 'utf8')
+)
+module.exports.translate = function(seq, geneticCode = 11) {
+  let translatedSeq = ''
+  for (let codon of module.exports.kmers(seq, 3, { overlap: false })) {
+    translatedSeq += geneticCodes[geneticCode][codon]
+  }
+  return translatedSeq
 }

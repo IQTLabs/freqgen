@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require('fs')
 const events = require('events')
 const mapYaml = require('./yaml')
@@ -133,8 +134,13 @@ program
   )
   .option(
     '-e, --early-stopping <int>',
-    'after how many generations without improvement to stop the optimization (default: 50)',
+    'after how many generations without at least --rel-tol percent improvement to stop the optimization (default: 50)',
     50
+  )
+  .option(
+    '-r, --rel-tol <float>',
+    'the percentage increase required to reset the early stopping counter (default: 0.0001, must be in [0, 1])',
+    0.0001
   )
   .option(
     '--pop-count <int>',
@@ -149,6 +155,10 @@ program
   .option(
     '--no-metadata',
     "whether to exclude JSON metadata from the output FASTA's comment line (default: false)"
+  )
+  .option(
+    '--dna',
+    'whether to interpret the FASTA file as DNA (default: false)'
   )
   .action(function(options) {
     // read in the freqs
@@ -165,6 +175,11 @@ program
     // read in the seq
     spinner.text = `Reading target amino acid sequence from ${options.seq}`
     seq = Fasta.parse(fs.readFileSync(options.seq, 'utf8'))[0].seq
+
+    // translate the sequence, if needed
+    if (options.dna) {
+      seq = freqgen.translate(seq, options.geneticCode)
+    }
 
     // show progress updates
     var emitter = new events.EventEmitter()
@@ -192,9 +207,10 @@ program
           cache: options.cache,
           emitter,
           mutationProbability: Number(options.mutationRate),
-
+          relTol: Number(options.relTol),
           crossoverProbability: Number(options.crossoverRate),
           populationSize: Number(options.popSize),
+          maxGensSinceImprovement: Number(options.earlyStopping),
         })
         // store the result
         fittestInPopulations.push(result[0])
@@ -211,6 +227,8 @@ program
         crossoverRate: options.crossoverRate,
         populationSize: options.popSize,
         populationCount: options.popCount,
+        earlyStopping: options.earlyStopping,
+        relTol: options.relTol,
       }
       if (options.log) {
         try {
