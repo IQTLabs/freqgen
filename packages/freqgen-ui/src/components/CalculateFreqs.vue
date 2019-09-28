@@ -4,7 +4,7 @@
       <PasteOrUpload />
     </b-tab-item>
     <b-tab-item label="YAML" icon="file-chart">
-      <PasteOrUpload></PasteOrUpload>
+      <PasteOrUpload filetype-name="YAML" acceptable-filetypes=".yaml,.yml" />
     </b-tab-item>
   </b-tabs>
 </template>

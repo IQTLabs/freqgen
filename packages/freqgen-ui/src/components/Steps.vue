@@ -5,7 +5,8 @@
     </b-step-item>
     <b-step-item label="Protein Target" icon="target">
       <div class="box">
-        <PasteOrUpload></PasteOrUpload>
+        <h2 class="title has-text-centered is-4">Paste FASTA</h2>
+        <PasteOrUpload filetype-name="FASTA" acceptable-filetypes=".fna,.fa,.fasta"></PasteOrUpload>
       </div>
     </b-step-item>
     <b-step-item label="Generate DNA" icon="dna">
