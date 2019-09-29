@@ -41,6 +41,7 @@
         header="DNA optimization made easy."
         bg-variant="transparent"
         lead="Generate DNA sequences with target k-mer and codon usage frequencies."
+        class="my-0"
       ></b-jumbotron>
     </b-container>
     <Main></Main>
