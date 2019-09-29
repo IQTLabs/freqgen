@@ -1,30 +1,28 @@
 <template>
   <div id="app">
-    <link
-      rel="stylesheet"
-      href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css"
-    />
-    <NavBar />
-    <div class="container">
-      <Steps />
-    </div>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
 <script>
-import NavBar from './components/NavBar.vue'
-import Steps from './components/Steps.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
-    NavBar,
-    Steps,
+    HelloWorld,
   },
 }
 </script>
-<style >
-body {
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

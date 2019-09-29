@@ -1,4 +1,4 @@
-# freqgen
+# freqgen-ui
 
 ## Project setup
 ```
