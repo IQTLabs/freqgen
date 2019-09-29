@@ -15,6 +15,12 @@ usage bias. To accomplish this, Freqgen uses genetic algorithms to efficiently
 search the solution space of possible DNA sequences to find ones that most
 closely match the desired parameters.
 
+Freqgen is currently undergoing a thorough rewrite in Javascript to achieve better performance and the ability to run natively in the browser.
+The Python version is being deprecated and will receive no further updates.
+Don't worry, since the JS version has all the features of the Python version (and more!) with a much cleaner user interface.
+Stay tuned!
+
+<!--
 ## Features
 
 - CLI and Python API
@@ -58,7 +64,7 @@ The basic flow of Freqgen can be summarized in three steps:
 ## Documentation
 
 Read the full docs over at
-[freqgen.readthedocs.io](http://freqgen.readthedocs.io).
+[freqgen.readthedocs.io](http://freqgen.readthedocs.io). -->
 
 ## Citation
 
