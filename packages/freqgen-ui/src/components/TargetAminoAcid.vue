@@ -16,14 +16,14 @@
           placeholder="Paste YAML here..."
           rows="3"
           max-rows="6"
-          :disabled="Boolean(file.length)"
+          :disabled="Boolean(file)"
         ></b-form-textarea>
         <p class="text-center my-3">or</p>
         <b-row>
           <b-col cols="10">
             <b-form-file
               v-model="file"
-              :state="Boolean(file.length) ? true : null"
+              :state="Boolean(file) ? true : null"
               placeholder="Choose a file or drop it here..."
               drop-placeholder="Drop file here..."
               accept=".yml, .yaml"
@@ -33,9 +33,9 @@
             <b-button
               variant="outline-secondary"
               block
-              :disabled="!Boolean(file.length)"
+              :disabled="!Boolean(file)"
               @click="file = []"
-            >Clear file{{ file.length > 1 ? 's' : '' }}</b-button>
+            >Clear file</b-button>
           </b-col>
         </b-row>
       </b-container>
@@ -48,10 +48,7 @@ export default {
   name: 'TargetAminoAcid',
   data() {
     return {
-      file: [],
-      options: [1, 2, 3, 'codons', 4, 5, 6, 7, 8, 9],
-      selected: [],
-      text: '',
+      file: null,
     }
   },
   computed: {

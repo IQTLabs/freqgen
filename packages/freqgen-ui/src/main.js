@@ -11,3 +11,6 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app')
+
+const freqgen = require('../../freqgen-core')
+Object.defineProperty(Vue.prototype, '$freqgen', { value: freqgen })

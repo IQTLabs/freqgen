@@ -1,4 +1,4 @@
-const GenAlgo = require('GenAlgo')
+const GenAlgo = require('genalgo')
 
 // local packages
 const Operators = require('./operators')
