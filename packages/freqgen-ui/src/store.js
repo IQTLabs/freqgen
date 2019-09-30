@@ -4,7 +4,11 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: { aminoAcidSeq: '' },
+  mutations: {
+    setAminoAcidSeq(state, seq) {
+      state.aminoAcidSeq = seq
+    },
+  },
   actions: {},
 })
