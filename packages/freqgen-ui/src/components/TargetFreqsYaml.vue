@@ -7,15 +7,15 @@
       rows="3"
       max-rows="6"
       :disabled="Boolean(file)"
-      :state="yamlState"
-      @change="loadText"
+      :state="yamlState && text.length"
+      @input="loadText"
     ></b-form-textarea>
     <p class="text-center my-3">or</p>
     <b-row>
       <b-col cols="10">
         <b-form-file
           v-model="file"
-          :state="Boolean(file) ? true : null"
+          :state="fileState"
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here..."
           accept=".yml, .yaml"
@@ -27,7 +27,7 @@
           variant="outline-secondary"
           block
           :disabled="!Boolean(file)"
-          @click="file = null"
+          @click="file = null; fileState = null"
         >Clear file</b-button>
       </b-col>
     </b-row>
@@ -43,6 +43,7 @@ export default {
       file: null,
       yamlObj: undefined,
       text: '',
+      fileState: null,
     }
   },
   methods: {
@@ -57,7 +58,19 @@ export default {
       let reader = new FileReader()
       let text = ''
       reader.readAsText(ev.target.files[0])
-      reader.onload = e => (this.text = e.target.result)
+      reader.onload = e => {
+        try {
+          this.yamlObj = yaml.safeLoad(e.target.result)
+          this.fileState = true
+        } catch (error) {
+          this.yamlObj = undefined
+          this.fileState = false
+          this.$bvModal.msgBoxOk('Unable to parse YAML file.').then(() => {
+            this.file = null
+            this.fileState = null
+          })
+        }
+      }
     },
   },
   computed: {
