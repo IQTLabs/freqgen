@@ -7,7 +7,7 @@
       rows="3"
       max-rows="6"
       :disabled="Boolean(file)"
-      :state="yamlState && text.length"
+      :state="textareaState"
       @input="loadText"
     ></b-form-textarea>
     <p class="text-center my-3">or</p>
@@ -56,13 +56,16 @@ export default {
     },
     loadFile(ev) {
       let reader = new FileReader()
-      let text = ''
       reader.readAsText(ev.target.files[0])
       reader.onload = e => {
+        // if things worked, update the object
         try {
           this.yamlObj = yaml.safeLoad(e.target.result)
+          console.log(this.yamlObj)
+
           this.fileState = true
         } catch (error) {
+          // otherwise, create an error message and reset things to try again
           this.yamlObj = undefined
           this.fileState = false
           this.$bvModal.msgBoxOk('Unable to parse YAML file.').then(() => {
@@ -74,8 +77,9 @@ export default {
     },
   },
   computed: {
-    yamlState() {
-      if (typeof this.yamlObj == 'object') {
+    // decide whether to make the textarea outline red, green, or blank
+    textareaState() {
+      if (typeof this.yamlObj == 'object' && this.text.length > 0) {
         return true
       } else if (typeof this.yamlObj != 'object' && this.text.length != 0) {
         return false
